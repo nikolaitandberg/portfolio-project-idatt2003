@@ -9,10 +9,6 @@ package edu.ntnu.stud.idatt2003.models;
  * @since 2024-02-08
  */
 public class Complex extends Vector2D {
-  private final double realPart;
-
-  private final double imaginaryPart;
-
   /**
    * Constructor for the complex number.
    *
@@ -21,16 +17,14 @@ public class Complex extends Vector2D {
    */
   public Complex(double realPart, double imaginaryPart) {
     super(realPart, imaginaryPart);
-    this.realPart = realPart;
-    this.imaginaryPart = imaginaryPart;
   }
 
   public double getRealPart() {
-    return realPart;
+    return getX0();
   }
 
   public double getImaginaryPart() {
-    return imaginaryPart;
+    return getX1();
   }
 
   /**
@@ -39,10 +33,13 @@ public class Complex extends Vector2D {
    * @return Square root of the complex number.
    */
   public Complex sqrt() {
-    double r = Math.sqrt(Math.pow(realPart, 2) + Math.pow(imaginaryPart, 2));
-    double x = Math.sqrt((r + realPart) / 2);
-    double y = Math.sqrt((r - realPart) / 2);
-    return new Complex(x, y);
+    double r = Math.sqrt(Math.pow(getRealPart(), 2) + Math.pow(getImaginaryPart(), 2));
+    double theta = Math.atan2(getImaginaryPart(), getRealPart());
+
+    double realPart = Math.sqrt(r) * Math.cos(theta / 2);
+    double imaginaryPart = Math.sqrt(r) * Math.sin(theta / 2);
+
+    return new Complex(realPart, imaginaryPart);
   }
 
 
