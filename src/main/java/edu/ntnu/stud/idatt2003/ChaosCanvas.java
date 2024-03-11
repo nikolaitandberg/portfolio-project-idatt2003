@@ -45,6 +45,13 @@ public class ChaosCanvas {
     );
   }
 
+  public int getPixel(Vector2D point) {
+    Vector2D matrixVector = transformCoordsToIndices.transform(point);
+    return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
+  }
 
+  public void putPixel(Vector2D point) {
+
+  }
 
 }
