@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003;
 
+import edu.ntnu.stud.idatt2003.models.Matrix2x2;
 import edu.ntnu.stud.idatt2003.models.Vector2D;
 import edu.ntnu.stud.idatt2003.models.transformations.AffineTransform2D;
 
@@ -32,5 +33,18 @@ public class ChaosCanvas {
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
     this.canvas = new int[width][height];
+    this.transformCoordsToIndices = new AffineTransform2D(
+            new Matrix2x2(
+                    0, (height - 1) / (minCoords.getX1() - maxCoords.getX1()),
+                    (width - 1) / (maxCoords.getX0() - minCoords.getX0()), 0
+            ),
+            new Vector2D(
+                    (height - 1) / (maxCoords.getX1() - minCoords.getX1()),
+                    (width - 1) / (minCoords.getX0() - maxCoords.getX0())
+            )
+    );
   }
+
+
+
 }
