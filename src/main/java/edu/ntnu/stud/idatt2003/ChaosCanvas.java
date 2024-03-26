@@ -43,6 +43,7 @@ public class ChaosCanvas {
                     (width - 1) / (minCoords.getX0() - maxCoords.getX0())
             )
     );
+    this.clear();
   }
 
   public int getPixel(Vector2D point) {
@@ -51,7 +52,23 @@ public class ChaosCanvas {
   }
 
   public void putPixel(Vector2D point) {
+    Vector2D matrixVector = transformCoordsToIndices.transform(point);
+    int i = (int) matrixVector.getX0();
+    int j = (int) matrixVector.getX1();
 
+    // todo: check if i and j are within bounds
+    canvas[i][j] = 1;
   }
 
+  public void clear() {
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        canvas[i][j] = 0;
+      }
+    }
+  }
+
+  public int[][] getCanvas() {
+    return canvas;
+  }
 }
