@@ -29,4 +29,23 @@ public class AffineTransform2D implements Transform2D {
   public Vector2D transform(Vector2D point) {
     return matrix2x2.multiply(point).add(vector2D);
   }
+
+  /**
+   * Method for getting the matrix of the affine transformation.
+   *
+   * @return The matrix of the affine transformation
+   */
+  public Matrix2x2 getMatrix2x2() {
+    return matrix2x2;
+  }
+
+  /**
+   * Method for getting the vector of the affine transformation.
+   *
+   * @return The vector of the affine transformation
+   */
+  public Vector2D getVector2D() {
+    return vector2D;
+  }
+
 }
