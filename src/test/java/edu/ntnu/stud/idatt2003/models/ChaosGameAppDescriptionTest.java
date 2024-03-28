@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 1.0
  * @since 2024-02-28
  */
-class ChaosGameDescriptionTest {
+class ChaosGameAppDescriptionTest {
 
   @Test
   @DisplayName("Test constructor")

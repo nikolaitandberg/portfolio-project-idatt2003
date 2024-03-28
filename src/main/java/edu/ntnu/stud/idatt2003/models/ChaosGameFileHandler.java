@@ -25,7 +25,7 @@ public class ChaosGameFileHandler {
    * @throws IOException If an I/O error occurs
    */
 
-  public ChaosGameDescription readFromFile(String path) throws IOException {
+  public ChaosGameDescription readFromFile(String path) throws IOException, IllegalArgumentException {
     List<Transform2D> transforms = new ArrayList<>();
     Vector2D minCords = null;
     Vector2D maxCords = null;
