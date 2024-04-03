@@ -1,9 +1,11 @@
 package edu.ntnu.stud.idatt2003.models;
 
-import edu.ntnu.stud.idatt2003.ChaosGameApp;
+import edu.ntnu.stud.idatt2003.models.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.models.transformations.Transform2D;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -14,11 +16,25 @@ import java.util.Scanner;
  */
 public class CLIApp {
 
+  public static ChaosGameDescription initializeChaosGameDescription() {
+    List<Transform2D> transforms = new ArrayList<>();
+    transforms.add(new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(1, 0)));
+    transforms.add(new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0, 0.5)));
+    transforms.add(new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(-1, 0)));
+    transforms.add(new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0, -0.5)));
+
+    Vector2D minCords = new Vector2D(-1.0, -1.0);
+    Vector2D maxCords = new Vector2D(1.0, 1.0);
+
+    // Create the description object
+    return new ChaosGameDescription(minCords, maxCords, transforms);
+  }
+
   public static void main(String[] args) throws IOException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
-    ChaosGameApp chaosGameApp = new ChaosGameApp();
-    ChaosGameDescription description = chaosGameApp.initializeChaosGameDescription();
+
+    ChaosGameDescription description = initializeChaosGameDescription();
     boolean running = true;
     while (running) {
       System.out.println("1. Read description from file");
@@ -64,5 +80,4 @@ public class CLIApp {
       }
     }
   }
-
 }
