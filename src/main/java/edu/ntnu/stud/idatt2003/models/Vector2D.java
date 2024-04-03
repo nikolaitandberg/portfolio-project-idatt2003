@@ -49,4 +49,9 @@ public class Vector2D {
   public Vector2D subtract(Vector2D vector) {
     return new Vector2D(this.x0 - vector.x0, this.x1 - vector.x1);
   }
+
+  public String toString() {
+    return x0 + ", " + x1;
+  }
+
 }

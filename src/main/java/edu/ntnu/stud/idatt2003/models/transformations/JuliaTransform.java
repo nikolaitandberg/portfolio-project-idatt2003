@@ -30,6 +30,25 @@ public class JuliaTransform implements Transform2D {
   }
 
   /**
+   * Method for getting the point of the transformation.
+   *
+   * @return The point of the transformation
+   */
+  public Complex getPoint() {
+    return point;
+  }
+
+  /**
+   * Method for getting the sign of the transformation.
+   *
+   * @return The sign of the transformation
+   */
+
+  public int getSign() {
+    return sign;
+  }
+
+  /**
    * Method for transforming a vector using the Julia transformation.
    *
    * @param point Vector to transform
@@ -49,4 +68,9 @@ public class JuliaTransform implements Transform2D {
 
     return complexPoint.sqrt();
   }
+
+  public String toString() {
+    return "Point: " + point + ", Sign: " + sign;
+  }
+
 }

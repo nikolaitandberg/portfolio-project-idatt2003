@@ -42,5 +42,9 @@ public class Complex extends Vector2D {
     return new Complex(realPart, imaginaryPart);
   }
 
+  @Override
+  public String toString() {
+    return getRealPart() + ", " + getImaginaryPart();
+  }
 
 }

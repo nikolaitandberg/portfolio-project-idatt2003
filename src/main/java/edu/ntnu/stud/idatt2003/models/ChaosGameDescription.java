@@ -2,6 +2,7 @@ package edu.ntnu.stud.idatt2003.models;
 
 import edu.ntnu.stud.idatt2003.models.transformations.Transform2D;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class representing a chaos game description.
@@ -42,5 +43,14 @@ public class ChaosGameDescription {
 
   public List<Transform2D> getTransforms() {
     return transforms;
+  }
+
+  @Override
+  public String toString() {
+    return "ChaosGameDescription{" +
+            "minCords=" + minCords +
+            ", maxCords=" + maxCords +
+            ", transforms=" + transforms +
+            '}';
   }
 }
