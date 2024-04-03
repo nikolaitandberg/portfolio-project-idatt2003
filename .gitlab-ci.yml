@@ -7,7 +7,6 @@ stages:
   - build
   - test
   - package
-  - deploy
 
 
 cache:
@@ -42,13 +41,3 @@ package_job:
   script:
     - echo "Maven packaging started"
     - "mvn package"
-
-
-Deploy_job:
-  stage: deploy
-  tags:
-    - docker
-
-  script:
-    - echo "Maven deploy started"
-    - "mvn deploy"
