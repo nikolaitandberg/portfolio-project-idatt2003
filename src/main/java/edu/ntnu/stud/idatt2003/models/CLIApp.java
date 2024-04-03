@@ -30,7 +30,7 @@ public class CLIApp {
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
-  public static void main(String[] args) throws IOException {
+  public void run() {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
