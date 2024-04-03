@@ -51,6 +51,12 @@ public class ChaosCanvas {
     return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
   }
 
+  /**
+   * Method for putting a pixel on the canvas.
+   *
+   * @param point Point to put the pixel at.
+   */
+
   public void putPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     int i = (int) matrixVector.getX0();
@@ -59,6 +65,10 @@ public class ChaosCanvas {
     // todo: check if i and j are within bounds
     canvas[i][j] = 1;
   }
+
+  /**
+   * Method for clearing the canvas.
+   */
 
   public void clear() {
     for (int i = 0; i < width; i++) {

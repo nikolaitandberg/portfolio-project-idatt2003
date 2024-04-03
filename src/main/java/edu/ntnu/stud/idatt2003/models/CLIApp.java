@@ -1,25 +1,30 @@
 package edu.ntnu.stud.idatt2003.models;
 
 import edu.ntnu.stud.idatt2003.ChaosGameApp;
+import edu.ntnu.stud.idatt2003.models.transformations.Transform2D;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * A class for running the chaos game application in the command line interface.
+ *
+ * @version 1.0
+ * @since 2024-02-28
+ */
 public class CLIApp {
 
   public static void main(String[] args) throws IOException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
     ChaosGameApp chaosGameApp = new ChaosGameApp();
-    // FractalGenerator fractalGenerator = new FractalGenerator(); // TODO create FractalGenerator class
     ChaosGameDescription description = chaosGameApp.initializeChaosGameDescription();
     boolean running = true;
     while (running) {
       System.out.println("1. Read description from file");
       System.out.println("2. Write description to file");
       System.out.println("3. Run iterations");
-      System.out.println("4. Print ASCII fractal");
-      System.out.println("5. Exit");
+      System.out.println("4. Exit");
       System.out.print("Enter option: ");
 
       int option = scanner.nextInt();
@@ -28,6 +33,9 @@ public class CLIApp {
           System.out.print("Enter file path: ");
           String readPath = scanner.next();
           description = fileHandler.readFromFile(readPath);
+          for (Transform2D transform : description.getTransforms()) {
+            System.out.println(transform.toString());
+          }
           break;
         case 2:
           if (description != null) {
@@ -48,13 +56,6 @@ public class CLIApp {
           }
           break;
         case 4:
-          if (description != null) {
-            System.out.println("Here should the fractal be printed.");
-          } else {
-            System.out.println("No fractal generated to print.");
-          }
-          break;
-        case 5:
           System.out.println("Exiting application...");
           running = false;
           break;

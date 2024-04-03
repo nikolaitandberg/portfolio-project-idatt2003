@@ -68,4 +68,9 @@ public class JuliaTransform implements Transform2D {
 
     return complexPoint.sqrt();
   }
+
+  public String toString() {
+    return "Point: " + point + ", Sign: " + sign;
+  }
+
 }

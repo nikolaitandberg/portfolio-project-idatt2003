@@ -48,4 +48,8 @@ public class AffineTransform2D implements Transform2D {
     return vector2D;
   }
 
+  public String toString() {
+    return "Matrix: " + matrix2x2 + ", Vector: " + vector2D;
+  }
+
 }

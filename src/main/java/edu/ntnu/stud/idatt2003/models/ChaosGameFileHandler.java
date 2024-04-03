@@ -30,24 +30,26 @@ public class ChaosGameFileHandler {
     Vector2D minCords = null;
     Vector2D maxCords = null;
 
-    try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-      String line = reader.readLine();
-      String transformType = line.trim();
+    try (Scanner scanner = new Scanner(new File(path))) {
+      scanner.useDelimiter(",|\\s|#"); // Bruker komma eller whitespace som delimiter
 
-      line = reader.readLine();
-      String[] minCordsArray = line.trim().split(",");
-      minCords = new Vector2D(Double.parseDouble(minCordsArray[0]), Double.parseDouble(minCordsArray[1]));
+      String transformType = scanner.next().trim();
+      scanner.nextLine();
 
-      line = reader.readLine();
-      String[] maxCordsArray = line.trim().split(",");
-      maxCords = new Vector2D(Double.parseDouble(maxCordsArray[0]), Double.parseDouble(maxCordsArray[1]));
+      double minX = scanner.nextDouble();
+      double minY = scanner.nextDouble();
+      minCords = new Vector2D(minX, minY);
+      scanner.nextLine();
 
-      while ((line = reader.readLine()) != null) {
-        if (line.isEmpty() || line.startsWith("#")) {
-          continue;
-        }
+      double maxX = scanner.nextDouble();
+      double maxY = scanner.nextDouble();
+      maxCords = new Vector2D(maxX, maxY);
+      scanner.nextLine();
 
-        double[] params = Arrays.stream(line.trim().split(","))
+      while (scanner.hasNextLine()) {
+
+        String[] parts = scanner.nextLine().split("#")[0].trim().split(",");
+        double[] params = Arrays.stream(parts)
                 .mapToDouble(Double::parseDouble)
                 .toArray();
 
@@ -66,41 +68,46 @@ public class ChaosGameFileHandler {
             throw new IllegalArgumentException("Did not find transform type: " + transformType);
         }
       }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
-  /**
-   * Method for writing a chaos game description to a file.
-   *
-   * @param description Chaos game description to write
-   * @param path        Path to write to
-   * @throws IOException If an I/O error occurs
-   */
+    /**
+     * Method for writing a chaos game description to a file.
+     *
+     * @param description Chaos game description to write
+     * @param path        Path to write to
+     * @throws IOException If an I/O error occurs
+     */
 
   public void writeToFile(ChaosGameDescription description, String path) throws IOException {
     List<String> linesToWrite = new ArrayList<>();
 
     if (!description.getTransforms().isEmpty()) {
       Transform2D firstTransform = description.getTransforms().getFirst();
-      linesToWrite.add(firstTransform instanceof AffineTransform2D ? "Affine2D" : "Julia");
+      linesToWrite.add(firstTransform instanceof AffineTransform2D
+              ? "Affine2D   # Type of transformation" : "Julia   # Type of transformation");
     }
 
-    linesToWrite.add(description.getMinCords().getX0() + "," + description.getMinCords().getX1());
-    linesToWrite.add(description.getMaxCords().getX0() + "," + description.getMaxCords().getX1());
+    linesToWrite.add(description.getMinCords().getX0() + "," + description.getMinCords().getX1() + "   # Lower left");
+    linesToWrite.add(description.getMaxCords().getX0() + "," + description.getMaxCords().getX1() + "   # Upper right");
 
+    int transformationCounter = 1;
     for (Transform2D transform : description.getTransforms()) {
       if (transform instanceof AffineTransform2D affine) {
         Matrix2x2 matrix = affine.getMatrix2x2();
         Vector2D vector = affine.getVector2D();
-        String matrixLine = matrix.getA00() + "," + matrix.getA01() + "," + matrix.getA10() + "," + matrix.getA11();
-        String vectorLine = vector.getX0() + "," + vector.getX1();
-        linesToWrite.add(matrixLine + "," + vectorLine);
+        linesToWrite.add(matrix + "," + vector + "   # Transformation " + transformationCounter);
+        transformationCounter++;
       } else if (transform instanceof JuliaTransform julia) {
         Complex c = julia.getPoint();
         int sign = julia.getSign();
-        String juliaLine = c.getRealPart() + "," + c.getImaginaryPart() + "," + sign;
+        String juliaLine = c.getRealPart() + "," + c.getImaginaryPart() + ","
+                + sign + "   # Transformation " + transformationCounter;
         linesToWrite.add(juliaLine);
+        transformationCounter++;
       }
     }
     try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {

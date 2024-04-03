@@ -78,5 +78,8 @@ public class Matrix2x2 {
     return a11;
   }
 
+  public String toString() {
+    return a00 + ", " + a01 + ", " + a10 + ", " + a11;
+  }
 
 }
