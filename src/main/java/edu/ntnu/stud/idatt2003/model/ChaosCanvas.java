@@ -1,8 +1,6 @@
-package edu.ntnu.stud.idatt2003;
+package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.models.Matrix2x2;
-import edu.ntnu.stud.idatt2003.models.Vector2D;
-import edu.ntnu.stud.idatt2003.models.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
 
 /**
 * A class representing a canvas for the chaos game.

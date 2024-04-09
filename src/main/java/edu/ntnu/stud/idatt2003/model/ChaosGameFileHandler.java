@@ -1,8 +1,8 @@
-package edu.ntnu.stud.idatt2003.models;
+package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.models.transformations.AffineTransform2D;
-import edu.ntnu.stud.idatt2003.models.transformations.JuliaTransform;
-import edu.ntnu.stud.idatt2003.models.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.JuliaTransform;
+import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 
 import java.io.*;
 import java.nio.file.*;

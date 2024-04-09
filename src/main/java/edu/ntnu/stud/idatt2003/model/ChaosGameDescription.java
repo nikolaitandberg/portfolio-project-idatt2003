@@ -1,8 +1,7 @@
-package edu.ntnu.stud.idatt2003.models;
+package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.models.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A class representing a chaos game description.

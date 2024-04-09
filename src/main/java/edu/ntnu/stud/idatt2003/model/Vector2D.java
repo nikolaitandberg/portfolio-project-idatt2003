@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.models;
+package edu.ntnu.stud.idatt2003.model;
 
 /**
  * Class for representing a 2D vector.
