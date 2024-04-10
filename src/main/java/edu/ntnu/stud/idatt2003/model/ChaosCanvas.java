@@ -1,5 +1,7 @@
 package edu.ntnu.stud.idatt2003.model;
 
+import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
 import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
 
 /**
@@ -60,7 +62,6 @@ public class ChaosCanvas {
     int i = (int) matrixVector.getX0();
     int j = (int) matrixVector.getX1();
 
-    // todo: check if i and j are within bounds
     canvas[i][j] = 1;
   }
 

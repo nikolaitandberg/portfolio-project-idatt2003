@@ -1,5 +1,7 @@
 package edu.ntnu.stud.idatt2003.model;
 
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+
 import java.util.Random;
 
 /**
