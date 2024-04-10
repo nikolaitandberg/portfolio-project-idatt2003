@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003.model.math;
 
 
 /**
@@ -33,13 +33,14 @@ public class Complex extends Vector2D {
    * @return Square root of the complex number.
    */
   public Complex sqrt() {
-    double r = Math.sqrt(Math.pow(getRealPart(), 2) + Math.pow(getImaginaryPart(), 2));
-    double theta = Math.atan2(getImaginaryPart(), getRealPart());
+    double a = this.getX0();
+    double b = this.getX1();
 
-    double realPart = Math.sqrt(r) * Math.cos(theta / 2);
-    double imaginaryPart = Math.sqrt(r) * Math.sin(theta / 2);
+    double magnitude = Math.sqrt(a * a + b * b);
+    double x = Math.sqrt((magnitude + a) / 2);
+    double y = Math.signum(b) * Math.sqrt((magnitude - a ) / 2);
 
-    return new Complex(realPart, imaginaryPart);
+    return new Complex(x,y);
   }
 
   @Override
