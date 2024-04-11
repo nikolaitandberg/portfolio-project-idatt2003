@@ -1,7 +1,10 @@
-package edu.ntnu.stud.idatt2003;
+package edu.ntnu.stud.idatt2003.model.main;
 
-import edu.ntnu.stud.idatt2003.model.*;
 import edu.ntnu.stud.idatt2003.model.math.Complex;
+import edu.ntnu.stud.idatt2003.model.model.ChaosGame;
+import edu.ntnu.stud.idatt2003.model.model.ChaosGameDescription;
+import edu.ntnu.stud.idatt2003.model.model.ChaosGameDescriptionFactory;
+import edu.ntnu.stud.idatt2003.model.model.ChaosGameFileHandler;
 import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 
 import java.io.IOException;
