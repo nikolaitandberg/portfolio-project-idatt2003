@@ -28,11 +28,11 @@ public class ChaosGameDescriptionFactory {
    * @return a chaos game description
    * @throws IllegalArgumentException if the name is unknown
    */
-  public static ChaosGameDescription get(String name) throws IllegalArgumentException {
+  public static ChaosGameDescription get(String name) throws UnknownTransformationException {
     return switch (name) {
       case "Sierpinski triangle" -> createSierpinskiTriangle();
       case "Barnsley fern" -> createBarnsleyFern();
-      default -> throw new IllegalArgumentException("Unknown chaos game description");
+      default -> throw new UnknownTransformationException("Unknown chaos game description");
     };
   }
 
