@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003.model.model;
 
+import edu.ntnu.stud.idatt2003.model.exceptions.UnknownTransformationException;
 import edu.ntnu.stud.idatt2003.model.math.Complex;
 import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
 import edu.ntnu.stud.idatt2003.model.math.Vector2D;
@@ -26,16 +27,16 @@ public class ChaosGameFileHandler {
    *
    * @param path Path to the file
    * @return A chaos game description
-   * @throws IOException If an I/O error occurs
+   * @throws UnknownTransformationException if the transformation type is unknown
    */
 
-  public ChaosGameDescription readFromFile(String path) throws IOException, IllegalArgumentException {
+  public ChaosGameDescription readFromFile(String path) throws UnknownTransformationException {
     List<Transform2D> transforms = new ArrayList<>();
     Vector2D minCords = null;
     Vector2D maxCords = null;
 
     try (Scanner scanner = new Scanner(new File(path))) {
-      scanner.useDelimiter(",|\\s|#"); // Bruker komma eller whitespace som delimiter
+      scanner.useDelimiter(",|\\s|#");
 
       String transformType = scanner.next().trim();
       scanner.nextLine();
@@ -69,11 +70,11 @@ public class ChaosGameFileHandler {
             transforms.add(new JuliaTransform(c, sign));
             break;
           default:
-            throw new IllegalArgumentException("Did not find transform type: " + transformType);
+            throw new UnknownTransformationException("Did not find transform type: " + transformType);
         }
       }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      throw new IllegalArgumentException("File not found: " + path);
     }
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }

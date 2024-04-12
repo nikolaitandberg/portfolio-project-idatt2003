@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003.model.main;
 
+import edu.ntnu.stud.idatt2003.model.exceptions.UnknownTransformationException;
 import edu.ntnu.stud.idatt2003.model.math.Complex;
 import edu.ntnu.stud.idatt2003.model.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.model.ChaosGameDescription;
@@ -18,7 +19,7 @@ import java.util.Scanner;
  */
 public class CLIApp {
 
-  public void run() throws IOException {
+  public void run() throws IOException, UnknownTransformationException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
@@ -88,7 +89,7 @@ public class CLIApp {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, UnknownTransformationException {
     CLIApp app = new CLIApp();
     app.run();
   }
