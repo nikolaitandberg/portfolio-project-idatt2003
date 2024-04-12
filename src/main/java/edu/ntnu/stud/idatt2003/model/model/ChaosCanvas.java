@@ -46,6 +46,13 @@ public class ChaosCanvas {
     this.clear();
   }
 
+  /**
+   * Method for getting a pixel from the canvas.
+   *
+   * @param point Point to get the pixel from.
+   * @return Pixel value.
+   */
+
   public int getPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
@@ -76,6 +83,12 @@ public class ChaosCanvas {
       }
     }
   }
+
+  /**
+   * Method for getting the canvas.
+   *
+   * @return The canvas.
+   */
 
   public int[][] getCanvas() {
     return canvas;

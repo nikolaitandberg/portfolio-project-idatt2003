@@ -22,10 +22,20 @@ public class Vector2D {
     this.x1 = x1;
   }
 
+  /**
+   * Method for getting the first element in the vector.
+   *
+   * @return First element in the vector
+   */
   public double getX0() {
     return x0;
   }
 
+  /**
+   * Method for getting the second element in the vector.
+   *
+   * @return Second element in the vector
+   */
   public double getX1() {
     return x1;
   }
@@ -50,6 +60,10 @@ public class Vector2D {
     return new Vector2D(this.x0 - vector.x0, this.x1 - vector.x1);
   }
 
+  /**
+   * To string method.
+   * @return String representation of the vector.
+   */
   public String toString() {
     return x0 + ", " + x1;
   }

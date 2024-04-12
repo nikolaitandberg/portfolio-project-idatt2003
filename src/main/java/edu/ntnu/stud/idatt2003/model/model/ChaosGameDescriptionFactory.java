@@ -38,6 +38,12 @@ public class ChaosGameDescriptionFactory {
     };
   }
 
+  /**
+   * Method for creating a Julia set chaos game description.
+   *
+   * @param c complex number for the Julia set
+   * @return chaos game description for a Julia set
+   */
   public static ChaosGameDescription createJuliaSet(Complex c) {
     // Define the transformation matrices
 
@@ -102,7 +108,4 @@ public class ChaosGameDescriptionFactory {
 
     return new ChaosGameDescription(minCords, maxCords, transforms);
 }
-
-
-
   }

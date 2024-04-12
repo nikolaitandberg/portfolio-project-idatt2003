@@ -65,7 +65,6 @@ public class JuliaTransform implements Transform2D {
 
       return new Complex(-sqrt.getX0(), -sqrt.getX1());
     }
-
     return sqrt;
   }
 

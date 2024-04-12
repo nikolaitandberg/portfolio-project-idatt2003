@@ -19,10 +19,21 @@ public class Complex extends Vector2D {
     super(realPart, imaginaryPart);
   }
 
+  /**
+   * Method for getting the real part of the complex number.
+   *
+   * @return Real part of the complex number.
+   */
+
   public double getRealPart() {
     return getX0();
   }
 
+  /**
+   * Method for getting the imaginary part of the complex number.
+   *
+   * @return Imaginary part of the complex number.
+   */
   public double getImaginaryPart() {
     return getX1();
   }
@@ -43,6 +54,10 @@ public class Complex extends Vector2D {
     return new Complex(x,y);
   }
 
+  /**
+   * To string method.
+   * @return String representation of the complex number.
+   */
   @Override
   public String toString() {
     return getRealPart() + ", " + getImaginaryPart();
