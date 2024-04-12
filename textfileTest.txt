@@ -1,0 +1,5 @@
+Julia   # Type of transformation
+-1.6,-1.0   # Lower left
+1.6,1.0   # Upper right
+-0.74543,0.11301,1   # Transformation 1
+-0.74543,0.11301,-1   # Transformation 2
