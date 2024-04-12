@@ -1,7 +1,10 @@
 package edu.ntnu.stud.idatt2003.model.model;
 
+import edu.ntnu.stud.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.model.math.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,6 +22,7 @@ public class ChaosGame {
   private Vector2D currentPoint = new Vector2D(0, 0);
 
   private final Random random = new Random();
+  private final List<ChaosGameObserver> observers = new ArrayList<>();
 
   /**
    * Constructor for chaosGame.
@@ -59,4 +63,15 @@ public class ChaosGame {
     }
   }
 
+  public void addObserver(ChaosGameObserver observer) {
+    observers.add(observer);
+  }
+  public void removeObserver(ChaosGameObserver observer) {
+    observers.remove(observer);
+  }
+  public void notifyObservers(ChaosGameDescription description) {
+    for (ChaosGameObserver observer : observers) {
+      observer.update(description);
+    }
+  }
 }

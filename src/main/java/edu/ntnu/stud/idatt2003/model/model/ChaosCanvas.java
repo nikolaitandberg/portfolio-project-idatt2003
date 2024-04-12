@@ -93,4 +93,12 @@ public class ChaosCanvas {
   public int[][] getCanvas() {
     return canvas;
   }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
+  }
 }
