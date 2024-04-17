@@ -23,7 +23,7 @@ public class CLIApp {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
-    ChaosGameDescription description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.74543, 0.11301));
+    ChaosGameDescription description = ChaosGameDescriptionFactory.createBarnsleyFern();
     ChaosGame chaosGame = new ChaosGame(description, 60, 60);
     boolean running = true;
     while (running) {
@@ -64,7 +64,7 @@ public class CLIApp {
           break;
         case 4:
           if (chaosGame != null) {
-            int[][] canvas = chaosGame.getCanvas();
+            int[][] canvas = chaosGame.getCanvas().getCanvas();
             for (int i = 0; i < canvas.length; i++) {
               for (int j = 0; j < canvas[i].length; j++) {
                 if (canvas[i][j] == 1) {

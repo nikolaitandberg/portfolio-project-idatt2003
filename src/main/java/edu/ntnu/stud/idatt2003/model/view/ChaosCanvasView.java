@@ -3,36 +3,30 @@ package edu.ntnu.stud.idatt2003.model.view;
 import edu.ntnu.stud.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.model.model.ChaosCanvas;
 import edu.ntnu.stud.idatt2003.model.model.ChaosGameDescription;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.awt.*;
 
 public class ChaosCanvasView extends Canvas implements ChaosGameObserver {
 
-  private ChaosCanvas canvas;
+  private ChaosCanvas chaosCanvas;
 
-  public ChaosCanvasView(ChaosCanvas canvas) {
-    setSize(canvas.getWidth(), canvas.getHeight());
+  public ChaosCanvasView(javafx.scene.canvas.Canvas canvas) {
   }
 
-  @Override
-  public void update(ChaosGameDescription description) {
-    paint(getGraphics());
-  }
+  private void paint(int[][] canvasArray, GraphicsContext gc) {
+    double cellSize = 10; // Adjust size based on your array and canvas dimensions
 
-  @Override
-  public void paint(Graphics g) {
-    super.paint(g);
-    if (canvas != null) {
-      for (int x = 0; x < canvas.getCanvas().length; x++) {
-        for (int y = 0; y < canvas.getCanvas()[x].length; y++) {
-          if (canvas.getCanvas()[x][y] == 1) {
-            g.setColor(Color.BLACK);
-          } else {
-            g.setColor(Color.WHITE);
-          }
-          g.drawLine(x, y, x, y);
+    for (int i = 0; i < canvasArray.length; i++) {
+      for (int j = 0; j < canvasArray[i].length; j++) {
+        if (canvasArray[i][j] == 1) {
+          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
         }
       }
     }
+  }
+
+  @Override
+  public void update() {
   }
 }

@@ -34,6 +34,7 @@ public class ChaosGameDescriptionFactory {
     return switch (name) {
       case "Sierpinski triangle" -> createSierpinskiTriangle();
       case "Barnsley fern" -> createBarnsleyFern();
+      case "Julia set" -> createJuliaSet(new Complex(-0.4, 0.6));
       default -> throw new UnknownTransformationException("Unknown chaos game description");
     };
   }
@@ -67,7 +68,7 @@ public class ChaosGameDescriptionFactory {
    *
    * @return chaos game description for a Sierpinski triangle
    */
-  private static ChaosGameDescription createSierpinskiTriangle() {
+  public static ChaosGameDescription createSierpinskiTriangle() {
     Matrix2x2 sierpinskiMatrix = new Matrix2x2(0.5, 0, 0, 0.5);
     AffineTransform2D sierpinski1 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0, 0));
     AffineTransform2D sierpinski2 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.5, 0));
@@ -85,7 +86,7 @@ public class ChaosGameDescriptionFactory {
    *
    * @return chaos game description for a Barnsley fern
    */
-  private static ChaosGameDescription createBarnsleyFern() {
+  public static ChaosGameDescription createBarnsleyFern() {
     Matrix2x2 matrix1 = new Matrix2x2(0, 0, 0, 0.16);
     Matrix2x2 matrix2 = new Matrix2x2(0.85, 0.04, -0.04, 0.85);
     Matrix2x2 matrix3 = new Matrix2x2(0.2, -0.26, 0.23, 0.22);

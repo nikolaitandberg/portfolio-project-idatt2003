@@ -13,7 +13,7 @@ import java.util.Random;
  * @version 1.0
  * @since 2024-03-29
  */
-public class ChaosGame {
+public class ChaosGame implements ChaosGameObserver {
 
   private final ChaosCanvas canvas;
 
@@ -46,8 +46,17 @@ public class ChaosGame {
    *
    * @return canvas, an int[][] of 0 and 1
    */
-  public int[][] getCanvas() {
+  public int[][] getCanvasInt() {
     return canvas.getCanvas();
+  }
+
+  /**
+   * Method for getting the canvas.
+   *
+   * @return canvas, a ChaosCanvas object
+   */
+  public ChaosCanvas getCanvas() {
+    return canvas;
   }
 
   /**
@@ -69,9 +78,14 @@ public class ChaosGame {
   public void removeObserver(ChaosGameObserver observer) {
     observers.remove(observer);
   }
-  public void notifyObservers(ChaosGameDescription description) {
+  public void notifyObservers() {
     for (ChaosGameObserver observer : observers) {
-      observer.update(description);
+      observer.update();
     }
+  }
+
+  @Override
+  public void update() {
+
   }
 }
