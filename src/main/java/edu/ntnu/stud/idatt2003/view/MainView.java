@@ -5,13 +5,14 @@ import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainView extends Application {
@@ -35,50 +36,45 @@ public class MainView extends Application {
   public void start(Stage primaryStage) {
 
     MenuBar menuBar = new MenuBar();
-    Menu fractalMenu = new Menu("Fractals");
-    Menu fractalList = new Menu("Fractal List");
+    Menu fractalMenu = new Menu("New fractal");
 
-    fractalMenu.getItems().addAll(sierpinski, barnsleyFern, julia);
+    menuBar.getMenus().add(fractalMenu);
 
-    barnsleyFern.setOnAction(e -> {
-      chaosGame.runSteps(10000);
-      drawCanvas(chaosGame.getCanvasInt(), gc);
-    });
-    sierpinski.setOnAction(e -> {
-      chaosGame.runSteps(10000);
-      drawCanvas(chaosGame.getCanvasInt(), gc);
-    });
-    julia.setOnAction(e -> {
-      chaosGame.runSteps(10000);
-      drawCanvas(chaosGame.getCanvasInt(), gc);
-    });
+    VBox leftPanel = new VBox();
+    leftPanel.setSpacing(15); // Mellomrom mellom komponentene
 
-    menuBar.getMenus().addAll(fractalMenu, fractalList);
+    ComboBox<String> savedFractalsDropdown = new ComboBox<>();
+    leftPanel.getChildren().add(savedFractalsDropdown);
+
+    ComboBox<String> fractalTypeDropdown = new ComboBox<>();
+    fractalTypeDropdown.getItems().addAll("Julia Set", "Sierpinski triangle", "Barnsley fern");
+    leftPanel.getChildren().add(fractalTypeDropdown);
+
+    VBox parametersBox = new VBox();
+    HBox stepsBox = new HBox();
+
+    TextField stepsField = new TextField();
+    stepsField.setPromptText("Antall steg");
+    Button submitSteps = new Button("Beregn");
+
+    stepsBox.getChildren().addAll(stepsField, submitSteps);
+
+    leftPanel.getChildren().add(parametersBox);
+
+    Button saveButton = new Button("Lagre");
+    saveButton.setOnAction(event -> {
+    });
+    leftPanel.getChildren().add(saveButton);
 
     BorderPane root = new BorderPane();
+    BorderPane.setMargin(leftPanel, new Insets(17));
     root.setTop(menuBar);
-    root.setBottom(canvas);
+    root.setRight(canvas);
+    root.setLeft(leftPanel);
 
     Scene scene = new Scene(root, 800, 600);
     primaryStage.setTitle("Chaos Game");
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(true);
     primaryStage.show();
-  }
-
-  public MenuItem getSierpinski() {
-    return sierpinski;
-  }
-
-  private void drawCanvas(int[][] canvasArray, GraphicsContext gc) {
-    gc.clearRect(0,0,800,600);
-    double cellSize = 10; // Adjust size based on your array and canvas dimensions
-    for (int i = 0; i < canvasArray.length; i++) {
-      for (int j = 0; j < canvasArray[i].length; j++) {
-        if (canvasArray[i][j] == 1) {
-          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-        }
-      }
-    }
   }
 }
