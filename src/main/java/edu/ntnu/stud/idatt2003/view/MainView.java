@@ -46,26 +46,45 @@ public class MainView extends Application {
     ComboBox<String> fractalTypeDropdown = new ComboBox<>();
     fractalTypeDropdown.getItems().addAll("Julia Set", "Sierpinski triangle", "Barnsley fern");
     leftPanel.getChildren().add(fractalTypeDropdown);
-    HBox fractalBox = new HBox();
+    VBox fractalBox = new VBox();
     fractalTypeDropdown.setOnAction(event -> {
       String selected = fractalTypeDropdown.getValue();
       if (selected.equals("Julia Set")) {
           fractalBox.getChildren().clear();
-          TextField c = new TextField();
+        HBox juliaBox = new HBox();
+        TextField c = new TextField();
           c.setPromptText("c");
           Button submitC = new Button("Beregn");
-          fractalBox.getChildren().addAll(c, submitC);
+          juliaBox.getChildren().addAll(c, submitC);
+          fractalBox.getChildren().add(juliaBox);
           leftPanel.getChildren().add(fractalBox);
         } else {
           fractalBox.getChildren().clear();
+          HBox vectorBox = new HBox();
+          HBox matrixBox1 = new HBox();
+          HBox matrixBox2 = new HBox();
           TextField vector1 = new TextField();
           vector1.setPromptText("Vector 1");
           TextField vector2 = new TextField();
           vector2.setPromptText("Vector 2");
           Button submitVectors = new Button("Beregn");
-          fractalBox.getChildren().addAll(vector1, vector2, submitVectors);
+          vectorBox.getChildren().addAll(vector1, vector2, submitVectors);
+          TextField matrix1 = new TextField();
+          matrix1.setPromptText("Matrix 1");
+          TextField matrix2 = new TextField();
+          matrix2.setPromptText("Matrix 2");
+          matrixBox1.getChildren().addAll(matrix1, matrix2);
+          TextField matrix3 = new TextField();
+          matrix3.setPromptText("Matrix 3");
+          TextField matrix4 = new TextField();
+          matrix4.setPromptText("Matrix 4");
+          Button submitMatrix = new Button("Beregn");
+          matrixBox2.getChildren().addAll(matrix3, matrix4, submitMatrix);
+          fractalBox.getChildren().addAll(vectorBox, matrixBox1, matrixBox2);
           leftPanel.getChildren().add(fractalBox);
         }
+        Button save = new Button("Save");
+        leftPanel.getChildren().add(save);
       }
     );
 
@@ -78,11 +97,6 @@ public class MainView extends Application {
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     leftPanel.getChildren().add(stepsBox);
-
-    Button saveButton = new Button("Lagre");
-    saveButton.setOnAction(event -> {
-    });
-    leftPanel.getChildren().add(saveButton);
 
     BorderPane root = new BorderPane();
     BorderPane.setMargin(leftPanel, new Insets(17));
