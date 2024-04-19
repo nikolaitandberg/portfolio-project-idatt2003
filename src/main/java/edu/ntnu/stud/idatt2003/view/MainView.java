@@ -1,6 +1,5 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.math.Complex;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
@@ -21,11 +20,9 @@ public class MainView extends Application {
     launch(args);
   }
 
-  Complex c = new Complex(-0.4, 0.6);
   ChaosGameDescription description = ChaosGameDescriptionFactory.createSierpinskiTriangle() ;
   ChaosGame chaosGame = new ChaosGame(description, 100, 100);
   Canvas canvas = new Canvas(800, 600);
-  ChaosCanvasView chaosCanvasView = new ChaosCanvasView(canvas);
 
   GraphicsContext gc = canvas.getGraphicsContext2D();
   MenuItem sierpinski = new MenuItem("Sierpinski Triangle");
@@ -49,8 +46,29 @@ public class MainView extends Application {
     ComboBox<String> fractalTypeDropdown = new ComboBox<>();
     fractalTypeDropdown.getItems().addAll("Julia Set", "Sierpinski triangle", "Barnsley fern");
     leftPanel.getChildren().add(fractalTypeDropdown);
+    HBox fractalBox = new HBox();
+    fractalTypeDropdown.setOnAction(event -> {
+      String selected = fractalTypeDropdown.getValue();
+      if (selected.equals("Julia Set")) {
+          fractalBox.getChildren().clear();
+          TextField c = new TextField();
+          c.setPromptText("c");
+          Button submitC = new Button("Beregn");
+          fractalBox.getChildren().addAll(c, submitC);
+          leftPanel.getChildren().add(fractalBox);
+        } else {
+          fractalBox.getChildren().clear();
+          TextField vector1 = new TextField();
+          vector1.setPromptText("Vector 1");
+          TextField vector2 = new TextField();
+          vector2.setPromptText("Vector 2");
+          Button submitVectors = new Button("Beregn");
+          fractalBox.getChildren().addAll(vector1, vector2, submitVectors);
+          leftPanel.getChildren().add(fractalBox);
+        }
+      }
+    );
 
-    VBox parametersBox = new VBox();
     HBox stepsBox = new HBox();
 
     TextField stepsField = new TextField();
@@ -59,7 +77,7 @@ public class MainView extends Application {
 
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
-    leftPanel.getChildren().add(parametersBox);
+    leftPanel.getChildren().add(stepsBox);
 
     Button saveButton = new Button("Lagre");
     saveButton.setOnAction(event -> {
