@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003.view;
 
+import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
@@ -15,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainView extends Application {
+public class MainView extends Application implements ChaosGameObserver {
 
   public static void main(String[] args) {
     launch(args);
@@ -142,5 +143,10 @@ public class MainView extends Application {
     matricesBox.getChildren().addAll(matrixBox1, matrixBox2);
     vectorAndMatrixBoxes.getChildren().addAll(vectorBox, matricesBox);
     return vectorAndMatrixBoxes;
+  }
+
+  @Override
+  public void update() {
+    //update view based on model's state
   }
 }

@@ -5,15 +5,13 @@ import edu.ntnu.stud.idatt2003.view.MainView;
 
 public class MainController {
 
-  MainView view;
-  ChaosGame chaosGame;
+  private final MainView view;
+  private final ChaosGame model;
 
 
-  MainController(MainView view) {
+  MainController(MainView view, ChaosGame model) {
     this.view = view;
-  }
-
-  public void addObservers() {
-
+    this.model = model;
+    this.model.addObserver(view);
   }
 }
