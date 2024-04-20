@@ -218,10 +218,6 @@ public class MainView extends Application implements ChaosGameObserver {
   public List<String[]> getAffineBoxValues() {
     List<String[]> values = new ArrayList<>();
     for (HBox affineBox : affineBoxes) {
-      VBox vectorBox = (VBox) affineBox.getChildren().get(1);
-      TextField vector1 = (TextField) vectorBox.getChildren().get(0);
-      TextField vector2 = (TextField) vectorBox.getChildren().get(1);
-
       VBox matrixBox = (VBox) affineBox.getChildren().getFirst();
       HBox matrixRow1 = (HBox) matrixBox.getChildren().getFirst();
       TextField matrix00 = (TextField) matrixRow1.getChildren().get(0);
@@ -230,7 +226,11 @@ public class MainView extends Application implements ChaosGameObserver {
       TextField matrix10 = (TextField) matrixRow2.getChildren().get(0);
       TextField matrix11 = (TextField) matrixRow2.getChildren().get(1);
 
-      values.add(new String[]{vector1.getText(), vector2.getText(), matrix00.getText(), matrix01.getText(), matrix10.getText(), matrix11.getText()});
+      VBox vectorBox = (VBox) affineBox.getChildren().get(1);
+      TextField vector1 = (TextField) vectorBox.getChildren().get(0);
+      TextField vector2 = (TextField) vectorBox.getChildren().get(1);
+
+      values.add(new String[]{matrix00.getText(), matrix01.getText(), matrix10.getText(), matrix11.getText(), vector1.getText(), vector2.getText()});
     }
     return values;
   }
