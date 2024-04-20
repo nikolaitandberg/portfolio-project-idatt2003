@@ -255,8 +255,8 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   @Override
-  public void update() {
+  public void update(int[][] newCanvas) {
       gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
-      drawFractal(controller.getCanvas());
+      drawFractal(newCanvas);
   }
 }

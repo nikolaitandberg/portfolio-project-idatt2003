@@ -81,7 +81,7 @@ public class ChaosGame {
   }
   public void notifyObservers() {
     for (ChaosGameObserver observer : observers) {
-      observer.update();
+      observer.update(getCanvas().getCanvas());
     }
   }
 }
