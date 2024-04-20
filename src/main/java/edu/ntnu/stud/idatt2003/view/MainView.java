@@ -1,6 +1,7 @@
 package edu.ntnu.stud.idatt2003.view;
 
 import edu.ntnu.stud.idatt2003.ChaosGameObserver;
+import edu.ntnu.stud.idatt2003.controller.MainController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -18,8 +20,13 @@ import java.util.List;
 
 public class MainView extends Application implements ChaosGameObserver {
 
-  Canvas canvas = new Canvas(800, 600);
+  private MainController controller;
+
+  Canvas canvas = new Canvas(800, 800);
   GraphicsContext gc = canvas.getGraphicsContext2D();
+
+  private String selectedFractalType = null;
+
 
   List<HBox> juliaBoxes = new ArrayList<>();
   List<HBox> affineBoxes = new ArrayList<>();
@@ -35,6 +42,11 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void start(Stage primaryStage) {
+
+    gc.setFill(Color.RED);
+    gc.fillRect(50, 50, 100, 100);
+
+    controller = new MainController(this, null);
 
     MenuBar menuBar = new MenuBar();
     Menu fractalMenu = new Menu("New fractal");
@@ -98,6 +110,9 @@ public class MainView extends Application implements ChaosGameObserver {
     TextField stepsField = new TextField();
     stepsField.setPromptText("Antall steg");
     Button submitSteps = new Button("Beregn");
+    submitSteps.setOnAction(actionEvent -> {
+      controller.runSteps(Integer.parseInt(stepsField.getText()));
+    });
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
@@ -105,8 +120,12 @@ public class MainView extends Application implements ChaosGameObserver {
     addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
       if (selected.equals("Julia")) {
         fractalBox.getChildren().add(createJuliaBox());
-      } else {
+        selectedFractalType = "Julia";
+      } else if (selected.equals("Affine")) {
         fractalBox.getChildren().add(createAffineBox());
+        selectedFractalType = "Affine";
+      } else {
+        selectedFractalType = null;
       }
     });
 
@@ -121,6 +140,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
     Scene scene = new Scene(root, 800, 600);
     primaryStage.setTitle("Chaos Game");
+    primaryStage.setFullScreen(true);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
@@ -214,8 +234,29 @@ public class MainView extends Application implements ChaosGameObserver {
     return values;
   }
 
+  private void drawFractal(int[][] fractal) {
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+
+    double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
+    cellSize *= 2;
+    System.out.println(cellSize);
+
+    for (int i = 0; i < fractal.length; i++) {
+      for (int j = 0; j < fractal[i].length; j++) {
+        if (fractal[i][j] == 1) {
+          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+  }
+
+  public String getSelectedFractalType() {
+    return selectedFractalType;
+  }
+
   @Override
   public void update() {
-    //update view based on model's state
+      gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+      drawFractal(controller.getCanvas());
   }
 }

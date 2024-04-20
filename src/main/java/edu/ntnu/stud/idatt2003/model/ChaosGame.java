@@ -70,6 +70,7 @@ public class ChaosGame {
       currentPoint = description.getTransforms().get(randomNumber).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
+    notifyObservers();
   }
 
   public void addObserver(ChaosGameObserver observer) {

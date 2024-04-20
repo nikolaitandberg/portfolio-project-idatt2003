@@ -3,6 +3,7 @@ package edu.ntnu.stud.idatt2003.controller;
 import edu.ntnu.stud.idatt2003.math.Complex;
 import edu.ntnu.stud.idatt2003.math.Matrix2x2;
 import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
@@ -15,10 +16,12 @@ import java.util.List;
 public class MainController {
 
   private final MainView view;
+  private ChaosGame chaosGame;
 
 
-  public MainController(MainView view) {
+  public MainController(MainView view, ChaosGame chaosGame) {
     this.view = view;
+    this.chaosGame = chaosGame;
   }
 
   public ChaosGameDescription createJuliaDescription() {
@@ -74,10 +77,24 @@ public class MainController {
     }
   }
 
-  public void handleButtonClick() {
-    System.out.println("Button clicked");
+  public void runSteps(int steps) {
+
+    if (view.getSelectedFractalType().equals("Affine")) {
+      ChaosGameDescription description = createAffineDescription();
+      chaosGame = new ChaosGame(description, 800, 800);
+      chaosGame.addObserver(view);
+      chaosGame.runSteps(steps);
+    } else {
+      ChaosGameDescription description = createJuliaDescription();
+      chaosGame = new ChaosGame(description, 800, 800);
+      chaosGame.addObserver(view);
+      chaosGame.runSteps(steps);
+    }
   }
 
+  public int[][] getCanvas() {
+    return chaosGame.getCanvas().getCanvas();
+  }
 
 
 
