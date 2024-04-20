@@ -20,7 +20,8 @@ import java.util.List;
 
 public class MainView extends Application implements ChaosGameObserver {
 
-  private MainController controller;
+  private static final String JULIA = "Julia";
+  private static final String AFFINE = "Affine";
 
   Canvas canvas = new Canvas(800, 800);
   GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -43,10 +44,12 @@ public class MainView extends Application implements ChaosGameObserver {
   @Override
   public void start(Stage primaryStage) {
 
+    MainController controller;
+
     gc.setFill(Color.RED);
     gc.fillRect(50, 50, 100, 100);
 
-    controller = new MainController(this, null);
+    controller = new MainController(this);
 
     MenuBar menuBar = new MenuBar();
     Menu fractalMenu = new Menu("New fractal");
@@ -64,13 +67,13 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
     ComboBox<String> fractalTypeDropdown = new ComboBox<>();
-    fractalTypeDropdown.getItems().addAll("Julia", "Affine");
+    fractalTypeDropdown.getItems().addAll(JULIA, AFFINE);
     leftPanel.getChildren().add(fractalTypeDropdown);
     VBox fractalBox = new VBox();
 
 
     fractalTypeDropdown.setOnAction(event -> {String selected = fractalTypeDropdown.getValue();
-        if (selected.equals("Julia")) {
+        if (selected.equals(JULIA)) {
           fractalBox.getChildren().clear();
           fractalBox.getChildren().add(createJuliaBox());
         } else {
@@ -110,20 +113,18 @@ public class MainView extends Application implements ChaosGameObserver {
     TextField stepsField = new TextField();
     stepsField.setPromptText("Antall steg");
     Button submitSteps = new Button("Beregn");
-    submitSteps.setOnAction(actionEvent -> {
-      controller.runSteps(Integer.parseInt(stepsField.getText()));
-    });
+    submitSteps.setOnAction(actionEvent -> controller.runSteps(Integer.parseInt(stepsField.getText())));
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
     Button addTransformation = new Button("Add transformation");
     addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
-      if (selected.equals("Julia")) {
+      if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
-        selectedFractalType = "Julia";
-      } else if (selected.equals("Affine")) {
+        selectedFractalType = JULIA;
+      } else if (selected.equals(AFFINE)) {
         fractalBox.getChildren().add(createAffineBox());
-        selectedFractalType = "Affine";
+        selectedFractalType = AFFINE;
       } else {
         selectedFractalType = null;
       }
@@ -221,8 +222,8 @@ public class MainView extends Application implements ChaosGameObserver {
       TextField vector1 = (TextField) vectorBox.getChildren().get(0);
       TextField vector2 = (TextField) vectorBox.getChildren().get(1);
 
-      VBox matrixBox = (VBox) affineBox.getChildren().get(0);
-      HBox matrixRow1 = (HBox) matrixBox.getChildren().get(0);
+      VBox matrixBox = (VBox) affineBox.getChildren().getFirst();
+      HBox matrixRow1 = (HBox) matrixBox.getChildren().getFirst();
       TextField matrix00 = (TextField) matrixRow1.getChildren().get(0);
       TextField matrix01 = (TextField) matrixRow1.getChildren().get(1);
       HBox matrixRow2 = (HBox) matrixBox.getChildren().get(1);
@@ -238,8 +239,7 @@ public class MainView extends Application implements ChaosGameObserver {
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
 
     double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
-    cellSize *= 2;
-    System.out.println(cellSize);
+    cellSize *= 3;
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {

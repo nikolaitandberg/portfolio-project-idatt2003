@@ -16,12 +16,10 @@ import java.util.List;
 public class MainController {
 
   private final MainView view;
-  private ChaosGame chaosGame;
 
 
-  public MainController(MainView view, ChaosGame chaosGame) {
+  public MainController(MainView view) {
     this.view = view;
-    this.chaosGame = chaosGame;
   }
 
   public ChaosGameDescription createJuliaDescription() {
@@ -32,9 +30,8 @@ public class MainController {
     List<Transform2D> transforms = new ArrayList<>();
 
     for (String[] juliaBoxValue : juliaBoxValues) {
-      String[] values = juliaBoxValue;
-      Complex c = new Complex(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
-      int sign = Integer.parseInt(values[2]);
+      Complex c = new Complex(Double.parseDouble(juliaBoxValue[0]), Double.parseDouble(juliaBoxValue[1]));
+      int sign = Integer.parseInt(juliaBoxValue[2]);
       transforms.add(new JuliaTransform(c, sign));
     }
 
@@ -52,13 +49,12 @@ public class MainController {
     List<Transform2D> transforms = new ArrayList<>();
 
     for (String[] affineBoxValue : affineBoxValues) {
-      String[] values = affineBoxValue;
-      double a = Double.parseDouble(values[0]);
-      double b = Double.parseDouble(values[1]);
-      double c = Double.parseDouble(values[2]);
-      double d = Double.parseDouble(values[3]);
-      double e = Double.parseDouble(values[4]);
-      double f = Double.parseDouble(values[5]);
+      double a = Double.parseDouble(affineBoxValue[0]);
+      double b = Double.parseDouble(affineBoxValue[1]);
+      double c = Double.parseDouble(affineBoxValue[2]);
+      double d = Double.parseDouble(affineBoxValue[3]);
+      double e = Double.parseDouble(affineBoxValue[4]);
+      double f = Double.parseDouble(affineBoxValue[5]);
       transforms.add(new AffineTransform2D(new Matrix2x2(a, b, c, d), new Vector2D(e, f)));
     }
 
@@ -68,34 +64,17 @@ public class MainController {
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
-  public void printDescription(ChaosGameDescription description) {
-    System.out.println("Min coordinates: " + description.getMinCords());
-    System.out.println("Max coordinates: " + description.getMaxCords());
-    System.out.println("Transformations: ");
-    for (Transform2D transform : description.getTransforms()) {
-      System.out.println(transform);
-    }
-  }
-
   public void runSteps(int steps) {
+    ChaosGame chaosGame;
+    ChaosGameDescription description;
 
     if (view.getSelectedFractalType().equals("Affine")) {
-      ChaosGameDescription description = createAffineDescription();
-      chaosGame = new ChaosGame(description, 800, 800);
-      chaosGame.addObserver(view);
-      chaosGame.runSteps(steps);
+      description = createAffineDescription();
     } else {
-      ChaosGameDescription description = createJuliaDescription();
-      chaosGame = new ChaosGame(description, 800, 800);
-      chaosGame.addObserver(view);
-      chaosGame.runSteps(steps);
+      description = createJuliaDescription();
     }
+    chaosGame = new ChaosGame(description, 800, 800);
+    chaosGame.addObserver(view);
+    chaosGame.runSteps(steps);
   }
-
-  public int[][] getCanvas() {
-    return chaosGame.getCanvas().getCanvas();
-  }
-
-
-
 }
