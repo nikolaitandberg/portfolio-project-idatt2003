@@ -73,7 +73,7 @@ public class MainController {
     } else {
       description = createJuliaDescription();
     }
-    chaosGame = new ChaosGame(description, 800, 800);
+    chaosGame = new ChaosGame(description, 600, 600);
     chaosGame.addObserver(view);
     chaosGame.runSteps(steps);
   }

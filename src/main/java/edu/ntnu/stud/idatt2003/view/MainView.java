@@ -10,9 +10,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
 
-  Canvas canvas = new Canvas(800, 800);
+  Canvas canvas = new Canvas(600, 600);
   GraphicsContext gc = canvas.getGraphicsContext2D();
 
   private String selectedFractalType = null;
@@ -32,9 +32,13 @@ public class MainView extends Application implements ChaosGameObserver {
   List<HBox> juliaBoxes = new ArrayList<>();
   List<HBox> affineBoxes = new ArrayList<>();
 
-  HBox minCoordsBox;
 
-  HBox maxCoordsBox;
+  private VBox fractalBox;
+  private ComboBox<String> fractalTypeDropdown;
+  private HBox minCoordsBox;
+  private HBox maxCoordsBox;
+  private HBox stepsBox;
+  private Button addTransformation;
 
   public static void main(String[] args) {
     launch(args);
@@ -45,6 +49,24 @@ public class MainView extends Application implements ChaosGameObserver {
   public void start(Stage primaryStage) {
 
     MainController controller;
+
+    stepsBox = new HBox();
+
+    fractalBox = new VBox();
+    fractalBox.setVisible(false);
+
+    fractalTypeDropdown = new ComboBox<>();
+    fractalTypeDropdown.setVisible(false);
+
+    minCoordsBox = new HBox();
+    minCoordsBox.setVisible(false);
+
+    maxCoordsBox = new HBox();
+    maxCoordsBox.setVisible(false);
+
+    addTransformation = new Button("Add transformation");
+    addTransformation.setVisible(false);
+
 
     gc.setFill(Color.RED);
     gc.fillRect(50, 50, 100, 100);
@@ -59,21 +81,38 @@ public class MainView extends Application implements ChaosGameObserver {
     VBox leftPanel = new VBox();
     leftPanel.setSpacing(15);
 
+    // dropdown for saved fractals
     ComboBox<String> savedFractalsDropdown = new ComboBox<>();
+    savedFractalsDropdown.getItems().addAll("Custom fractal","Sierpinski triangle", "Barnsley Fern", "Julia set");
     leftPanel.getChildren().add(savedFractalsDropdown);
 
-    Text transformText = new Text("Choose transform type");
-    leftPanel.getChildren().add(transformText);
+    // button for running steps
+    leftPanel.getChildren().add(stepsBox);
 
 
-    ComboBox<String> fractalTypeDropdown = new ComboBox<>();
     fractalTypeDropdown.getItems().addAll(JULIA, AFFINE);
     leftPanel.getChildren().add(fractalTypeDropdown);
-    VBox fractalBox = new VBox();
 
 
-    fractalTypeDropdown.setOnAction(event -> {String selected = fractalTypeDropdown.getValue();
-        if (selected.equals(JULIA)) {
+    savedFractalsDropdown.setOnAction(event ->  { String savedFractal = savedFractalsDropdown.getValue();
+      if ("Custom fractal".equals(savedFractal)) {
+        fractalBox.setVisible(true);
+        fractalTypeDropdown.setVisible(true);
+        minCoordsBox.setVisible(true);
+        maxCoordsBox.setVisible(true);
+        addTransformation.setVisible(true);
+      } else {
+        fractalBox.setVisible(false);
+        fractalTypeDropdown.setVisible(false);
+        minCoordsBox.setVisible(false);
+        maxCoordsBox.setVisible(false);
+        addTransformation.setVisible(false);
+      }
+    });
+
+
+    fractalTypeDropdown.setOnAction(event -> {String fractalType = fractalTypeDropdown.getValue();
+        if (fractalType.equals(JULIA)) {
           fractalBox.getChildren().clear();
           fractalBox.getChildren().add(createJuliaBox());
         } else {
@@ -85,31 +124,9 @@ public class MainView extends Application implements ChaosGameObserver {
       }
     );
 
-    // fields for maximum and minimum coords
-    minCoordsBox = new HBox();
-    TextField minX = new TextField();
-    minX.setPromptText("Min x");
-    TextField minY = new TextField();
-    minY.setPromptText("Min y");
-    minCoordsBox.getChildren().addAll(minX, minY);
-    maxCoordsBox = new HBox();
-    TextField maxX = new TextField();
-    maxX.setPromptText("max x");
-    TextField maxY = new TextField();
-    maxY.setPromptText("max y");
-    maxCoordsBox.getChildren().addAll(maxX, maxY);
-
-
-    leftPanel.getChildren().addAll(minCoordsBox, maxCoordsBox);
-
-
-
-    //button for saving current transformations
-    Button save = new Button("Save");
-    leftPanel.getChildren().add(save);
+    setUpCoordsBoxes(leftPanel);
 
     // field and button for running steps
-    HBox stepsBox = new HBox();
     TextField stepsField = new TextField();
     stepsField.setPromptText("Antall steg");
     Button submitSteps = new Button("Beregn");
@@ -117,7 +134,6 @@ public class MainView extends Application implements ChaosGameObserver {
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
-    Button addTransformation = new Button("Add transformation");
     addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
       if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
@@ -131,19 +147,45 @@ public class MainView extends Application implements ChaosGameObserver {
     });
 
     leftPanel.getChildren().add(addTransformation);
-    leftPanel.getChildren().add(stepsBox);
+
+    // Create a StackPane and add the canvas to it
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().add(canvas);
+
+    // Set the maximum size of the StackPane to its preferred size
+    stackPane.setMaxSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
+
+    // Set the border color, width and background color
+    stackPane.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: #cfcfcf;");
+
 
     BorderPane root = new BorderPane();
     BorderPane.setMargin(leftPanel, new Insets(17));
     root.setTop(menuBar);
-    root.setRight(canvas);
+    root.setCenter(stackPane);
     root.setLeft(leftPanel);
 
-    Scene scene = new Scene(root, 800, 600);
+    Scene scene = new Scene(root, 1280, 720);
     primaryStage.setTitle("Chaos Game");
-    primaryStage.setFullScreen(true);
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  private void setUpCoordsBoxes(VBox leftPanel) {
+    // fields for maximum and minimum coords
+    TextField minX = new TextField();
+    minX.setPromptText("Min x");
+    TextField minY = new TextField();
+    minY.setPromptText("Min y");
+    minCoordsBox.getChildren().addAll(minX, minY);
+    TextField maxX = new TextField();
+    maxX.setPromptText("max x");
+    TextField maxY = new TextField();
+    maxY.setPromptText("max y");
+    maxCoordsBox.getChildren().addAll(maxX, maxY);
+
+
+    leftPanel.getChildren().addAll(minCoordsBox, maxCoordsBox);
   }
 
   private HBox createJuliaBox() {
