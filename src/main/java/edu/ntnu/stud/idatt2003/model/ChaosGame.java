@@ -13,7 +13,7 @@ import java.util.Random;
  * @version 1.0
  * @since 2024-03-29
  */
-public class ChaosGame {
+public class ChaosGame implements ChaosGameObservable {
 
   private final ChaosCanvas canvas;
 
@@ -73,12 +73,30 @@ public class ChaosGame {
     notifyObservers();
   }
 
+  /**
+   * Method for adding an observer to the observer list.
+   *
+   * @param observer observer to add
+   */
+  @Override
   public void addObserver(ChaosGameObserver observer) {
     observers.add(observer);
   }
+
+  /**
+   * Method for removing an observer from the observer list.
+   *
+   * @param observer observer to remove
+   */
+  @Override
   public void removeObserver(ChaosGameObserver observer) {
     observers.remove(observer);
   }
+
+  /**
+   * Method for notifying the observers.
+   */
+  @Override
   public void notifyObservers() {
     for (ChaosGameObserver observer : observers) {
       observer.update(getCanvas().getCanvas());
