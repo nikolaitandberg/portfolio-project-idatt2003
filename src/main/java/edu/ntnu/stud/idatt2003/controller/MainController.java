@@ -95,15 +95,15 @@ public class MainController {
         description = ChaosGameDescriptionFactory.createBarnsleyFern();
         break;
       case "Custom fractal":
-        if (view.getSelectedTransformationType().equals("Affine")) {
-          description = createAffineDescription();
-        } else {
-          description = createJuliaDescription();
-        }
+        description = createCustomDescription();
         break;
       default:
         throw new IllegalArgumentException("Unknown transformation type");
     }
     return description;
+  }
+
+  private ChaosGameDescription createCustomDescription() {
+    return view.getSelectedTransformationType().equals("Affine") ? createAffineDescription() : createJuliaDescription();
   }
 }
