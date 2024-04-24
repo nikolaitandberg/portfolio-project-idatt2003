@@ -24,7 +24,7 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String AFFINE = "Affine";
 
   private static final int WIDTH = 600;
-  private static final int HEIGHT = 600;
+  private static final int HEIGHT = 375;
   WritableImage writableImage = new WritableImage(WIDTH, HEIGHT);
   PixelWriter pixelWriter = writableImage.getPixelWriter();
   private String selectedTransformationType = null;
@@ -278,7 +278,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private void drawFractal(int[][] fractal) {
     // Clearing the image by setting all pixels to transparent (or another background color)
-    clearImage(Color.GREY);
+    clearImage(Color.WHITE);
 
     double cellSize = Math.min(writableImage.getWidth() / fractal[0].length, writableImage.getHeight() / fractal.length);
     cellSize *= 3;
@@ -286,7 +286,7 @@ public class MainView extends Application implements ChaosGameObserver {
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
         if (fractal[i][j] == 1) {
-          drawCell(j, i, cellSize, Color.BLACK); // Draw the cell if the value is 1
+          drawCell(j, i, cellSize, Color.RED); // Draw the cell if the value is 1
         }
       }
     }
@@ -310,7 +310,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void update(int[][] newCanvas) {
-      clearImage(Color.GREY);
+      clearImage(Color.WHITE);
       drawFractal(newCanvas);
   }
 
