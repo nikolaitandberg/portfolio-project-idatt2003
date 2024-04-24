@@ -10,6 +10,7 @@ import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
 import edu.ntnu.stud.idatt2003.view.MainView;
+import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,24 +84,11 @@ public class MainController {
   }
 
   private ChaosGameDescription createChaosGameDescription() {
-    ChaosGameDescription description;
-    switch (view.getSavedFractal()) {
-      case "Sierpinski triangle":
-        description = ChaosGameDescriptionFactory.createSierpinskiTriangle();
-        break;
-      case "Julia set":
-        description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.4, 0.6));
-        break;
-      case "Barnsley fern":
-        description = ChaosGameDescriptionFactory.createBarnsleyFern();
-        break;
-      case "Custom fractal":
-        description = createCustomDescription();
-        break;
-      default:
-        throw new IllegalArgumentException("Unknown transformation type");
+    try {
+      return ChaosGameDescriptionFactory.get(view.getSavedFractal());
+    } catch (UnknownTransformationException e) {
+      return createCustomDescription();
     }
-    return description;
   }
 
   private ChaosGameDescription createCustomDescription() {

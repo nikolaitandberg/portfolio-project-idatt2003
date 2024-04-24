@@ -33,7 +33,7 @@ public class ChaosGameDescriptionFactory {
     return switch (name) {
       case "Sierpinski triangle" -> createSierpinskiTriangle();
       case "Barnsley fern" -> createBarnsleyFern();
-      case "Julia set" -> createJuliaSet(new Complex(-0.4, 0.6));
+      case "Julia set" -> createJuliaSet(new Complex(-0.74543, 0.11301));
       default -> throw new UnknownTransformationException("Unknown chaos game description");
     };
   }
@@ -48,11 +48,13 @@ public class ChaosGameDescriptionFactory {
     // Define the transformation matrices
 
     // Create the transformations
-    JuliaTransform transform1 = new JuliaTransform(c, 1);
+    JuliaTransform transform1 = new JuliaTransform(c, -1);
     JuliaTransform transform2 = new JuliaTransform(c, -1);
-
+    JuliaTransform transform3 = new JuliaTransform(c, -1);
+    JuliaTransform transform4 = new JuliaTransform(c, -1);
+    JuliaTransform transform5 = new JuliaTransform(new Complex(0,0), -1);
     // Add the transformations to a list
-    List<Transform2D> transforms = Arrays.asList(transform1, transform2);
+    List<Transform2D> transforms = Arrays.asList(transform1, transform2, transform3, transform4, transform5);
 
     // Define the minimum and maximum coordinates for the fractal
     Vector2D minCords = new Vector2D(-1.6,-1);
