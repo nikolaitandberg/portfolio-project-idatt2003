@@ -73,12 +73,27 @@ public class ChaosGame {
     notifyObservers();
   }
 
+  /**
+   * Method for adding an observer to the observer list.
+   *
+   * @param observer observer to add
+   */
   public void addObserver(ChaosGameObserver observer) {
     observers.add(observer);
   }
+
+  /**
+   * Method for removing an observer from the observer list.
+   *
+   * @param observer observer to remove
+   */
   public void removeObserver(ChaosGameObserver observer) {
     observers.remove(observer);
   }
+
+  /**
+   * Method for notifying the observers.
+   */
   public void notifyObservers() {
     for (ChaosGameObserver observer : observers) {
       observer.update(getCanvas().getCanvas());
