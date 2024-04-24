@@ -23,7 +23,7 @@ public class MainView extends Application implements ChaosGameObserver {
   Canvas canvas = new Canvas(600, 600);
   GraphicsContext gc = canvas.getGraphicsContext2D();
 
-  private String selectedTransformationType = null;
+  private String selectedTransformationType;
 
   private final TextField stepsField = new TextField();
 
