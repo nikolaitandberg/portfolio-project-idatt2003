@@ -25,6 +25,10 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private String selectedTransformationType = null;
 
+  private final TextField stepsField = new TextField();
+
+  private final Button submitSteps = new Button("Beregn");
+
 
   List<HBox> juliaBoxes = new ArrayList<>();
   List<HBox> affineBoxes = new ArrayList<>();
@@ -42,11 +46,11 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void start(Stage primaryStage) {
+    MainController controller = new MainController(this);
+
     VBox fractalBox;
     ComboBox<String> fractalTypeDropdown;
     Button addTransformation;
-
-    MainController controller;
 
     HBox stepsBox = new HBox();
 
@@ -68,8 +72,6 @@ public class MainView extends Application implements ChaosGameObserver {
 
     gc.setFill(Color.RED);
     gc.fillRect(50, 50, 100, 100);
-
-    controller = new MainController(this);
 
     MenuBar menuBar = new MenuBar();
     Menu fractalMenu = new Menu("New fractal");
@@ -126,10 +128,7 @@ public class MainView extends Application implements ChaosGameObserver {
     setUpCoordsBoxes(leftPanel);
 
     // field and button for running steps
-    TextField stepsField = new TextField();
     stepsField.setPromptText("Antall steg");
-    Button submitSteps = new Button("Beregn");
-    submitSteps.setOnAction(actionEvent -> controller.runSteps(Integer.parseInt(stepsField.getText())));
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
@@ -297,6 +296,14 @@ public class MainView extends Application implements ChaosGameObserver {
 
   public String getSavedFractal() {
     return savedFractalsDropdown.getValue();
+  }
+
+  public String getStepsFieldText() {
+    return stepsField.getText();
+  }
+
+  public Button getSubmitSteps() {
+    return submitSteps;
   }
 
   @Override
