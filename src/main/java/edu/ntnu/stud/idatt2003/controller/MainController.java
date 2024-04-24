@@ -83,24 +83,13 @@ public class MainController {
   }
 
   private ChaosGameDescription createChaosGameDescription() {
-    ChaosGameDescription description;
-    switch (view.getSavedFractal()) {
-      case "Sierpinski triangle":
-        description = ChaosGameDescriptionFactory.createSierpinskiTriangle();
-        break;
-      case "Julia set":
-        description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.4, 0.6));
-        break;
-      case "Barnsley fern":
-        description = ChaosGameDescriptionFactory.createBarnsleyFern();
-        break;
-      case "Custom fractal":
-        description = createCustomDescription();
-        break;
-      default:
-        throw new IllegalArgumentException("Unknown transformation type");
-    }
-    return description;
+    return switch (view.getSavedFractal()) {
+      case "Sierpinski triangle" -> ChaosGameDescriptionFactory.createSierpinskiTriangle();
+      case "Julia set" -> ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.4, 0.6));
+      case "Barnsley fern" -> ChaosGameDescriptionFactory.createBarnsleyFern();
+      case "Custom fractal" -> createCustomDescription();
+      default -> throw new IllegalArgumentException("Unknown transformation type");
+    };
   }
 
   private ChaosGameDescription createCustomDescription() {
