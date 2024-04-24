@@ -5,6 +5,7 @@ import edu.ntnu.stud.idatt2003.math.Matrix2x2;
 import edu.ntnu.stud.idatt2003.math.Vector2D;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
@@ -66,15 +67,35 @@ public class MainController {
 
   public void runSteps(int steps) {
     ChaosGame chaosGame;
-    ChaosGameDescription description;
+    ChaosGameDescription description = createChaosGameDescription();
 
-    if (view.getSelectedFractalType().equals("Affine")) {
-      description = createAffineDescription();
-    } else {
-      description = createJuliaDescription();
-    }
     chaosGame = new ChaosGame(description, 600, 600);
     chaosGame.addObserver(view);
     chaosGame.runSteps(steps);
+  }
+
+  private ChaosGameDescription createChaosGameDescription() {
+    ChaosGameDescription description;
+    switch (view.getSavedFractal()) {
+      case "Sierpinski triangle":
+        description = ChaosGameDescriptionFactory.createSierpinskiTriangle();
+        break;
+      case "Julia set":
+        description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.4, 0.6));
+        break;
+      case "Barnsley fern":
+        description = ChaosGameDescriptionFactory.createBarnsleyFern();
+        break;
+      case "Custom fractal":
+        if (view.getSelectedTransformationType().equals("Affine")) {
+          description = createAffineDescription();
+        } else {
+          description = createJuliaDescription();
+        }
+        break;
+      default:
+        throw new IllegalArgumentException("Unknown transformation type");
+    }
+    return description;
   }
 }
