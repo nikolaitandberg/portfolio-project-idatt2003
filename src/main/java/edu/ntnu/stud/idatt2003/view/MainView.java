@@ -8,13 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.PipedWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,10 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
 
-  Canvas canvas = new Canvas(600, 600);
-  GraphicsContext gc = canvas.getGraphicsContext2D();
-
+  private static final int WIDTH = 600;
+  private static final int HEIGHT = 600;
+  WritableImage writableImage = new WritableImage(WIDTH, HEIGHT);
+  PixelWriter pixelWriter = writableImage.getPixelWriter();
   private String selectedFractalType = null;
 
 
@@ -66,10 +68,6 @@ public class MainView extends Application implements ChaosGameObserver {
 
     addTransformation = new Button("Add transformation");
     addTransformation.setVisible(false);
-
-
-    gc.setFill(Color.RED);
-    gc.fillRect(50, 50, 100, 100);
 
     controller = new MainController(this);
 
@@ -134,7 +132,8 @@ public class MainView extends Application implements ChaosGameObserver {
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
-    addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
+    addTransformation.setOnAction(actionEvent -> {
+      String selected = fractalTypeDropdown.getValue();
       if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
         selectedFractalType = JULIA;
@@ -150,10 +149,11 @@ public class MainView extends Application implements ChaosGameObserver {
 
     // Create a StackPane and add the canvas to it
     StackPane stackPane = new StackPane();
-    stackPane.getChildren().add(canvas);
+    ImageView imageView = new ImageView(writableImage);
+    stackPane.getChildren().add(imageView);
 
     // Set the maximum size of the StackPane to its preferred size
-    stackPane.setMaxSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
+    stackPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
     // Set the border color, width and background color
     stackPane.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: #cfcfcf;");
@@ -278,15 +278,16 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   private void drawFractal(int[][] fractal) {
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+    // Clearing the image by setting all pixels to transparent (or another background color)
+    clearImage(Color.GREY);
 
-    double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
+    double cellSize = Math.min(writableImage.getWidth() / fractal[0].length, writableImage.getHeight() / fractal.length);
     cellSize *= 3;
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
         if (fractal[i][j] == 1) {
-          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+          drawCell(j, i, cellSize, Color.BLACK); // Draw the cell if the value is 1
         }
       }
     }
@@ -298,7 +299,33 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void update(int[][] newCanvas) {
-      gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+      clearImage(Color.GREY);
       drawFractal(newCanvas);
+  }
+
+  private void clearImage(Color clearColor) {
+    for (int y = 0; y < writableImage.getHeight(); y++) {
+      for (int x = 0; x < writableImage.getWidth(); x++) {
+        pixelWriter.setColor(x, y, clearColor);
+      }
+    }
+  }
+
+  private void drawCell(int cellX, int cellY, double size, Color color) {
+    // Convert cell position to pixel position
+    int startX = (int) (cellX * size);
+    int startY = (int) (cellY * size);
+    int endX = (int) (startX + size);
+    int endY = (int) (startY + size);
+
+    // Ensure we don't draw outside the bounds of the image
+    endX = (int) Math.min(endX, writableImage.getWidth());
+    endY = (int) Math.min(endY, writableImage.getHeight());
+
+    for (int y = startY; y < endY; y++) {
+      for (int x = startX; x < endX; x++) {
+        pixelWriter.setColor(x, y, color);
+      }
+    }
   }
 }
