@@ -8,12 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -24,14 +19,13 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
 
-  private static final int WIDTH = 600;
-  private static final int HEIGHT = 375;
-  WritableImage writableImage = new WritableImage(WIDTH, HEIGHT);
-  PixelWriter pixelWriter = writableImage.getPixelWriter();
-  private double zoomFactor = 1.0;
+  Canvas canvas = new Canvas(600, 600);
+  GraphicsContext gc = canvas.getGraphicsContext2D();
 
-  private String selectedTransformationType = null;
+  private String selectedTransformationType;
+
   private final TextField stepsField = new TextField();
+
   private final Button submitSteps = new Button("Beregn");
 
 
@@ -74,8 +68,6 @@ public class MainView extends Application implements ChaosGameObserver {
     addTransformation = new Button("Add transformation");
     addTransformation.setVisible(false);
 
-    controller = new MainController(this);
-
     MenuBar menuBar = new MenuBar();
     Menu fractalMenu = new Menu("New fractal");
 
@@ -116,16 +108,16 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
     fractalTypeDropdown.setOnAction(event -> {String fractalType = fractalTypeDropdown.getValue();
-        if (fractalType.equals(JULIA)) {
-          fractalBox.getChildren().clear();
-          fractalBox.getChildren().add(createJuliaBox());
-        } else {
-          fractalBox.getChildren().clear();
-          fractalBox.getChildren().add(createAffineBox());
-        }
-      leftPanel.getChildren().remove(fractalBox); // Remove the old fractalBox from leftPanel
-      leftPanel.getChildren().add(fractalBox); // Add the new fractalBox to leftPanel
-      }
+              if (fractalType.equals(JULIA)) {
+                fractalBox.getChildren().clear();
+                fractalBox.getChildren().add(createJuliaBox());
+              } else {
+                fractalBox.getChildren().clear();
+                fractalBox.getChildren().add(createAffineBox());
+              }
+              leftPanel.getChildren().remove(fractalBox); // Remove the old fractalBox from leftPanel
+              leftPanel.getChildren().add(fractalBox); // Add the new fractalBox to leftPanel
+            }
     );
 
     setUpCoordsBoxes(leftPanel);
@@ -151,21 +143,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
     // Create a StackPane and add the canvas to it
     StackPane stackPane = new StackPane();
-    ImageView imageView = new ImageView(writableImage);
-    imageView.setPreserveRatio(true);
-    imageView.setSmooth(true);
-
-    imageView.setOnScroll((ScrollEvent event) -> {
-      double delta = 1.1;
-
-      double scale = event.getDeltaY() > 0 ? delta : 1 / delta;
-      zoomFactor *= scale;
-
-      imageView.setScaleX(zoomFactor);
-      imageView.setScaleY(zoomFactor);
-    });
-
-    stackPane.getChildren().add(imageView);
+    stackPane.getChildren().add(canvas);
 
     // Set the maximum size of the StackPane to its preferred size
     stackPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -259,7 +237,7 @@ public class MainView extends Application implements ChaosGameObserver {
     TextField maxX1 = (TextField) maxCoordsBox.getChildren().get(1);
 
     return new String[]{minX0.getText(), minX1.getText(), maxX0.getText(), maxX1.getText()};
-}
+  }
 
   public List<String[]> getJuliaBoxValues() {
     List<String[]> values = new ArrayList<>();
@@ -293,16 +271,14 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   private void drawFractal(int[][] fractal) {
-    // Clearing the image by setting all pixels to transparent (or another background color)
-    clearImage(Color.WHITE);
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
 
-    double cellSize = Math.min(writableImage.getWidth() / fractal[0].length, writableImage.getHeight() / fractal.length);
-    cellSize *= 3;
+    double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
         if (fractal[i][j] == 1) {
-          drawCell(j, i, cellSize, Color.RED); // Draw the cell if the value is 1
+          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
         }
       }
     }
@@ -326,33 +302,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void update(int[][] newCanvas) {
-      clearImage(Color.WHITE);
-      drawFractal(newCanvas);
-  }
-
-  private void clearImage(Color clearColor) {
-    for (int y = 0; y < writableImage.getHeight(); y++) {
-      for (int x = 0; x < writableImage.getWidth(); x++) {
-        pixelWriter.setColor(x, y, clearColor);
-      }
-    }
-  }
-
-  private void drawCell(int cellX, int cellY, double size, Color color) {
-    // Convert cell position to pixel position
-    int startX = (int) (cellX * size);
-    int startY = (int) (cellY * size);
-    int endX = (int) (startX + size);
-    int endY = (int) (startY + size);
-
-    // Ensure we don't draw outside the bounds of the image
-    endX = (int) Math.min(endX, writableImage.getWidth());
-    endY = (int) Math.min(endY, writableImage.getHeight());
-
-    for (int y = startY; y < endY; y++) {
-      for (int x = startX; x < endX; x++) {
-        pixelWriter.setColor(x, y, color);
-      }
-    }
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+    drawFractal(newCanvas);
   }
 }
