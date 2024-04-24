@@ -64,16 +64,17 @@ public class MainController {
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
-  public void runSteps(int steps) {
-    ChaosGame chaosGame;
-    ChaosGameDescription description;
-
+  private ChaosGameDescription determineDescription() {
     if (view.getSelectedFractalType().equals("Affine")) {
-      description = createAffineDescription();
+      return createAffineDescription();
     } else {
-      description = createJuliaDescription();
+      return createJuliaDescription();
     }
-    chaosGame = new ChaosGame(description, 600, 600);
+  }
+
+  public void runSteps(int steps) {
+    ChaosGameDescription description = determineDescription();
+    ChaosGame chaosGame = new ChaosGame(description, 600, 600);
     chaosGame.addObserver(view);
     chaosGame.runSteps(steps);
   }
