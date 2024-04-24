@@ -5,8 +5,6 @@ import edu.ntnu.stud.idatt2003.controller.MainController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -15,7 +13,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.PipedWriter;
 import java.util.ArrayList;
 import java.util.List;
 
