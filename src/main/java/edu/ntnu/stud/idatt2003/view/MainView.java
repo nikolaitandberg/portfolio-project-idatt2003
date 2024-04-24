@@ -5,6 +5,8 @@ import edu.ntnu.stud.idatt2003.controller.MainController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -25,19 +27,19 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final int HEIGHT = 600;
   WritableImage writableImage = new WritableImage(WIDTH, HEIGHT);
   PixelWriter pixelWriter = writableImage.getPixelWriter();
-  private String selectedFractalType = null;
+  private String selectedTransformationType = null;
+  private final TextField stepsField = new TextField();
+  private final Button submitSteps = new Button("Beregn");
 
 
   List<HBox> juliaBoxes = new ArrayList<>();
   List<HBox> affineBoxes = new ArrayList<>();
 
 
-  private VBox fractalBox;
-  private ComboBox<String> fractalTypeDropdown;
+  private final ComboBox<String> savedFractalsDropdown = new ComboBox<>();
   private HBox minCoordsBox;
   private HBox maxCoordsBox;
-  private HBox stepsBox;
-  private Button addTransformation;
+
 
   public static void main(String[] args) {
     launch(args);
@@ -46,10 +48,13 @@ public class MainView extends Application implements ChaosGameObserver {
 
   @Override
   public void start(Stage primaryStage) {
+    MainController controller = new MainController(this);
 
-    MainController controller;
+    VBox fractalBox;
+    ComboBox<String> fractalTypeDropdown;
+    Button addTransformation;
 
-    stepsBox = new HBox();
+    HBox stepsBox = new HBox();
 
     fractalBox = new VBox();
     fractalBox.setVisible(false);
@@ -77,8 +82,8 @@ public class MainView extends Application implements ChaosGameObserver {
     leftPanel.setSpacing(15);
 
     // dropdown for saved fractals
-    ComboBox<String> savedFractalsDropdown = new ComboBox<>();
-    savedFractalsDropdown.getItems().addAll("Custom fractal","Sierpinski triangle", "Barnsley Fern", "Julia set");
+    savedFractalsDropdown.getItems().addAll("Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal");
+    savedFractalsDropdown.setValue("Choose fractal");
     leftPanel.getChildren().add(savedFractalsDropdown);
 
     // button for running steps
@@ -86,6 +91,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
     fractalTypeDropdown.getItems().addAll(JULIA, AFFINE);
+    fractalTypeDropdown.setValue("Choose transformation");
     leftPanel.getChildren().add(fractalTypeDropdown);
 
 
@@ -122,23 +128,19 @@ public class MainView extends Application implements ChaosGameObserver {
     setUpCoordsBoxes(leftPanel);
 
     // field and button for running steps
-    TextField stepsField = new TextField();
     stepsField.setPromptText("Antall steg");
-    Button submitSteps = new Button("Beregn");
-    submitSteps.setOnAction(actionEvent -> controller.runSteps(Integer.parseInt(stepsField.getText())));
     stepsBox.getChildren().addAll(stepsField, submitSteps);
 
     // button for adding transformations
-    addTransformation.setOnAction(actionEvent -> {
-      String selected = fractalTypeDropdown.getValue();
+    addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
       if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
-        selectedFractalType = JULIA;
+        selectedTransformationType = JULIA;
       } else if (selected.equals(AFFINE)) {
         fractalBox.getChildren().add(createAffineBox());
-        selectedFractalType = AFFINE;
+        selectedTransformationType = AFFINE;
       } else {
-        selectedFractalType = null;
+        selectedTransformationType = null;
       }
     });
 
@@ -290,8 +292,20 @@ public class MainView extends Application implements ChaosGameObserver {
     }
   }
 
-  public String getSelectedFractalType() {
-    return selectedFractalType;
+  public String getSelectedTransformationType() {
+    return selectedTransformationType;
+  }
+
+  public String getSavedFractal() {
+    return savedFractalsDropdown.getValue();
+  }
+
+  public String getStepsFieldText() {
+    return stepsField.getText();
+  }
+
+  public Button getSubmitSteps() {
+    return submitSteps;
   }
 
   @Override
