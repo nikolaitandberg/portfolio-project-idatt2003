@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -27,6 +28,8 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final int HEIGHT = 375;
   WritableImage writableImage = new WritableImage(WIDTH, HEIGHT);
   PixelWriter pixelWriter = writableImage.getPixelWriter();
+  private double zoomFactor = 1.0;
+
   private String selectedTransformationType = null;
   private final TextField stepsField = new TextField();
   private final Button submitSteps = new Button("Beregn");
@@ -149,6 +152,19 @@ public class MainView extends Application implements ChaosGameObserver {
     // Create a StackPane and add the canvas to it
     StackPane stackPane = new StackPane();
     ImageView imageView = new ImageView(writableImage);
+    imageView.setPreserveRatio(true);
+    imageView.setSmooth(true);
+
+    imageView.setOnScroll((ScrollEvent event) -> {
+      double delta = 1.1;
+
+      double scale = event.getDeltaY() > 0 ? delta : 1 / delta;
+      zoomFactor *= scale;
+
+      imageView.setScaleX(zoomFactor);
+      imageView.setScaleY(zoomFactor);
+    });
+
     stackPane.getChildren().add(imageView);
 
     // Set the maximum size of the StackPane to its preferred size
