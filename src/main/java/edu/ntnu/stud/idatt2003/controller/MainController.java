@@ -6,12 +6,14 @@ import edu.ntnu.stud.idatt2003.math.Vector2D;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
+import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
 import edu.ntnu.stud.idatt2003.view.MainView;
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,5 +95,27 @@ public class MainController {
 
   private ChaosGameDescription createCustomDescription() {
     return view.getSelectedTransformationType().equals("Affine") ? createAffineDescription() : createJuliaDescription();
+  }
+
+  public void saveFractal(String path) {
+    ChaosGameDescription description = createCustomDescription();
+    ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+    try {
+      fileHandler.writeToFile(description, path);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void loadFractal(String path) {
+    ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
+    try {
+      ChaosGameDescription description = fileHandler.readFromFile(path);
+      ChaosGame chaosGame = new ChaosGame(description, 600, 600);
+      chaosGame.addObserver(view);
+      chaosGame.runSteps(1000000); // Or any other number of steps
+    } catch (UnknownTransformationException e) {
+      e.printStackTrace();
+    }
   }
 }
