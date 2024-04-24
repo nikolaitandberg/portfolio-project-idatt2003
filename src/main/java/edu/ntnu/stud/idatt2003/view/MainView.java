@@ -9,8 +9,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,9 +71,30 @@ public class MainView extends Application implements ChaosGameObserver {
     addTransformation.setVisible(false);
 
     MenuBar menuBar = new MenuBar();
-    Menu fractalMenu = new Menu("New fractal");
+    Menu fileMenu = new Menu("File");
+    MenuItem loadFractal = new MenuItem("Load fractal");
+    loadFractal.setOnAction(event -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Open Fractal File");
+      File file = fileChooser.showOpenDialog(primaryStage);
+      if (file != null) {
+        controller.loadFractal(file.getPath());
+      }
+    });
 
-    menuBar.getMenus().add(fractalMenu);
+    MenuItem saveFractal = new MenuItem("Save fractal");
+    saveFractal.setOnAction(event -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Save Fractal File");
+      File file = fileChooser.showSaveDialog(primaryStage);
+      if (file != null) {
+        controller.saveFractal(file.getPath());
+      }
+    });
+
+    fileMenu.getItems().addAll(loadFractal, saveFractal);
+
+    menuBar.getMenus().add(fileMenu);
 
     VBox leftPanel = new VBox();
     leftPanel.setSpacing(15);
