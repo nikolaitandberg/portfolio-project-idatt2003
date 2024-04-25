@@ -24,14 +24,6 @@ public class MainController {
 
   public MainController(MainView view) {
     this.view = view;
-    setupEventHandlers();
-  }
-
-  private void setupEventHandlers() {
-    view.getSubmitSteps().setOnAction(event -> {
-      int steps = Integer.parseInt(view.getStepsFieldText());
-      runSteps(steps);
-    });
   }
 
   public ChaosGameDescription createJuliaDescription() {

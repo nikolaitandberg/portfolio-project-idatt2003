@@ -143,6 +143,8 @@ public class MainView extends Application implements ChaosGameObserver {
             }
     );
 
+    submitSteps.setOnAction(event -> controller.runSteps(Integer.parseInt(stepsField.getText())));
+
     setUpCoordsBoxes(leftPanel);
 
     // field and button for running steps
