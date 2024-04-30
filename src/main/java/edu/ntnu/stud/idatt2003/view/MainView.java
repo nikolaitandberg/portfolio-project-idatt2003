@@ -113,7 +113,8 @@ public class MainView extends Application implements ChaosGameObserver {
     leftPanel.getChildren().add(fractalTypeDropdown);
 
 
-    savedFractalsDropdown.setOnAction(event ->  { String savedFractal = savedFractalsDropdown.getValue();
+    savedFractalsDropdown.setOnAction(event ->  {
+      String savedFractal = savedFractalsDropdown.getValue();
       if ("Custom fractal".equals(savedFractal)) {
         fractalBox.setVisible(true);
         fractalTypeDropdown.setVisible(true);
@@ -317,17 +318,8 @@ public class MainView extends Application implements ChaosGameObserver {
     return savedFractalsDropdown.getValue();
   }
 
-  public String getStepsFieldText() {
-    return stepsField.getText();
-  }
-
-  public Button getSubmitSteps() {
-    return submitSteps;
-  }
-
   @Override
   public void update(int[][] newCanvas) {
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
     drawFractal(newCanvas);
   }
 }
