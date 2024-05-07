@@ -21,7 +21,7 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
 
-  Canvas canvas = new Canvas(600, 600);
+  Canvas canvas = new Canvas();
   GraphicsContext gc = canvas.getGraphicsContext2D();
 
   private String selectedTransformationType;
@@ -29,6 +29,8 @@ public class MainView extends Application implements ChaosGameObserver {
   private final TextField stepsField = new TextField();
 
   private final Button submitSteps = new Button("Beregn");
+
+  private int[][] fractal = new int[][]{};
 
 
   List<HBox> juliaBoxes = new ArrayList<>();
@@ -166,22 +168,18 @@ public class MainView extends Application implements ChaosGameObserver {
 
     leftPanel.getChildren().add(addTransformation);
 
-    // Create a StackPane and add the canvas to it
-    StackPane stackPane = new StackPane();
-    stackPane.getChildren().add(canvas);
-
-    // Set the maximum size of the StackPane to its preferred size
-    stackPane.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-
-    // Set the border color, width and background color
-    stackPane.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-background-color: #cfcfcf;");
-
 
     BorderPane root = new BorderPane();
-    BorderPane.setMargin(leftPanel, new Insets(17));
+    BorderPane.setMargin(leftPanel, new Insets(20));
+    BorderPane.setMargin(canvas, new Insets(20));
     root.setTop(menuBar);
-    root.setCenter(stackPane);
     root.setLeft(leftPanel);
+    root.setRight(canvas);
+    canvas.widthProperty().bind(root.widthProperty().multiply(0.5));
+    canvas.heightProperty().bind(root.heightProperty().multiply(0.9));
+    canvas.widthProperty().addListener(event -> drawFractal());
+    canvas.heightProperty().addListener(event -> drawFractal());
+
 
     Scene scene = new Scene(root, 1280, 720);
     primaryStage.setTitle("Chaos Game");
@@ -295,8 +293,11 @@ public class MainView extends Application implements ChaosGameObserver {
     return values;
   }
 
-  private void drawFractal(int[][] fractal) {
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+  private void drawFractal() {
+    if (fractal.length == 0) {
+      return;
+    }
+    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
 
@@ -317,17 +318,13 @@ public class MainView extends Application implements ChaosGameObserver {
     return savedFractalsDropdown.getValue();
   }
 
-  public String getStepsFieldText() {
-    return stepsField.getText();
-  }
-
-  public Button getSubmitSteps() {
-    return submitSteps;
+  private void setFractal(int[][] fractal) {
+    this.fractal = fractal;
   }
 
   @Override
   public void update(int[][] newCanvas) {
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
-    drawFractal(newCanvas);
+    setFractal(newCanvas);
+    drawFractal();
   }
 }
