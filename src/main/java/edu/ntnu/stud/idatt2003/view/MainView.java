@@ -168,12 +168,13 @@ public class MainView extends Application implements ChaosGameObserver {
 
     leftPanel.getChildren().add(addTransformation);
 
-
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setContent(leftPanel);
     BorderPane root = new BorderPane();
     BorderPane.setMargin(leftPanel, new Insets(20));
     BorderPane.setMargin(canvas, new Insets(20));
     root.setTop(menuBar);
-    root.setLeft(leftPanel);
+    root.setLeft(scrollPane);
     root.setRight(canvas);
     canvas.widthProperty().bind(root.widthProperty().multiply(0.5));
     canvas.heightProperty().bind(root.heightProperty().multiply(0.9));
@@ -182,6 +183,8 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
     Scene scene = new Scene(root, 1280, 720);
+    primaryStage.setMinWidth(850);
+    primaryStage.setMinHeight(400);
     primaryStage.setTitle("Chaos Game");
     primaryStage.setScene(scene);
     primaryStage.show();
