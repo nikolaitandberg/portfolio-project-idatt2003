@@ -2,6 +2,7 @@ package edu.ntnu.stud.idatt2003.model;
 
 import edu.ntnu.stud.idatt2003.math.Complex;
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChaosGameFileHandlerTest {
 
-  private final String testFilePath = "C:\\Users\\jerry\\OneDrive\\Dokumenter\\Programmering\\Prog2\\chaos-game-group34\\textfileTest.txt";
+  private final String testFilePath = "textfileTest.txt";
   private ChaosGameFileHandler fileHandler;
 
 
@@ -46,7 +47,7 @@ class ChaosGameFileHandlerTest {
     assertTrue(writtenLines.getFirst().contains("Julia"));
     assertTrue(writtenLines.get(1).contains("-1.6,-1.0"));
     assertTrue(writtenLines.get(2).contains("1.6,1.0"));
-    assertTrue(writtenLines.get(3).contains("-0.74543,0.11301,1"));
+    assertTrue(writtenLines.get(3).contains("-0.74543,0.11301,-1"));
   }
 
 
@@ -63,5 +64,10 @@ class ChaosGameFileHandlerTest {
 
     fileHandler.writeToFile(description, testFilePath);
     assertEquals(String.valueOf(description), String.valueOf(fileHandler.readFromFile(testFilePath)));
+  }
+
+  @AfterAll
+  static void cleanUp() throws IOException {
+    Files.deleteIfExists(Path.of("textfileTest.txt"));
   }
 }
