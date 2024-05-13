@@ -3,12 +3,13 @@ package edu.ntnu.stud.idatt2003.view;
 import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.controller.MainController;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -28,18 +29,17 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private final TextField stepsField = new TextField();
 
-  private final Button submitSteps = new Button("Beregn");
+  private final Button runSteps = createStyledButton("Run steps");
 
   private int[][] fractal = new int[][]{};
 
 
   List<HBox> juliaBoxes = new ArrayList<>();
   List<HBox> affineBoxes = new ArrayList<>();
+  List<TextField> coordsFields = new ArrayList<>();
 
 
-  private final ComboBox<String> savedFractalsDropdown = new ComboBox<>();
-  private HBox minCoordsBox;
-  private HBox maxCoordsBox;
+  private final ComboBox<String> fractalSelector = new ComboBox<>();
 
 
   public static void main(String[] args) {
@@ -51,25 +51,22 @@ public class MainView extends Application implements ChaosGameObserver {
   public void start(Stage primaryStage) {
     MainController controller = new MainController(this);
 
-    VBox fractalBox;
     ComboBox<String> fractalTypeDropdown;
     Button addTransformation;
 
     HBox stepsBox = new HBox();
 
-    fractalBox = new VBox();
+    VBox fractalBox = new VBox();
+    fractalBox.setAlignment(Pos.CENTER);
     fractalBox.setVisible(false);
 
     fractalTypeDropdown = new ComboBox<>();
     fractalTypeDropdown.setVisible(false);
 
-    minCoordsBox = new HBox();
-    minCoordsBox.setVisible(false);
+    HBox coordsBox = createCoordsBox();
+    coordsBox.setVisible(false);
 
-    maxCoordsBox = new HBox();
-    maxCoordsBox.setVisible(false);
-
-    addTransformation = new Button("Add transformation");
+    addTransformation = createStyledButton("Add transformation");
     addTransformation.setVisible(false);
 
     MenuBar menuBar = new MenuBar();
@@ -102,12 +99,14 @@ public class MainView extends Application implements ChaosGameObserver {
     leftPanel.setSpacing(15);
 
     // dropdown for saved fractals
-    savedFractalsDropdown.getItems().addAll("Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal");
-    savedFractalsDropdown.setValue("Choose fractal");
-    leftPanel.getChildren().add(savedFractalsDropdown);
+    fractalSelector.getItems().addAll("Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal");
+    fractalSelector.setValue("Choose fractal");
+    leftPanel.getChildren().add(fractalSelector);
 
     // button for running steps
     leftPanel.getChildren().add(stepsBox);
+
+    leftPanel.getChildren().add(coordsBox);
 
 
     fractalTypeDropdown.getItems().addAll(JULIA, AFFINE);
@@ -115,18 +114,16 @@ public class MainView extends Application implements ChaosGameObserver {
     leftPanel.getChildren().add(fractalTypeDropdown);
 
 
-    savedFractalsDropdown.setOnAction(event ->  { String savedFractal = savedFractalsDropdown.getValue();
-      if ("Custom fractal".equals(savedFractal)) {
+    fractalSelector.setOnAction(event ->  { String selectedFractal = fractalSelector.getValue();
+      if ("Custom fractal".equals(selectedFractal)) {
         fractalBox.setVisible(true);
         fractalTypeDropdown.setVisible(true);
-        minCoordsBox.setVisible(true);
-        maxCoordsBox.setVisible(true);
+        coordsBox.setVisible(true);
         addTransformation.setVisible(true);
       } else {
         fractalBox.setVisible(false);
         fractalTypeDropdown.setVisible(false);
-        minCoordsBox.setVisible(false);
-        maxCoordsBox.setVisible(false);
+        coordsBox.setVisible(false);
         addTransformation.setVisible(false);
       }
     });
@@ -145,13 +142,11 @@ public class MainView extends Application implements ChaosGameObserver {
             }
     );
 
-    submitSteps.setOnAction(event -> controller.runSteps(Integer.parseInt(stepsField.getText())));
-
-    setUpCoordsBoxes(leftPanel);
+    runSteps.setOnAction(event -> controller.runSteps(Integer.parseInt(stepsField.getText())));
 
     // field and button for running steps
     stepsField.setPromptText("Antall steg");
-    stepsBox.getChildren().addAll(stepsField, submitSteps);
+    stepsBox.getChildren().addAll(stepsField, runSteps);
 
     // button for adding transformations
     addTransformation.setOnAction(actionEvent -> {String selected = fractalTypeDropdown.getValue();
@@ -161,8 +156,6 @@ public class MainView extends Application implements ChaosGameObserver {
       } else if (selected.equals(AFFINE)) {
         fractalBox.getChildren().add(createAffineBox());
         selectedTransformationType = AFFINE;
-      } else {
-        selectedTransformationType = null;
       }
     });
 
@@ -170,52 +163,70 @@ public class MainView extends Application implements ChaosGameObserver {
 
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setContent(leftPanel);
-    BorderPane root = new BorderPane();
-    BorderPane.setMargin(leftPanel, new Insets(20));
-    BorderPane.setMargin(canvas, new Insets(20));
-    root.setTop(menuBar);
-    root.setLeft(scrollPane);
-    root.setRight(canvas);
-    canvas.widthProperty().bind(root.widthProperty().multiply(0.5));
-    canvas.heightProperty().bind(root.heightProperty().multiply(0.9));
+    scrollPane.setMinWidth(500);
+
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().add(canvas);
+    stackPane.setStyle("-fx-background-color: #d5b59e;");
+    canvas.widthProperty().bind(stackPane.widthProperty().multiply(0.8));
+    canvas.heightProperty().bind(stackPane.heightProperty().multiply(0.8));
     canvas.widthProperty().addListener(event -> drawFractal());
     canvas.heightProperty().addListener(event -> drawFractal());
 
+    BorderPane root = new BorderPane();
+    root.setTop(menuBar);
+    SplitPane splitPane = new SplitPane();
+    splitPane.getItems().addAll(scrollPane, stackPane);
+    root.setCenter(splitPane);
+
+
 
     Scene scene = new Scene(root, 1280, 720);
-    primaryStage.setMinWidth(850);
-    primaryStage.setMinHeight(400);
+    primaryStage.setMinWidth(640);
+    primaryStage.setMinHeight(320);
     primaryStage.setTitle("Chaos Game");
     primaryStage.setScene(scene);
     primaryStage.show();
   }
 
-  private void setUpCoordsBoxes(VBox leftPanel) {
-    // fields for maximum and minimum coords
-    TextField minX = new TextField();
-    minX.setPromptText("Min x");
-    TextField minY = new TextField();
-    minY.setPromptText("Min y");
+  private HBox createCoordsBox() {
+    HBox coordsBox = new HBox();
+    coordsBox.setAlignment(Pos.CENTER);
+    coordsBox.setSpacing(10);
+
+    Text minCoordsText = new Text("Minimum coordinates: ");
+    TextField minX = createStyledTextField();
+    TextField minY = createStyledTextField();
+    VBox minCoordsBox = new VBox();
     minCoordsBox.getChildren().addAll(minX, minY);
-    TextField maxX = new TextField();
-    maxX.setPromptText("max x");
-    TextField maxY = new TextField();
-    maxY.setPromptText("max y");
+
+    Text maxCoordsText = new Text("Maximum coordinates: ");
+    TextField maxX = createStyledTextField();
+    TextField maxY = createStyledTextField();
+    VBox maxCoordsBox = new VBox();
     maxCoordsBox.getChildren().addAll(maxX, maxY);
 
 
-    leftPanel.getChildren().addAll(minCoordsBox, maxCoordsBox);
+    coordsFields.addAll(List.of(minX, minY, maxX, maxY));
+    coordsBox.getChildren().addAll(minCoordsText, minCoordsBox, maxCoordsText, maxCoordsBox);
+    return coordsBox;
   }
 
   private HBox createJuliaBox() {
     HBox juliaBox = new HBox();
-    TextField realPart = new TextField();
-    realPart.setPromptText("Real part");
-    TextField imaginaryPart = new TextField();
-    imaginaryPart.setPromptText("Imaginary part");
-    TextField sign = new TextField();
-    sign.setPromptText("Sign");
-    juliaBox.getChildren().addAll(realPart, imaginaryPart, sign);
+    juliaBox.setAlignment(Pos.CENTER);
+    juliaBox.setSpacing(10);
+
+    Text realPartText = new Text("Real part: ");
+    TextField realPart = createStyledTextField();
+
+    Text imaginaryPartText = new Text("Imaginary part: ");
+    TextField imaginaryPart = createStyledTextField();
+
+    Text signText = new Text("Sign: ");
+    TextField sign = createStyledTextField();
+
+    juliaBox.getChildren().addAll(realPartText, realPart, imaginaryPartText, imaginaryPart, signText, sign);
 
     juliaBoxes.add(juliaBox);
     return juliaBox;
@@ -223,54 +234,59 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private HBox createAffineBox() {
     HBox affineBox = new HBox();
+    affineBox.setAlignment(Pos.CENTER);
 
     // creates input fields for the matrix
     VBox matricesBox = new VBox();
 
+    Text matrixText = new Text("Matrix: ");
     HBox matrixBox1 = new HBox();
-    TextField matrix00 = new TextField();
+    TextField matrix00 = createStyledTextField();
     matrix00.setPromptText("Matrix 00");
-    TextField matrix01 = new TextField();
+    TextField matrix01 = createStyledTextField();
     matrix01.setPromptText("Matrix 01");
     matrixBox1.getChildren().addAll(matrix00, matrix01);
 
     HBox matrixBox2 = new HBox();
-    TextField matrix10 = new TextField();
+    TextField matrix10 = createStyledTextField();
     matrix10.setPromptText("Matrix 10");
-    TextField matrix11 = new TextField();
+    TextField matrix11 = createStyledTextField();
     matrix11.setPromptText("Matrix 11");
     matrixBox2.getChildren().addAll(matrix10, matrix11);
 
 
     // creates input fields for the vector
+
+    Text vectorText = new Text("Vector: ");
     VBox vectorBox = new VBox();
-    TextField vector1 = new TextField();
+    TextField vector1 = createStyledTextField();
     vector1.setPromptText("Vector 1");
-    TextField vector2 = new TextField();
+    TextField vector2 = createStyledTextField();
     vector2.setPromptText("Vector 2");
     vectorBox.getChildren().addAll(vector1, vector2);
 
     matricesBox.getChildren().addAll(matrixBox1, matrixBox2);
-    affineBox.getChildren().addAll(matricesBox, vectorBox);
+    affineBox.getChildren().addAll(matrixText, matricesBox, vectorText, vectorBox);
+    affineBox.setSpacing(10);
     affineBoxes.add(affineBox);
     return affineBox;
   }
 
   public String[] getMinMaxCoords() {
-    TextField minX0 = (TextField) minCoordsBox.getChildren().get(0);
-    TextField minX1 = (TextField) minCoordsBox.getChildren().get(1);
-    TextField maxX0 = (TextField) maxCoordsBox.getChildren().get(0);
-    TextField maxX1 = (TextField) maxCoordsBox.getChildren().get(1);
-
+    TextField minX0 = coordsFields.get(0);
+    TextField minX1 = coordsFields.get(1);
+    TextField maxX0 = coordsFields.get(2);
+    TextField maxX1 = coordsFields.get(3);
+    
     return new String[]{minX0.getText(), minX1.getText(), maxX0.getText(), maxX1.getText()};
   }
 
   public List<String[]> getJuliaBoxValues() {
     List<String[]> values = new ArrayList<>();
     for (HBox juliaBox : juliaBoxes) {
-      TextField realPart = (TextField) juliaBox.getChildren().get(0);
-      TextField imaginaryPart = (TextField) juliaBox.getChildren().get(1);
-      TextField sign = (TextField) juliaBox.getChildren().get(2);
+      TextField realPart = (TextField) juliaBox.getChildren().get(1);
+      TextField imaginaryPart = (TextField) juliaBox.getChildren().get(3);
+      TextField sign = (TextField) juliaBox.getChildren().get(5);
       values.add(new String[]{realPart.getText(), imaginaryPart.getText(), sign.getText()});
     }
     return values;
@@ -279,7 +295,7 @@ public class MainView extends Application implements ChaosGameObserver {
   public List<String[]> getAffineBoxValues() {
     List<String[]> values = new ArrayList<>();
     for (HBox affineBox : affineBoxes) {
-      VBox matrixBox = (VBox) affineBox.getChildren().getFirst();
+      VBox matrixBox = (VBox) affineBox.getChildren().get(1);
       HBox matrixRow1 = (HBox) matrixBox.getChildren().getFirst();
       TextField matrix00 = (TextField) matrixRow1.getChildren().get(0);
       TextField matrix01 = (TextField) matrixRow1.getChildren().get(1);
@@ -287,7 +303,7 @@ public class MainView extends Application implements ChaosGameObserver {
       TextField matrix10 = (TextField) matrixRow2.getChildren().get(0);
       TextField matrix11 = (TextField) matrixRow2.getChildren().get(1);
 
-      VBox vectorBox = (VBox) affineBox.getChildren().get(1);
+      VBox vectorBox = (VBox) affineBox.getChildren().get(3);
       TextField vector1 = (TextField) vectorBox.getChildren().get(0);
       TextField vector2 = (TextField) vectorBox.getChildren().get(1);
 
@@ -318,7 +334,7 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   public String getSavedFractal() {
-    return savedFractalsDropdown.getValue();
+    return fractalSelector.getValue();
   }
 
   private void setFractal(int[][] fractal) {
@@ -329,5 +345,23 @@ public class MainView extends Application implements ChaosGameObserver {
   public void update(int[][] newCanvas) {
     setFractal(newCanvas);
     drawFractal();
+  }
+
+  private TextField createStyledTextField() {
+    TextField textField = new TextField();
+    textField.setPrefHeight(50); // Set preferred height
+    textField.setPrefWidth(50); // Set preferred width
+    textField.setAlignment(Pos.CENTER);
+    textField.setStyle("-fx-background-radius: 10;"); // Set corner radius
+    return textField;
+  }
+
+  private Button createStyledButton(String text) {
+    Button button = new Button(text);
+    button.setPrefHeight(50); // Set preferred height
+    button.setPrefWidth(100); // Set preferred width
+    button.setAlignment(Pos.CENTER);
+    button.setStyle("-fx-background-radius: 10;"); // Set corner radius
+    return button;
   }
 }
