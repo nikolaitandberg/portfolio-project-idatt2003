@@ -1,9 +1,11 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003;
 
-import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
-import edu.ntnu.stud.idatt2003.model.math.Vector2D;
-import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
-import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
+import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.transformations.Transform2D;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -33,7 +35,7 @@ class ChaosGameAppDescriptionTest {
     Vector2D minCords = new Vector2D(0, 0);
     Vector2D maxCords = new Vector2D(1, 1);
     ChaosGameDescription chaosGameDescription = new ChaosGameDescription(minCords, maxCords, null);
-    assertEquals(chaosGameDescription.getMinCords(), minCords);
+    Assertions.assertEquals(chaosGameDescription.getMinCords(), minCords);
   }
 
   @Test
@@ -42,7 +44,7 @@ class ChaosGameAppDescriptionTest {
     Vector2D minCords = new Vector2D(0, 0);
     Vector2D maxCords = new Vector2D(1, 1);
     ChaosGameDescription chaosGameDescription = new ChaosGameDescription(minCords, maxCords, null);
-    assertEquals(chaosGameDescription.getMaxCords(), maxCords);
+    Assertions.assertEquals(chaosGameDescription.getMaxCords(), maxCords);
   }
 
   @Test

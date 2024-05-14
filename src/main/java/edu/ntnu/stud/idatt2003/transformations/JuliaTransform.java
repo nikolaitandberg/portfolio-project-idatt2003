@@ -1,7 +1,7 @@
-package edu.ntnu.stud.idatt2003.model.transformations;
+package edu.ntnu.stud.idatt2003.transformations;
 
-import edu.ntnu.stud.idatt2003.model.math.Complex;
-import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+import edu.ntnu.stud.idatt2003.math.Complex;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
 
 /**
  * A class representing a 2D Julia transformation.
@@ -65,7 +65,6 @@ public class JuliaTransform implements Transform2D {
 
       return new Complex(-sqrt.getX0(), -sqrt.getX1());
     }
-
     return sqrt;
   }
 

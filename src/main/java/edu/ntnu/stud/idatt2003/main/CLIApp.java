@@ -1,8 +1,11 @@
-package edu.ntnu.stud.idatt2003;
+package edu.ntnu.stud.idatt2003.main;
 
-import edu.ntnu.stud.idatt2003.model.*;
-import edu.ntnu.stud.idatt2003.model.math.Complex;
-import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.ChaosGame;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
+import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
+import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
+import edu.ntnu.stud.idatt2003.transformations.Transform2D;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,11 +18,11 @@ import java.util.Scanner;
  */
 public class CLIApp {
 
-  public void run() throws IOException {
+  public void run() throws IOException, UnknownTransformationException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
-    ChaosGameDescription description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.74543, 0.11301));
+    ChaosGameDescription description = ChaosGameDescriptionFactory.createBarnsleyFern();
     ChaosGame chaosGame = new ChaosGame(description, 60, 60);
     boolean running = true;
     while (running) {
@@ -60,7 +63,7 @@ public class CLIApp {
           break;
         case 4:
           if (chaosGame != null) {
-            int[][] canvas = chaosGame.getCanvas();
+            int[][] canvas = chaosGame.getCanvas().getCanvas();
             for (int i = 0; i < canvas.length; i++) {
               for (int j = 0; j < canvas[i].length; j++) {
                 if (canvas[i][j] == 1) {
@@ -85,7 +88,7 @@ public class CLIApp {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, UnknownTransformationException {
     CLIApp app = new CLIApp();
     app.run();
   }
