@@ -1,6 +1,8 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 
 /**
 * A class representing a canvas for the chaos game.
@@ -44,6 +46,13 @@ public class ChaosCanvas {
     this.clear();
   }
 
+  /**
+   * Method for getting a pixel from the canvas.
+   *
+   * @param point Point to get the pixel from.
+   * @return Pixel value.
+   */
+
   public int getPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
@@ -60,8 +69,9 @@ public class ChaosCanvas {
     int i = (int) matrixVector.getX0();
     int j = (int) matrixVector.getX1();
 
-    // todo: check if i and j are within bounds
-    canvas[i][j] = 1;
+    if (i >= 0 && i < height && j >= 0 && j < width) {
+      canvas[i][j] = 1;
+    }
   }
 
   /**
@@ -76,7 +86,21 @@ public class ChaosCanvas {
     }
   }
 
+  /**
+   * Method for getting the canvas.
+   *
+   * @return The canvas.
+   */
+
   public int[][] getCanvas() {
     return canvas;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
   }
 }

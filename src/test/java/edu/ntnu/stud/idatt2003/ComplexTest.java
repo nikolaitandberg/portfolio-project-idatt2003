@@ -1,5 +1,6 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003;
 
+import edu.ntnu.stud.idatt2003.math.Complex;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

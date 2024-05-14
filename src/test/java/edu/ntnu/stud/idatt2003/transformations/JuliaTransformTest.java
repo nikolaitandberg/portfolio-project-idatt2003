@@ -1,7 +1,7 @@
-package edu.ntnu.stud.idatt2003.model.transformations;
+package edu.ntnu.stud.idatt2003.transformations;
 
-import edu.ntnu.stud.idatt2003.model.Complex;
-import edu.ntnu.stud.idatt2003.model.Vector2D;
+import edu.ntnu.stud.idatt2003.math.Complex;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

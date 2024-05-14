@@ -1,5 +1,10 @@
 package edu.ntnu.stud.idatt2003.model;
 
+import edu.ntnu.stud.idatt2003.ChaosGameObserver;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,7 +13,7 @@ import java.util.Random;
  * @version 1.0
  * @since 2024-03-29
  */
-public class ChaosGame {
+public class ChaosGame extends ChaosGameObservable {
 
   private final ChaosCanvas canvas;
 
@@ -26,6 +31,7 @@ public class ChaosGame {
    * @param height height of the canvas
    */
   public ChaosGame(ChaosGameDescription description, int width, int height) {
+    super();
     this.canvas = new ChaosCanvas(
             width,
             height,
@@ -40,8 +46,17 @@ public class ChaosGame {
    *
    * @return canvas, an int[][] of 0 and 1
    */
-  public int[][] getCanvas() {
+  public int[][] getCanvasInt() {
     return canvas.getCanvas();
+  }
+
+  /**
+   * Method for getting the canvas.
+   *
+   * @return canvas, a ChaosCanvas object
+   */
+  public ChaosCanvas getCanvas() {
+    return canvas;
   }
 
   /**
@@ -55,6 +70,6 @@ public class ChaosGame {
       currentPoint = description.getTransforms().get(randomNumber).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
+    notifyObservers(canvas.getCanvas());
   }
-
 }

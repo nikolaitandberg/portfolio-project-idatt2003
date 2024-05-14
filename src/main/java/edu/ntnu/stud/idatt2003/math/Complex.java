@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003.math;
 
 
 /**
@@ -19,10 +19,21 @@ public class Complex extends Vector2D {
     super(realPart, imaginaryPart);
   }
 
+  /**
+   * Method for getting the real part of the complex number.
+   *
+   * @return Real part of the complex number.
+   */
+
   public double getRealPart() {
     return getX0();
   }
 
+  /**
+   * Method for getting the imaginary part of the complex number.
+   *
+   * @return Imaginary part of the complex number.
+   */
   public double getImaginaryPart() {
     return getX1();
   }
@@ -33,15 +44,20 @@ public class Complex extends Vector2D {
    * @return Square root of the complex number.
    */
   public Complex sqrt() {
-    double r = Math.sqrt(Math.pow(getRealPart(), 2) + Math.pow(getImaginaryPart(), 2));
-    double theta = Math.atan2(getImaginaryPart(), getRealPart());
+    double a = this.getX0();
+    double b = this.getX1();
 
-    double realPart = Math.sqrt(r) * Math.cos(theta / 2);
-    double imaginaryPart = Math.sqrt(r) * Math.sin(theta / 2);
+    double magnitude = Math.sqrt(a * a + b * b);
+    double x = Math.sqrt((magnitude + a) / 2);
+    double y = Math.signum(b) * Math.sqrt((magnitude - a ) / 2);
 
-    return new Complex(realPart, imaginaryPart);
+    return new Complex(x,y);
   }
 
+  /**
+   * To string method.
+   * @return String representation of the complex number.
+   */
   @Override
   public String toString() {
     return getRealPart() + ", " + getImaginaryPart();

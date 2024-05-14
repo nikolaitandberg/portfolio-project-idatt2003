@@ -1,7 +1,7 @@
-package edu.ntnu.stud.idatt2003.model.transformations;
+package edu.ntnu.stud.idatt2003.transformations;
 
-import edu.ntnu.stud.idatt2003.model.Complex;
-import edu.ntnu.stud.idatt2003.model.Vector2D;
+import edu.ntnu.stud.idatt2003.math.Complex;
+import edu.ntnu.stud.idatt2003.math.Vector2D;
 
 /**
  * A class representing a 2D Julia transformation.
@@ -59,14 +59,13 @@ public class JuliaTransform implements Transform2D {
 
     Vector2D subtractedPoint = point.subtract(this.point);
 
-    Complex complexPoint = new Complex(subtractedPoint.getX0(), subtractedPoint.getX1());
+    Complex sqrt = new Complex(subtractedPoint.getX0(), subtractedPoint.getX1()).sqrt();
 
     if (sign == -1) {
-      Complex negativeComplex = new Complex(-complexPoint.getX0(), -complexPoint.getX1());
-      return negativeComplex.sqrt();
-    }
 
-    return complexPoint.sqrt();
+      return new Complex(-sqrt.getX0(), -sqrt.getX1());
+    }
+    return sqrt;
   }
 
   public String toString() {

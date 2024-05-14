@@ -1,12 +1,13 @@
-package edu.ntnu.stud.idatt2003;
+package edu.ntnu.stud.idatt2003.main;
 
-import edu.ntnu.stud.idatt2003.model.*;
-import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
-import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.ChaosGame;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
+import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
+import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
+import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
+import edu.ntnu.stud.idatt2003.transformations.Transform2D;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -17,25 +18,11 @@ import java.util.Scanner;
  */
 public class CLIApp {
 
-  private ChaosGameDescription initializeChaosGameDescription() {
-    Matrix2x2 sierpinskiMatrix = new Matrix2x2(0.5, 0, 0, 0.5);
-    AffineTransform2D sierpinski1 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0, 0));
-    AffineTransform2D sierpinski2 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.5, 0));
-    AffineTransform2D sierpinski3 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.25, 0.5));
-
-    List<Transform2D> transforms = Arrays.asList(sierpinski1, sierpinski2, sierpinski3);
-    Vector2D minCords = new Vector2D(0, 0);
-    Vector2D maxCords = new Vector2D(1, 1);
-
-    // Create the description object
-    return new ChaosGameDescription(minCords, maxCords, transforms);
-  }
-
-  public void run() throws IOException {
+  public void run() throws IOException, UnknownTransformationException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
-    ChaosGameDescription description = initializeChaosGameDescription();
+    ChaosGameDescription description = ChaosGameDescriptionFactory.createBarnsleyFern();
     ChaosGame chaosGame = new ChaosGame(description, 60, 60);
     boolean running = true;
     while (running) {
@@ -69,7 +56,6 @@ public class CLIApp {
           if (description != null) {
             System.out.print("Enter number of iterations: ");
             int iterations = scanner.nextInt();
-            chaosGame = new ChaosGame(description, 60, 60);
             chaosGame.runSteps(iterations);
           } else {
             System.out.println("No description loaded to run iterations.");
@@ -77,7 +63,7 @@ public class CLIApp {
           break;
         case 4:
           if (chaosGame != null) {
-            int[][] canvas = chaosGame.getCanvas();
+            int[][] canvas = chaosGame.getCanvas().getCanvas();
             for (int i = 0; i < canvas.length; i++) {
               for (int j = 0; j < canvas[i].length; j++) {
                 if (canvas[i][j] == 1) {
@@ -102,7 +88,7 @@ public class CLIApp {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, UnknownTransformationException {
     CLIApp app = new CLIApp();
     app.run();
   }

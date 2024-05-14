@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003.math;
 
 
 /**
@@ -43,41 +43,9 @@ public class Matrix2x2 {
   }
 
   /**
-   * Method for getting the first element in the first row.
-   *
-   * @return The first element in the first row
+   * To string method.
+   * @return String representation of the matrix.
    */
-  public double getA00() {
-    return a00;
-  }
-
-  /**
-   * Method for getting the second element in the first row.
-   *
-   * @return The second element in the first row
-   */
-  public double getA01() {
-    return a01;
-  }
-
-  /**
-   * Method for getting the first element in the second row.
-   *
-   * @return The first element in the second row
-   */
-  public double getA10() {
-    return a10;
-  }
-
-  /**
-   * Method for getting the second element in the second row.
-   *
-   * @return The second element in the second row
-   */
-  public double getA11() {
-    return a11;
-  }
-
   public String toString() {
     return a00 + ", " + a01 + ", " + a10 + ", " + a11;
   }

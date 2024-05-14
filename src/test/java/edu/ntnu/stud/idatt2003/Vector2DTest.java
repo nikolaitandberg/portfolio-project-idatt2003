@@ -1,5 +1,6 @@
-package edu.ntnu.stud.idatt2003.model;
+package edu.ntnu.stud.idatt2003;
 
+import edu.ntnu.stud.idatt2003.math.Vector2D;
 import org.junit.jupiter.api.*;
 
 class Vector2DTest {
