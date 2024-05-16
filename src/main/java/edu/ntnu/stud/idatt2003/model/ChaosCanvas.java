@@ -70,7 +70,7 @@ public class ChaosCanvas {
     int j = (int) matrixVector.getX1();
 
     if (i >= 0 && i < height && j >= 0 && j < width) {
-      canvas[i][j] = 1;
+      canvas[i][j] += 1;
     }
   }
 

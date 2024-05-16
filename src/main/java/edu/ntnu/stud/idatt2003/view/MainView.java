@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -325,11 +326,25 @@ public class MainView extends Application implements ChaosGameObserver {
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
-        if (fractal[i][j] == 1) {
+        int hits = fractal[i][j];
+        if (hits > 0) {
+          gc.setFill(getColorForHitCount(hits));
           gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
         }
       }
     }
+  }
+
+  private Color getColorForHitCount(int hits) {
+    return switch (hits % 6) {
+      case 0 -> Color.YELLOW;
+      case 1 -> Color.RED;
+      case 2 -> Color.GREEN;
+      case 3 -> Color.BLUE;
+      case 4 -> Color.PURPLE;
+      case 5 -> Color.ORANGE;
+      default -> Color.BLACK;
+    };
   }
 
   public String getSelectedTransformationType() {
