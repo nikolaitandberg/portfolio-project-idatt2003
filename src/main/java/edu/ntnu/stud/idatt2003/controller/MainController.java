@@ -17,8 +17,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * The controller class for the main view.
+ *
+ * @version 1.0
+ * @since 2024-03-29
+ */
+
 public class MainController {
 
+  /**
+   * The view for the controller.
+   */
   private final MainView view;
 
 
@@ -26,6 +37,10 @@ public class MainController {
     this.view = view;
   }
 
+  /**
+   * Gets the values from the view and creates a Julia Description.
+   * @return a Julia Description
+   */
   public ChaosGameDescription createJuliaDescription() {
 
     List<String[]> juliaBoxValues = view.getJuliaBoxValues();
@@ -45,6 +60,11 @@ public class MainController {
 
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
+
+  /**
+   * Gets the values from the view and creates an Affine Description.
+   * @return an Affine Description
+   */
 
   public ChaosGameDescription createAffineDescription() {
     List<String[]> affineBoxValues = view.getAffineBoxValues();
@@ -68,6 +88,10 @@ public class MainController {
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
+  /**
+   * Adds the view as an observer to the chaos game and runs the steps.
+   * @param steps the number of steps to run
+   */
   public void runSteps(int steps) {
     ChaosGame chaosGame;
     ChaosGameDescription description = createChaosGameDescription();
@@ -77,6 +101,11 @@ public class MainController {
     chaosGame.runSteps(steps);
   }
 
+  /**
+   * Creates a chaos game description based on the saved fractal in the view.
+   * @return a chaos game description
+   */
+
   private ChaosGameDescription createChaosGameDescription() {
     try {
       return ChaosGameDescriptionFactory.get(view.getSavedFractal());
@@ -85,9 +114,18 @@ public class MainController {
     }
   }
 
+  /**
+   * Creates a custom chaos game description based on the selected transformation type in the view.
+   * @return a custom chaos game description
+   */
   private ChaosGameDescription createCustomDescription() {
     return view.getSelectedTransformationType().equals("Affine") ? createAffineDescription() : createJuliaDescription();
   }
+
+  /**
+   * Saves the fractal to a file.
+   * @param path the path to save the fractal to
+   */
 
   public void saveFractal(String path) {
     ChaosGameDescription description = createCustomDescription();
@@ -98,6 +136,11 @@ public class MainController {
       e.printStackTrace();
     }
   }
+
+  /**
+   * Loads a fractal from a file.
+   * @param path the path to load the fractal from
+   */
 
   public void loadFractal(String path) {
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
