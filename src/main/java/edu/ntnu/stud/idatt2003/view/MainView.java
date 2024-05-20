@@ -3,13 +3,13 @@ package edu.ntnu.stud.idatt2003.view;
 import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.controller.MainController;
 import edu.ntnu.stud.idatt2003.model.InputValidator;
+import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -19,19 +19,15 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
-  private static final String CORNER_RADIUS = "-fx-background-radius: 10;";
 
   private String selectedTransformationType;
 
-  private final TextField stepsField = createStepsField();
-
-  private final Button runSteps = createStyledButton("Run steps");
+  private StepsBox stepsBox;
 
 
-  private final List<HBox> juliaBoxes = new ArrayList<>();
-  private final List<HBox> affineBoxes = new ArrayList<>();
-  private final List<TextField> coordsFields = new ArrayList<>();
-
+  private final List<JuliaBox> juliaBoxes = new ArrayList<>();
+  private final List<AffineBox> affineBoxes = new ArrayList<>();
+  private final CoordsBox coordsBox = new CoordsBox();
 
   private final ComboBox<String> fractalSelector = new ComboBox<>();
   ComboBox<String> fractalTypeDropdown = new ComboBox<>();
@@ -48,12 +44,10 @@ public class MainView extends Application implements ChaosGameObserver {
   public void start(Stage primaryStage) {
     MainController controller = new MainController(this);
     MenuBarView menuBarView = new MenuBarView(controller, primaryStage);
+    stepsBox = new StepsBox(controller);
 
-    Button addTransformation;
-
-    HBox stepsBox = new HBox();
-    stepsBox.getChildren().addAll(stepsField, runSteps);
-    stepsBox.setSpacing(10);
+    CustomButton addTransformation = new CustomButton("Add transformation");
+    addTransformation.setVisible(false);
 
     VBox fractalBox = new VBox();
     fractalBox.setAlignment(Pos.CENTER);
@@ -61,12 +55,8 @@ public class MainView extends Application implements ChaosGameObserver {
     fractalBox.setSpacing(10);
 
     fractalTypeDropdown.setVisible(false);
-
-    HBox coordsBox = createCoordsBox();
     coordsBox.setVisible(false);
 
-    addTransformation = createStyledButton("Add transformation");
-    addTransformation.setVisible(false);
 
     VBox leftPanel = new VBox();
     leftPanel.setSpacing(10);
@@ -116,12 +106,7 @@ public class MainView extends Application implements ChaosGameObserver {
             }
     );
 
-    runSteps.setOnAction(event -> {
-      if (!validateEverything()) {
-        return;
-      }
-      controller.runSteps(Integer.parseInt(stepsField.getText()));
-    });
+
 
 
     // button for adding transformations
@@ -182,7 +167,7 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   private boolean validateSteps() {
-    if (!InputValidator.validateSteps(stepsField.getText())) {
+    if (!InputValidator.validateSteps(stepsBox.getSteps())) {
       UserFeedback.invalidSteps();
       return false;
     }
@@ -240,119 +225,34 @@ public class MainView extends Application implements ChaosGameObserver {
     return ensureFractalIsSelected() && validateSteps() && validateCustomFractal();
   }
 
-  private HBox createCoordsBox() {
-    HBox coordsBox = new HBox();
-    coordsBox.setAlignment(Pos.CENTER_LEFT);
-    coordsBox.setSpacing(10);
-
-    Text minCoordsText = new Text("Min. coords: ");
-    TextField minX = createStyledTextField();
-    TextField minY = createStyledTextField();
-    VBox minCoordsBox = new VBox();
-    minCoordsBox.getChildren().addAll(minX, minY);
-
-    Text maxCoordsText = new Text("Max. coords: ");
-    TextField maxX = createStyledTextField();
-    TextField maxY = createStyledTextField();
-    VBox maxCoordsBox = new VBox();
-    maxCoordsBox.getChildren().addAll(maxX, maxY);
-
-
-    coordsFields.addAll(List.of(minX, minY, maxX, maxY));
-    coordsBox.getChildren().addAll(minCoordsText, minCoordsBox, maxCoordsText, maxCoordsBox);
-    return coordsBox;
-  }
-
   private HBox createJuliaBox() {
-    HBox juliaBox = new HBox();
-    juliaBox.setAlignment(Pos.CENTER_LEFT);
-    juliaBox.setSpacing(10);
-
-    Text realPartText = new Text("Real part: ");
-    TextField realPart = createStyledTextField();
-
-    Text imaginaryPartText = new Text("Imaginary part: ");
-    TextField imaginaryPart = createStyledTextField();
-
-    Text signText = new Text("Sign: ");
-    TextField sign = createStyledTextField();
-
-    juliaBox.getChildren().addAll(realPartText, realPart, imaginaryPartText, imaginaryPart, signText, sign);
-
+    JuliaBox juliaBox = new JuliaBox();
     juliaBoxes.add(juliaBox);
     return juliaBox;
   }
 
   private HBox createAffineBox() {
-    HBox affineBox = new HBox();
-    affineBox.setAlignment(Pos.CENTER_LEFT);
-
-    // creates input fields for the matrix
-    VBox matricesBox = new VBox();
-
-    Text matrixText = new Text("Matrix: ");
-    HBox matrixBox1 = new HBox();
-    TextField matrix00 = createStyledTextField();
-    TextField matrix01 = createStyledTextField();
-    matrixBox1.getChildren().addAll(matrix00, matrix01);
-
-    HBox matrixBox2 = new HBox();
-    TextField matrix10 = createStyledTextField();
-    TextField matrix11 = createStyledTextField();
-    matrixBox2.getChildren().addAll(matrix10, matrix11);
-
-
-    // creates input fields for the vector
-
-    Text vectorText = new Text("Vector: ");
-    VBox vectorBox = new VBox();
-    TextField vector1 = createStyledTextField();
-    TextField vector2 = createStyledTextField();
-    vectorBox.getChildren().addAll(vector1, vector2);
-
-    matricesBox.getChildren().addAll(matrixBox1, matrixBox2);
-    affineBox.getChildren().addAll(matrixText, matricesBox, vectorText, vectorBox);
-    affineBox.setSpacing(10);
+    AffineBox affineBox = new AffineBox();
     affineBoxes.add(affineBox);
     return affineBox;
   }
 
   public String[] getMinMaxCoords() {
-    String minX0 = coordsFields.get(0).getText();
-    String minX1 = coordsFields.get(1).getText();
-    String maxX0 = coordsFields.get(2).getText();
-    String maxX1 = coordsFields.get(3).getText();
-
-    return new String[]{minX0, minX1, maxX0, maxX1};
+    return coordsBox.getValues();
   }
 
   public List<String[]> getJuliaBoxValues() {
     List<String[]> values = new ArrayList<>();
-    for (HBox juliaBox : juliaBoxes) {
-      TextField realPart = (TextField) juliaBox.getChildren().get(1);
-      TextField imaginaryPart = (TextField) juliaBox.getChildren().get(3);
-      TextField sign = (TextField) juliaBox.getChildren().get(5);
-      values.add(new String[]{realPart.getText(), imaginaryPart.getText(), sign.getText()});
+    for (JuliaBox juliaBox : juliaBoxes) {
+      values.add(juliaBox.getValues());
     }
     return values;
   }
 
   public List<String[]> getAffineBoxValues() {
     List<String[]> values = new ArrayList<>();
-    for (HBox affineBox : affineBoxes) {
-      VBox matrixBox = (VBox) affineBox.getChildren().get(1);
-      HBox matrixRow1 = (HBox) matrixBox.getChildren().getFirst();
-      TextField matrix00 = (TextField) matrixRow1.getChildren().get(0);
-      TextField matrix01 = (TextField) matrixRow1.getChildren().get(1);
-      HBox matrixRow2 = (HBox) matrixBox.getChildren().get(1);
-      TextField matrix10 = (TextField) matrixRow2.getChildren().get(0);
-      TextField matrix11 = (TextField) matrixRow2.getChildren().get(1);
-
-      VBox vectorBox = (VBox) affineBox.getChildren().get(3);
-      TextField vector1 = (TextField) vectorBox.getChildren().get(0);
-      TextField vector2 = (TextField) vectorBox.getChildren().get(1);
-
-      values.add(new String[]{matrix00.getText(), matrix01.getText(), matrix10.getText(), matrix11.getText(), vector1.getText(), vector2.getText()});
+    for (AffineBox affineBox : affineBoxes) {
+      values.add(affineBox.getValues());
     }
     return values;
   }
@@ -364,35 +264,6 @@ public class MainView extends Application implements ChaosGameObserver {
 
   public String getSavedFractal() {
     return fractalSelector.getValue();
-  }
-
-
-
-  private TextField createStyledTextField() {
-    TextField textField = new TextField();
-    textField.setPrefHeight(50); // Set preferred height
-    textField.setPrefWidth(50); // Set preferred width
-    textField.setAlignment(Pos.CENTER);
-    textField.setStyle(CORNER_RADIUS); // Set corner radius
-    return textField;
-  }
-
-  private TextField createStepsField() {
-    TextField stepsTextField = new TextField();
-    stepsTextField.setPrefHeight(50); // Set preferred height
-    stepsTextField.setPrefWidth(200); // Set preferred width
-    stepsTextField.setAlignment(Pos.CENTER_LEFT);
-    stepsTextField.setStyle(CORNER_RADIUS); // Set corner radius
-    return stepsTextField;
-  }
-
-  private Button createStyledButton(String text) {
-    Button button = new Button(text);
-    button.setPrefHeight(50); // Set preferred height
-    button.setPrefWidth(100); // Set preferred width
-    button.setAlignment(Pos.CENTER);
-    button.setStyle(CORNER_RADIUS); // Set corner radius
-    return button;
   }
 
   @Override
