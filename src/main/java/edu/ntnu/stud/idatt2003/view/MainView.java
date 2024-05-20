@@ -220,7 +220,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private boolean validateSteps() {
     if (!InputValidator.validateSteps(stepsField.getText())) {
-      UserFeedback.unvalidSteps();
+      UserFeedback.invalidSteps();
       return false;
     }
     return true;
