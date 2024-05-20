@@ -1,16 +1,24 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * A class for the canvas view.
+ *
+ * @version 1.0
+ * @since 2024-05-20
+ */
 public class CanvasView extends StackPane {
-  private Canvas canvas = new Canvas();
-  private GraphicsContext gc = canvas.getGraphicsContext2D();
+  private final Canvas canvas = new Canvas();
+  private final GraphicsContext gc = canvas.getGraphicsContext2D();
   private int[][] fractal = new int[][]{};
 
+  /**
+   * Constructor for the canvas view.
+   */
   public CanvasView() {
     this.getChildren().add(canvas);
     this.setStyle("-fx-background-color: #d5b59e;");
@@ -20,13 +28,19 @@ public class CanvasView extends StackPane {
     canvas.heightProperty().addListener(event -> drawFractal());
   }
 
+  /**
+   * Method for drawing the fractal.
+   */
   public void drawFractal() {
     if (fractal.length == 0) {
       return;
     }
     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-    double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
+    double cellSize = Math.min(
+            canvas.getWidth() / fractal[0].length,
+            canvas.getHeight() / fractal.length
+    );
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
@@ -39,10 +53,20 @@ public class CanvasView extends StackPane {
     }
   }
 
+  /**
+   * Method for setting the fractal.
+   *
+   * @param fractal fractal to set
+   */
   public void setFractal(int[][] fractal) {
     this.fractal = fractal;
   }
 
+  /**
+   * Method for getting the color of pixels depending on the hit count.
+   *
+   * @return Color of the pixel
+   */
   private Color getColorForHitCount(int hits) {
     return switch (hits % 6) {
       case 0 -> Color.YELLOW;
