@@ -6,16 +6,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +20,11 @@ public class MainView extends Application implements ChaosGameObserver {
   private static final String AFFINE = "Affine";
   private static final String CORNER_RADIUS = "-fx-background-radius: 10;";
 
-  Canvas canvas = new Canvas();
-  GraphicsContext gc = canvas.getGraphicsContext2D();
-
   private String selectedTransformationType;
 
   private final TextField stepsField = createStepsField();
 
   private final Button runSteps = createStyledButton("Run steps");
-
-  private int[][] fractal = new int[][]{};
 
 
   private final List<HBox> juliaBoxes = new ArrayList<>();
@@ -43,6 +33,8 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
   private final ComboBox<String> fractalSelector = new ComboBox<>();
+
+  private final CanvasView canvasView = new CanvasView();
 
 
   public static void main(String[] args) {
@@ -53,6 +45,7 @@ public class MainView extends Application implements ChaosGameObserver {
   @Override
   public void start(Stage primaryStage) {
     MainController controller = new MainController(this);
+    MenuBarView menuBarView = new MenuBarView(controller, primaryStage);
 
     ComboBox<String> fractalTypeDropdown;
     Button addTransformation;
@@ -74,32 +67,6 @@ public class MainView extends Application implements ChaosGameObserver {
 
     addTransformation = createStyledButton("Add transformation");
     addTransformation.setVisible(false);
-
-    MenuBar menuBar = new MenuBar();
-    Menu fileMenu = new Menu("File");
-    MenuItem loadFractal = new MenuItem("Load fractal");
-    loadFractal.setOnAction(event -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Open Fractal File");
-      File file = fileChooser.showOpenDialog(primaryStage);
-      if (file != null) {
-        controller.loadFractal(file.getPath());
-      }
-    });
-
-    MenuItem saveFractal = new MenuItem("Save fractal");
-    saveFractal.setOnAction(event -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Save Fractal File");
-      File file = fileChooser.showSaveDialog(primaryStage);
-      if (file != null) {
-        controller.saveFractal(file.getPath());
-      }
-    });
-
-    fileMenu.getItems().addAll(loadFractal, saveFractal);
-
-    menuBar.getMenus().add(fileMenu);
 
     VBox leftPanel = new VBox();
     leftPanel.setSpacing(10);
@@ -175,18 +142,13 @@ public class MainView extends Application implements ChaosGameObserver {
     scrollPane.setContent(leftPanel);
     scrollPane.setMinWidth(400);
 
-    StackPane stackPane = new StackPane();
-    stackPane.getChildren().add(canvas);
-    stackPane.setStyle("-fx-background-color: #d5b59e;");
-    canvas.widthProperty().bind(stackPane.widthProperty().multiply(0.8));
-    canvas.heightProperty().bind(stackPane.heightProperty().multiply(0.8));
-    canvas.widthProperty().addListener(event -> drawFractal());
-    canvas.heightProperty().addListener(event -> drawFractal());
+
 
     BorderPane root = new BorderPane();
-    root.setTop(menuBar);
+
+    root.setTop(menuBarView);
     SplitPane splitPane = new SplitPane();
-    splitPane.getItems().addAll(scrollPane, stackPane);
+    splitPane.getItems().addAll(scrollPane, canvasView);
     root.setCenter(splitPane);
 
 
@@ -316,36 +278,6 @@ public class MainView extends Application implements ChaosGameObserver {
     return values;
   }
 
-  private void drawFractal() {
-    if (fractal.length == 0) {
-      return;
-    }
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-    double cellSize = Math.min(canvas.getWidth() / fractal[0].length, canvas.getHeight() / fractal.length);
-
-    for (int i = 0; i < fractal.length; i++) {
-      for (int j = 0; j < fractal[i].length; j++) {
-        int hits = fractal[i][j];
-        if (hits > 0) {
-          gc.setFill(getColorForHitCount(hits));
-          gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-        }
-      }
-    }
-  }
-
-  private Color getColorForHitCount(int hits) {
-    return switch (hits % 6) {
-      case 0 -> Color.YELLOW;
-      case 1 -> Color.RED;
-      case 2 -> Color.GREEN;
-      case 3 -> Color.BLUE;
-      case 4 -> Color.PURPLE;
-      case 5 -> Color.ORANGE;
-      default -> Color.BLACK;
-    };
-  }
 
   public String getSelectedTransformationType() {
     return selectedTransformationType;
@@ -355,15 +287,7 @@ public class MainView extends Application implements ChaosGameObserver {
     return fractalSelector.getValue();
   }
 
-  private void setFractal(int[][] fractal) {
-    this.fractal = fractal;
-  }
 
-  @Override
-  public void update(int[][] newCanvas) {
-    setFractal(newCanvas);
-    drawFractal();
-  }
 
   private TextField createStyledTextField() {
     TextField textField = new TextField();
@@ -390,5 +314,11 @@ public class MainView extends Application implements ChaosGameObserver {
     button.setAlignment(Pos.CENTER);
     button.setStyle(CORNER_RADIUS); // Set corner radius
     return button;
+  }
+
+  @Override
+  public void update(int[][] newCanvas) {
+    canvasView.setFractal(newCanvas);
+    canvasView.drawFractal();
   }
 }
