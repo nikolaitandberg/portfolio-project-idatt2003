@@ -257,17 +257,20 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   private boolean validateCustomFractal() {
-    if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
-      UserFeedback.emptyField();
-      return false;
-    } else if (!InputValidator.onlyNumericValues(getMinMaxCoords())) {
-      UserFeedback.notNumeric();
-      return false;
-    } else if (fractalTypeDropdown.getValue().equals(JULIA)) {
-      return validateJuliaFields();
-    } else if (fractalTypeDropdown.getValue().equals(AFFINE)) {
-      return validateAffineFields();
-    } else return ensureTransformationIsSelected();
+    if (fractalSelector.getValue().equals("Custom fractal")) {
+      if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.onlyNumericValues(getMinMaxCoords())) {
+        UserFeedback.notNumeric();
+        return false;
+      } else if (fractalTypeDropdown.getValue().equals(JULIA)) {
+        return validateJuliaFields();
+      } else if (fractalTypeDropdown.getValue().equals(AFFINE)) {
+        return validateAffineFields();
+      } else return ensureTransformationIsSelected();
+    }
+    return true;
   }
 
   private boolean validateEverything() {
