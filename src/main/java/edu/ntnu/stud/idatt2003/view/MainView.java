@@ -2,6 +2,7 @@ package edu.ntnu.stud.idatt2003.view;
 
 import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import edu.ntnu.stud.idatt2003.controller.MainController;
+import edu.ntnu.stud.idatt2003.model.InputValidator;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
