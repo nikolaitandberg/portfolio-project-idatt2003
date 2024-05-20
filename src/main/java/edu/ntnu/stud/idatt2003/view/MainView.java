@@ -43,6 +43,7 @@ public class MainView extends Application implements ChaosGameObserver {
 
 
   private final ComboBox<String> fractalSelector = new ComboBox<>();
+  ComboBox<String> fractalTypeDropdown = new ComboBox<>();
 
 
   public static void main(String[] args) {
@@ -54,7 +55,6 @@ public class MainView extends Application implements ChaosGameObserver {
   public void start(Stage primaryStage) {
     MainController controller = new MainController(this);
 
-    ComboBox<String> fractalTypeDropdown;
     Button addTransformation;
 
     HBox stepsBox = new HBox();
@@ -66,7 +66,6 @@ public class MainView extends Application implements ChaosGameObserver {
     fractalBox.setVisible(false);
     fractalBox.setSpacing(10);
 
-    fractalTypeDropdown = new ComboBox<>();
     fractalTypeDropdown.setVisible(false);
 
     HBox coordsBox = createCoordsBox();
@@ -149,8 +148,12 @@ public class MainView extends Application implements ChaosGameObserver {
             }
     );
 
-    runSteps.setOnAction(event -> controller.runSteps(Integer.parseInt(stepsField.getText())));
-
+    runSteps.setOnAction(event -> {
+      if (!validateEverything()) {
+        return;
+      }
+      controller.runSteps(Integer.parseInt(stepsField.getText()));
+    });
 
 
     // button for adding transformations
@@ -197,6 +200,72 @@ public class MainView extends Application implements ChaosGameObserver {
     primaryStage.setTitle("Chaos Game");
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  private boolean validateSelectedFractal() {
+    if (!InputValidator.checkIfFractalHasBeenSelected(fractalSelector.getValue())) {
+      UserFeedback.noFractalSelected();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean validateSteps() {
+    if (!InputValidator.validateSteps(stepsField.getText())) {
+      UserFeedback.unvalidSteps();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean validateJuliaFields() {
+    for (String[] values : getJuliaBoxValues()) {
+      if (!InputValidator.validateEmpty(values)) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.validateNumeric(values)) {
+        UserFeedback.notNumeric();
+        return false;
+      } else if ((!InputValidator.validateSign(values[2]))) {
+        UserFeedback.invalidSign();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validateAffineFields() {
+    for (String[] values : getAffineBoxValues()) {
+      if (!InputValidator.validateEmpty(values)) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.validateNumeric(values)) {
+        UserFeedback.notNumeric();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validateCustomFractal() {
+    if (!InputValidator.validateEmpty(getMinMaxCoords())) {
+      UserFeedback.emptyField();
+      return false;
+    } else if (!InputValidator.validateNumeric(getMinMaxCoords())) {
+      UserFeedback.notNumeric();
+      return false;
+    } else if (fractalTypeDropdown.getValue().equals(JULIA)) {
+      return validateJuliaFields();
+    } else if (fractalTypeDropdown.getValue().equals(AFFINE)) {
+      return validateAffineFields();
+    } else {
+      UserFeedback.noTransformationSelected();
+      return false;
+    }
+  }
+
+  private boolean validateEverything() {
+    return validateSelectedFractal() && validateSteps() && validateCustomFractal();
   }
 
   private HBox createCoordsBox() {
@@ -277,12 +346,12 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   public String[] getMinMaxCoords() {
-    TextField minX0 = coordsFields.get(0);
-    TextField minX1 = coordsFields.get(1);
-    TextField maxX0 = coordsFields.get(2);
-    TextField maxX1 = coordsFields.get(3);
+    String minX0 = coordsFields.get(0).getText();
+    String minX1 = coordsFields.get(1).getText();
+    String maxX0 = coordsFields.get(2).getText();
+    String maxX1 = coordsFields.get(3).getText();
 
-    return new String[]{minX0.getText(), minX1.getText(), maxX0.getText(), maxX1.getText()};
+    return new String[]{minX0, minX1, maxX0, maxX1};
   }
 
   public List<String[]> getJuliaBoxValues() {
