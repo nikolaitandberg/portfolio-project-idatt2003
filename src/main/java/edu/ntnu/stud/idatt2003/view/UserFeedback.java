@@ -5,6 +5,9 @@ import javafx.scene.control.Alert.AlertType;
 
 public class UserFeedback {
 
+  private UserFeedback() {
+  }
+
   public static void notNumeric() {
     showAlert("All fields must be numeric");
   }

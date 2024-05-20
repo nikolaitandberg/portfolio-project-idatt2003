@@ -202,9 +202,17 @@ public class MainView extends Application implements ChaosGameObserver {
     primaryStage.show();
   }
 
-  private boolean validateSelectedFractal() {
+  private boolean ensureFractalIsSelected() {
     if (!InputValidator.checkIfFractalHasBeenSelected(fractalSelector.getValue())) {
       UserFeedback.noFractalSelected();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean ensureTransformationIsSelected() {
+    if (!InputValidator.checkIfTransformationHasBeenSelected(fractalTypeDropdown.getValue())) {
+      UserFeedback.noTransformationSelected();
       return false;
     }
     return true;
@@ -220,12 +228,13 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private boolean validateJuliaFields() {
     for (String[] values : getJuliaBoxValues()) {
-      if (!InputValidator.validateEmpty(values)) {
+      if (!InputValidator.noEmptyFields(values)) {
         UserFeedback.emptyField();
         return false;
-      } else if (!InputValidator.validateNumeric(values)) {
+      } else if (!InputValidator.onlyNumericValues(values)) {
         UserFeedback.notNumeric();
         return false;
+        // The index of the sign value is 2
       } else if ((!InputValidator.validateSign(values[2]))) {
         UserFeedback.invalidSign();
         return false;
@@ -236,10 +245,10 @@ public class MainView extends Application implements ChaosGameObserver {
 
   private boolean validateAffineFields() {
     for (String[] values : getAffineBoxValues()) {
-      if (!InputValidator.validateEmpty(values)) {
+      if (!InputValidator.noEmptyFields(values)) {
         UserFeedback.emptyField();
         return false;
-      } else if (!InputValidator.validateNumeric(values)) {
+      } else if (!InputValidator.onlyNumericValues(values)) {
         UserFeedback.notNumeric();
         return false;
       }
@@ -248,24 +257,21 @@ public class MainView extends Application implements ChaosGameObserver {
   }
 
   private boolean validateCustomFractal() {
-    if (!InputValidator.validateEmpty(getMinMaxCoords())) {
+    if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
       UserFeedback.emptyField();
       return false;
-    } else if (!InputValidator.validateNumeric(getMinMaxCoords())) {
+    } else if (!InputValidator.onlyNumericValues(getMinMaxCoords())) {
       UserFeedback.notNumeric();
       return false;
     } else if (fractalTypeDropdown.getValue().equals(JULIA)) {
       return validateJuliaFields();
     } else if (fractalTypeDropdown.getValue().equals(AFFINE)) {
       return validateAffineFields();
-    } else {
-      UserFeedback.noTransformationSelected();
-      return false;
-    }
+    } else return ensureTransformationIsSelected();
   }
 
   private boolean validateEverything() {
-    return validateSelectedFractal() && validateSteps() && validateCustomFractal();
+    return ensureFractalIsSelected() && validateSteps() && validateCustomFractal();
   }
 
   private HBox createCoordsBox() {

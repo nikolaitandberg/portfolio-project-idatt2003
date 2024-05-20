@@ -12,11 +12,11 @@ public class InputValidator {
     return str.trim().isEmpty();
   }
 
-  public static boolean validateNumeric(String[] values) {
+  public static boolean onlyNumericValues(String[] values) {
     return Arrays.stream(values).allMatch(InputValidator::isNumeric);
   }
 
-  public static boolean validateEmpty(String[] values) {
+  public static boolean noEmptyFields(String[] values) {
     return Arrays.stream(values).noneMatch(InputValidator::isEmpty);
   }
 
