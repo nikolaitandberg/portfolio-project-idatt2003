@@ -49,6 +49,7 @@ public class SettingsController {
       }
       runSteps();
     });
+    view.getClearButton().setOnAction(actionEvent -> clearCanvas());
   }
 
   /**
@@ -129,6 +130,10 @@ public class SettingsController {
     chaosGame = new ChaosGame(description, 600, 600);
     chaosGame.runSteps(steps);
     notifyRunListeners(chaosGame.getCanvas().getCanvas());
+  }
+
+  public void clearCanvas() {
+    notifyRunListeners(new int[600][600]);
   }
 
   /**

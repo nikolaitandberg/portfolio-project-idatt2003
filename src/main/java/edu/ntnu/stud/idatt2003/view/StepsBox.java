@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 public class StepsBox extends HBox {
   private final CustomTextField stepsField = new CustomTextField();
   private final CustomButton runSteps = new CustomButton("Run steps");
+  private final CustomButton clearButton = new CustomButton("Clear canvas");
 
   /**
    * Constructs a new StepsBox.
@@ -19,7 +20,7 @@ public class StepsBox extends HBox {
     this.setSpacing(10);
     stepsField.setPrefWidth(200);
     stepsField.setAlignment(Pos.CENTER_LEFT);
-    this.getChildren().addAll(stepsField, runSteps);
+    this.getChildren().addAll(stepsField, runSteps, clearButton);
   }
 
   /**
@@ -44,5 +45,7 @@ public class StepsBox extends HBox {
     return runSteps;
   }
 
-
+  public CustomButton getClearButton() {
+    return clearButton;
+  }
 }
