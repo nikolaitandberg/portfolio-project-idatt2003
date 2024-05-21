@@ -1,7 +1,7 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.controller.MainController;
 import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
+import edu.ntnu.stud.idatt2003.model.InputValidator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -27,25 +27,16 @@ public class ConfigView extends VBox {
   private final ComboBox<String> fractalSelectorComboBox = new ComboBox<>();
   ComboBox<String> transformationTypeComboBox = new ComboBox<>();
 
-  private final MainController controller;
 
-  public ConfigView(MainController controller) {
-    this.controller = controller;
 
-    stepsBox = new StepsBox(controller);
+  public ConfigView() {
+
+    stepsBox = new StepsBox();
     CustomButton addTransformation = new CustomButton("Add transformation");
     addTransformation.setVisible(false);
 
-
     this.setSpacing(10);
     this.setPadding(new Insets(10));
-
-
-
-
-
-
-
 
     VBox fractalBox = new VBox();
     fractalBox.setAlignment(Pos.CENTER);
@@ -61,8 +52,6 @@ public class ConfigView extends VBox {
     // dropdown for saved fractals
     fractalSelectorComboBox.getItems().addAll("Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal");
     fractalSelectorComboBox.setValue("Choose fractal");
-
-
 
 
     fractalSelectorComboBox.setOnAction(event ->  { String selectedFractal = fractalSelectorComboBox.getValue();
@@ -160,5 +149,84 @@ public class ConfigView extends VBox {
 
   public String getSavedFractal() {
     return fractalSelectorComboBox.getValue();
+  }
+
+  public CustomButton getRunButton() {
+    return stepsBox.getRunButton();
+  }
+
+  private boolean ensureFractalIsSelected() {
+    if (!InputValidator.checkIfFractalHasBeenSelected(fractalSelectorComboBox.getValue())) {
+      UserFeedback.noFractalSelected();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean ensureTransformationIsSelected() {
+    if (!InputValidator.checkIfTransformationHasBeenSelected(transformationTypeComboBox.getValue())) {
+      UserFeedback.noTransformationSelected();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean validateSteps() {
+    if (!InputValidator.validateSteps(stepsBox.getSteps())) {
+      UserFeedback.invalidSteps();
+      return false;
+    }
+    return true;
+  }
+
+  private boolean validateJuliaFields() {
+    for (String[] values : getJuliaBoxValues()) {
+      if (!InputValidator.noEmptyFields(values)) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.onlyNumericValues(values)) {
+        UserFeedback.notNumeric();
+        return false;
+        // The index of the sign value is 2
+      } else if ((!InputValidator.validateSign(values[2]))) {
+        UserFeedback.invalidSign();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validateAffineFields() {
+    for (String[] values : getAffineBoxValues()) {
+      if (!InputValidator.noEmptyFields(values)) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.onlyNumericValues(values)) {
+        UserFeedback.notNumeric();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean validateCustomFractal() {
+    if (fractalSelectorComboBox.getValue().equals("Custom fractal")) {
+      if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
+        UserFeedback.emptyField();
+        return false;
+      } else if (!InputValidator.onlyNumericValues(getMinMaxCoords())) {
+        UserFeedback.notNumeric();
+        return false;
+      } else if (transformationTypeComboBox.getValue().equals(JULIA)) {
+        return validateJuliaFields();
+      } else if (transformationTypeComboBox.getValue().equals(AFFINE)) {
+        return validateAffineFields();
+      } else return ensureTransformationIsSelected();
+    }
+    return true;
+  }
+
+  public boolean validateEverything() {
+    return ensureFractalIsSelected() && validateSteps() && validateCustomFractal();
   }
 }

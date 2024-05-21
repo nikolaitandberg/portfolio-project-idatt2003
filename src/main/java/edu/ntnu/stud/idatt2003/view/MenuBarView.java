@@ -1,6 +1,6 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.controller.MainController;
+import edu.ntnu.stud.idatt2003.controller.ConfigController;
 import java.io.File;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -23,7 +23,7 @@ public class MenuBarView extends MenuBar {
    * @param controller the controller for the main view
    * @param primaryStage the primary stage
    */
-  public MenuBarView(MainController controller, Stage primaryStage) {
+  public MenuBarView(ConfigController controller, Stage primaryStage) {
     MenuItem loadFractal = new MenuItem("Load fractal");
     loadFractal.setOnAction(event -> {
       FileChooser fileChooser = new FileChooser();

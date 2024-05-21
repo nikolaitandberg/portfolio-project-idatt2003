@@ -56,7 +56,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>edu.ntnu.stud.idatt2003.view.MainView</mainClass> <!-- Main class to launch JavaFX application -->
+                    <mainClass>edu.ntnu.stud.idatt2003.view.App</mainClass> <!-- Main class to launch JavaFX application -->
                 </configuration>
             </plugin>
             <!-- Maven Javadoc plugin for generating JavaDoc -->

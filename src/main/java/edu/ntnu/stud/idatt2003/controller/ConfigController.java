@@ -10,12 +10,13 @@ import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
-import edu.ntnu.stud.idatt2003.view.MainView;
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
+import edu.ntnu.stud.idatt2003.view.ConfigView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 /**
@@ -25,16 +26,25 @@ import java.util.List;
  * @since 2024-03-29
  */
 
-public class MainController {
+public class ConfigController {
 
   /**
    * The view for the controller.
    */
-  private final MainView view;
+  private final ConfigView view;
+
+  List<Consumer<Void>> runListeners;
 
 
-  public MainController(MainView view) {
+  public ConfigController(ConfigView view) {
     this.view = view;
+
+    view.getRunButton().setOnAction(actionEvent -> {
+      if (!view.validateEverything()) {
+        return;
+      }
+      runSteps();
+    });
   }
 
   /**
@@ -98,7 +108,7 @@ public class MainController {
     int steps = Integer.parseInt(view.getSteps());
 
     chaosGame = new ChaosGame(description, 600, 600);
-    chaosGame.addObserver(view.getCanvasView());
+    //chaosGame.addObserver(view);
     chaosGame.runSteps(steps);
   }
 
@@ -148,10 +158,20 @@ public class MainController {
     try {
       ChaosGameDescription description = fileHandler.readFromFile(path);
       ChaosGame chaosGame = new ChaosGame(description, 600, 600);
-      chaosGame.addObserver(view.getCanvasView());
+      //chaosGame.addObserver(view);
       chaosGame.runSteps(1000000); // Or any other number of steps
     } catch (UnknownTransformationException e) {
       e.printStackTrace();
     }
   }
+
+  public void addRunListener (Consumer<Void> listener) {
+    runListeners.add(listener);
+  }
+
+  private void notifyRunListeners() {
+    runListeners.forEach(listener -> listener.accept(null));
+  }
+
+
 }

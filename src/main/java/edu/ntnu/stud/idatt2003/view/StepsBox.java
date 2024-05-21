@@ -1,6 +1,5 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.controller.MainController;
 import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
 import edu.ntnu.stud.idatt2003.view.inputs.CustomTextField;
 import javafx.geometry.Pos;
@@ -11,27 +10,15 @@ import javafx.scene.layout.HBox;
  */
 public class StepsBox extends HBox {
   private final CustomTextField stepsField = new CustomTextField();
+  private final CustomButton runSteps = new CustomButton("Run steps");
 
   /**
    * Constructs a new StepsBox.
-   *
-   * @param controller the controller to use
    */
-  public StepsBox(MainController controller) {
+  public StepsBox() {
     this.setSpacing(10);
     stepsField.setPrefWidth(200);
     stepsField.setAlignment(Pos.CENTER_LEFT);
-
-    CustomButton runSteps = new CustomButton("Run steps");
-    runSteps.setOnAction(event ->
-      // TODO: Move validation to and implement new ConfigController
-
-      /**
-      if (!validateEverything()) {
-        return;
-      }**/
-        controller.runSteps()
-    );
     this.getChildren().addAll(stepsField, runSteps);
   }
 
@@ -51,6 +38,10 @@ public class StepsBox extends HBox {
    */
   public void setSteps(String steps) {
     stepsField.setText(steps);
+  }
+
+  public CustomButton getRunButton() {
+    return runSteps;
   }
 
 
