@@ -1,8 +1,7 @@
-package edu.ntnu.stud.idatt2003;
+package edu.ntnu.stud.idatt2003.model;
 
 import edu.ntnu.stud.idatt2003.math.Matrix2x2;
 import edu.ntnu.stud.idatt2003.math.Vector2D;
-import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 1.0
  * @since 2024-02-28
  */
-class ChaosGameAppDescriptionTest {
+class ChaosGameDescriptionTest {
 
   @Test
   @DisplayName("Test constructor")
