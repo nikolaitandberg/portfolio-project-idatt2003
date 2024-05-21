@@ -22,7 +22,7 @@ public class CLIApp {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
-    ChaosGameDescription description = ChaosGameDescriptionFactory.createBarnsleyFern();
+    ChaosGameDescription description = ChaosGameDescriptionFactory.get("Barnsley fern");
     ChaosGame chaosGame = new ChaosGame(description, 60, 60);
     boolean running = true;
     while (running) {

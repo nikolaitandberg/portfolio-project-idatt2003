@@ -44,7 +44,7 @@ public class ChaosGameDescriptionFactory {
    * @param c complex number for the Julia set
    * @return chaos game description for a Julia set
    */
-  public static ChaosGameDescription createJuliaSet(Complex c) {
+  private static ChaosGameDescription createJuliaSet(Complex c) {
     // Define the transformation matrices
 
     // Create the transformations
@@ -69,7 +69,7 @@ public class ChaosGameDescriptionFactory {
    *
    * @return chaos game description for a Sierpinski triangle
    */
-  public static ChaosGameDescription createSierpinskiTriangle() {
+  private static ChaosGameDescription createSierpinskiTriangle() {
     Matrix2x2 sierpinskiMatrix = new Matrix2x2(0.5, 0, 0, 0.5);
     AffineTransform2D sierpinski1 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0, 0));
     AffineTransform2D sierpinski2 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.5, 0));
@@ -87,7 +87,7 @@ public class ChaosGameDescriptionFactory {
    *
    * @return chaos game description for a Barnsley fern
    */
-  public static ChaosGameDescription createBarnsleyFern() {
+  private static ChaosGameDescription createBarnsleyFern() {
     Matrix2x2 matrix1 = new Matrix2x2(0, 0, 0, 0.16);
     Matrix2x2 matrix2 = new Matrix2x2(0.85, 0.04, -0.04, 0.85);
     Matrix2x2 matrix3 = new Matrix2x2(0.2, -0.26, 0.23, 0.22);

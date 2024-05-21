@@ -19,26 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChaosGameFileHandlerTest {
 
   private final String testFilePath = "textfileTest.txt";
-  private ChaosGameFileHandler fileHandler;
+  private final ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();
 
 
-  private static void clearFile(String path) throws IOException {
-    try (PrintWriter writer = new PrintWriter(new FileWriter(path))) {
-    }
-  }
-  @BeforeEach
-  void setUp() {
-    fileHandler = new ChaosGameFileHandler();
-
-  }
   @Test
-  void testWriteToFile() throws IOException {
-    ChaosGameDescription description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.74543, 0.11301));
+  void testWriteToFile() throws IOException, UnknownTransformationException {
+    ChaosGameDescription description = ChaosGameDescriptionFactory.get("Julia set");
     Path path = Path.of(testFilePath);
-    clearFile(testFilePath);
-
-    List<String> checkFileIsEmpty = Files.readAllLines(path);
-    assertTrue(checkFileIsEmpty.isEmpty());
 
     fileHandler.writeToFile(description, testFilePath);
     List<String> writtenLines = Files.readAllLines(path);
@@ -59,8 +46,7 @@ class ChaosGameFileHandlerTest {
   @Test
   @DisplayName("Test read from file with right format")
   void testReadFromFileRightFormat() throws IOException, UnknownTransformationException {
-    ChaosGameDescription description = ChaosGameDescriptionFactory.createJuliaSet(new Complex(-0.74543, 0.11301));
-    clearFile(testFilePath);
+    ChaosGameDescription description = ChaosGameDescriptionFactory.get("Julia set");
 
     fileHandler.writeToFile(description, testFilePath);
     assertEquals(String.valueOf(description), String.valueOf(fileHandler.readFromFile(testFilePath)));
