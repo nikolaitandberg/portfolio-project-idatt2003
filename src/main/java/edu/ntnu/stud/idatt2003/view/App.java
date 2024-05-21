@@ -1,20 +1,20 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.ChaosGameObserver;
-import edu.ntnu.stud.idatt2003.controller.ConfigController;
+import edu.ntnu.stud.idatt2003.controller.CanvasController;
+import edu.ntnu.stud.idatt2003.controller.SettingsController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class App extends Application implements ChaosGameObserver {
-
-
+/**
+ * Main class for the chaos game application.
+ */
+public class App extends Application {
 
   private final CanvasView canvasView = new CanvasView();
-  private final ConfigView configView = new ConfigView();
-
+  private final SettingsView settingsView = new SettingsView();
 
   public static void main(String[] args) {
     launch(args);
@@ -23,12 +23,14 @@ public class App extends Application implements ChaosGameObserver {
 
   @Override
   public void start(Stage primaryStage) {
-    ConfigController controller = new ConfigController(configView);
-    MenuBarView menuBarView = new MenuBarView(controller, primaryStage);
+    SettingsController settingsController = new SettingsController(settingsView);
+    CanvasController canvasController = new CanvasController(canvasView);
+    MenuBarView menuBarView = new MenuBarView(settingsController, primaryStage);
+    settingsController.addRunListener(canvasController::updateCanvas);
 
 
     ScrollPane scrollPane = new ScrollPane();
-    scrollPane.setContent(configView);
+    scrollPane.setContent(settingsView);
     scrollPane.setMinWidth(400);
 
     BorderPane root = new BorderPane();
@@ -46,11 +48,5 @@ public class App extends Application implements ChaosGameObserver {
     primaryStage.setTitle("Chaos Game");
     primaryStage.setScene(scene);
     primaryStage.show();
-  }
-
-  @Override
-  public void update(int[][] newCanvas) {
-    canvasView.setFractal(newCanvas);
-    canvasView.drawFractal();
   }
 }

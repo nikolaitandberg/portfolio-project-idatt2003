@@ -1,6 +1,5 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -77,21 +76,19 @@ public class CanvasView extends StackPane {
    *
    * @return Color of the pixel
    */
-private Color getColorForHitCount(int hits, int maxHits) {
-  if(hits == 0) {
+  private Color getColorForHitCount(int hits, int maxHits) {
+    if (hits == 0) {
       return Color.WHITE;
+    }
+
+    hits = (int) Math.log(hits);
+    maxHits = (int) Math.log(maxHits);
+
+    Color[] colors = {Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED};
+
+    double ratio = (double) hits / maxHits * (colors.length - 1);
+    int index = (int) Math.floor(ratio);
+
+    return colors[index];
   }
-
-  hits = (int) Math.log(hits);
-  maxHits = (int) Math.log(maxHits);
-
-  Color[] colors = {Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED};
-
-  double ratio = (double) hits / maxHits * (colors.length - 1);
-  int index = (int) Math.floor(ratio);
-
-  return colors[index];
-  }
-
-
 }

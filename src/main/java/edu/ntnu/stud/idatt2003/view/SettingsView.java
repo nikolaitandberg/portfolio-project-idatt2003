@@ -1,24 +1,30 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
 import edu.ntnu.stud.idatt2003.model.InputValidator;
+import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class ConfigView extends VBox {
+/**
+ * View class for settings of the chaos game.
+ *
+ * @version 1.0
+ * @since 2024-21-5
+ */
+public class SettingsView extends VBox {
 
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
 
   private String selectedTransformationType;
 
-  private StepsBox stepsBox;
+  private final StepsBox stepsBox;
 
   private final List<JuliaBox> juliaBoxes = new ArrayList<>();
   private final List<AffineBox> affineBoxes = new ArrayList<>();
@@ -28,8 +34,10 @@ public class ConfigView extends VBox {
   ComboBox<String> transformationTypeComboBox = new ComboBox<>();
 
 
-
-  public ConfigView() {
+  /**
+   * Constructor for the view.
+   */
+  public SettingsView() {
 
     stepsBox = new StepsBox();
     CustomButton addTransformation = new CustomButton("Add transformation");
@@ -50,11 +58,14 @@ public class ConfigView extends VBox {
     coordsBox.setVisible(false);
 
     // dropdown for saved fractals
-    fractalSelectorComboBox.getItems().addAll("Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal");
+    fractalSelectorComboBox.getItems().addAll(
+            "Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal"
+    );
     fractalSelectorComboBox.setValue("Choose fractal");
 
 
-    fractalSelectorComboBox.setOnAction(event ->  { String selectedFractal = fractalSelectorComboBox.getValue();
+    fractalSelectorComboBox.setOnAction(event ->  {
+      String selectedFractal = fractalSelectorComboBox.getValue();
       if ("Custom fractal".equals(selectedFractal)) {
         fractalBox.setVisible(true);
         transformationTypeComboBox.setVisible(true);
@@ -70,24 +81,25 @@ public class ConfigView extends VBox {
 
 
     transformationTypeComboBox.setOnAction(event -> {
-              String fractalType = transformationTypeComboBox.getValue();
-              if (fractalType.equals(JULIA)) {
-                fractalBox.getChildren().clear();
-                fractalBox.getChildren().add(createJuliaBox());
-              } else if (fractalType.equals(AFFINE)) {
-                fractalBox.getChildren().clear();
-                fractalBox.getChildren().add(createAffineBox());
-              }
-              this.getChildren().remove(fractalBox); // Remove the old fractalBox from leftPanel
-              this.getChildren().add(fractalBox); // Add the new fractalBox to leftPanel
-            }
+      String fractalType = transformationTypeComboBox.getValue();
+      if (fractalType.equals(JULIA)) {
+        fractalBox.getChildren().clear();
+        fractalBox.getChildren().add(createJuliaBox());
+      } else if (fractalType.equals(AFFINE)) {
+        fractalBox.getChildren().clear();
+        fractalBox.getChildren().add(createAffineBox());
+      }
+      this.getChildren().remove(fractalBox); // Remove the old fractalBox from leftPanel
+      this.getChildren().add(fractalBox); // Add the new fractalBox to leftPanel
+    }
     );
 
 
 
 
     // button for adding transformations
-    addTransformation.setOnAction(actionEvent -> {String selected = transformationTypeComboBox.getValue();
+    addTransformation.setOnAction(actionEvent -> {
+      String selected = transformationTypeComboBox.getValue();
       if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
         selectedTransformationType = JULIA;
@@ -97,12 +109,20 @@ public class ConfigView extends VBox {
       }
       for (int i = 0; i < fractalBox.getChildren().size(); i++) {
         if (i % 2 != 0) {
-          fractalBox.getChildren().get(i).setStyle("-fx-background-color: #D3D3D3;"); // Light gray color
+          fractalBox.getChildren().get(i)
+                  .setStyle("-fx-background-color: #D3D3D3;"); // Light gray color
         }
       }
     });
 
-    this.getChildren().addAll(fractalSelectorComboBox, stepsBox, coordsBox, transformationTypeComboBox, addTransformation, fractalBox);
+    this.getChildren().addAll(
+            fractalSelectorComboBox,
+            stepsBox,
+            coordsBox,
+            transformationTypeComboBox,
+            addTransformation,
+            fractalBox
+    );
   }
 
 
@@ -126,6 +146,11 @@ public class ConfigView extends VBox {
     return coordsBox.getValues();
   }
 
+  /**
+   * get values for all juliaboxes.
+   *
+   * @return values as List of String[]
+   */
   public List<String[]> getJuliaBoxValues() {
     List<String[]> values = new ArrayList<>();
     for (JuliaBox juliaBox : juliaBoxes) {
@@ -134,6 +159,11 @@ public class ConfigView extends VBox {
     return values;
   }
 
+  /**
+   * get values for all affineboxes.
+   *
+   * @return values as List of String[]
+   */
   public List<String[]> getAffineBoxValues() {
     List<String[]> values = new ArrayList<>();
     for (AffineBox affineBox : affineBoxes) {
@@ -157,15 +187,17 @@ public class ConfigView extends VBox {
 
   private boolean ensureFractalIsSelected() {
     if (!InputValidator.checkIfFractalHasBeenSelected(fractalSelectorComboBox.getValue())) {
-      UserFeedback.noFractalSelected();
+      UserNotification.noFractalSelected();
       return false;
     }
     return true;
   }
 
   private boolean ensureTransformationIsSelected() {
-    if (!InputValidator.checkIfTransformationHasBeenSelected(transformationTypeComboBox.getValue())) {
-      UserFeedback.noTransformationSelected();
+    if (!InputValidator.checkIfTransformationHasBeenSelected(
+            transformationTypeComboBox.getValue())
+    ) {
+      UserNotification.noTransformationSelected();
       return false;
     }
     return true;
@@ -173,7 +205,7 @@ public class ConfigView extends VBox {
 
   private boolean validateSteps() {
     if (!InputValidator.validateSteps(stepsBox.getSteps())) {
-      UserFeedback.invalidSteps();
+      UserNotification.invalidSteps();
       return false;
     }
     return true;
@@ -182,14 +214,14 @@ public class ConfigView extends VBox {
   private boolean validateJuliaFields() {
     for (String[] values : getJuliaBoxValues()) {
       if (!InputValidator.noEmptyFields(values)) {
-        UserFeedback.emptyField();
+        UserNotification.emptyField();
         return false;
       } else if (!InputValidator.onlyNumericValues(values)) {
-        UserFeedback.notNumeric();
+        UserNotification.notNumeric();
         return false;
         // The index of the sign value is 2
       } else if ((!InputValidator.validateSign(values[2]))) {
-        UserFeedback.invalidSign();
+        UserNotification.invalidSign();
         return false;
       }
     }
@@ -199,10 +231,10 @@ public class ConfigView extends VBox {
   private boolean validateAffineFields() {
     for (String[] values : getAffineBoxValues()) {
       if (!InputValidator.noEmptyFields(values)) {
-        UserFeedback.emptyField();
+        UserNotification.emptyField();
         return false;
       } else if (!InputValidator.onlyNumericValues(values)) {
-        UserFeedback.notNumeric();
+        UserNotification.notNumeric();
         return false;
       }
     }
@@ -212,16 +244,18 @@ public class ConfigView extends VBox {
   private boolean validateCustomFractal() {
     if (fractalSelectorComboBox.getValue().equals("Custom fractal")) {
       if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
-        UserFeedback.emptyField();
+        UserNotification.emptyField();
         return false;
       } else if (!InputValidator.onlyNumericValues(getMinMaxCoords())) {
-        UserFeedback.notNumeric();
+        UserNotification.notNumeric();
         return false;
       } else if (transformationTypeComboBox.getValue().equals(JULIA)) {
         return validateJuliaFields();
       } else if (transformationTypeComboBox.getValue().equals(AFFINE)) {
         return validateAffineFields();
-      } else return ensureTransformationIsSelected();
+      } else {
+        return ensureTransformationIsSelected();
+      }
     }
     return true;
   }

@@ -6,9 +6,9 @@ import javafx.scene.control.Alert.AlertType;
 /**
  * Class for giving validation feedback to the user.
  */
-public class UserFeedback {
+public class UserNotification {
 
-  private UserFeedback() {
+  private UserNotification() {
   }
 
   /**
@@ -55,6 +55,7 @@ public class UserFeedback {
 
   /**
    * Method for creating an alert with a message, depending on the error.
+   *
    * @param message The message to show in the alert.
    */
   private static void showAlert(String message) {
