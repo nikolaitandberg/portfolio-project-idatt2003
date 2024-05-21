@@ -41,15 +41,8 @@ public class CanvasView extends StackPane {
             canvas.getWidth() / fractal[0].length,
             canvas.getHeight() / fractal.length
     );
-    
-    int maxHits = 0;
-    for (int[] row : fractal) {
-      for (int hits : row) {
-        if (hits > maxHits) {
-          maxHits = hits;
-        }
-      }
-    }
+
+    int maxHits = this.findMaxHits(fractal);
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
@@ -60,6 +53,24 @@ public class CanvasView extends StackPane {
         }
       }
     }
+  }
+
+  /**
+   * Method for finding the maximum hits in the fractal.
+   *
+   * @param fractal fractal to find max hits in
+   * @return max hits
+   */
+  private int findMaxHits(int[][] fractal) {
+    int maxHits = 0;
+    for (int[] row : fractal) {
+      for (int hits : row) {
+        if (hits > maxHits) {
+          maxHits = hits;
+        }
+      }
+    }
+    return maxHits;
   }
 
   /**
