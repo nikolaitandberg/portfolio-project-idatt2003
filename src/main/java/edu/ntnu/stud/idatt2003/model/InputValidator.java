@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 public class InputValidator {
 
+  private InputValidator() {
+  }
+
   /**
    * Method for checking if a string is numeric.
    *
