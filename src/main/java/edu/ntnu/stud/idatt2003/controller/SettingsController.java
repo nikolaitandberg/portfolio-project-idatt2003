@@ -53,7 +53,7 @@ public class SettingsController {
    *
    * @return a Julia Description
    */
-  public ChaosGameDescription createJuliaDescription() {
+  private ChaosGameDescription createJuliaDescription() {
 
     List<String[]> juliaBoxValues = view.getJuliaBoxValues();
     String[] minMaxValues = view.getMinMaxCoords();
@@ -86,7 +86,7 @@ public class SettingsController {
    *
    * @return an Affine Description
    */
-  public ChaosGameDescription createAffineDescription() {
+  private ChaosGameDescription createAffineDescription() {
     List<String[]> affineBoxValues = view.getAffineBoxValues();
     String[] minMaxValues = view.getMinMaxCoords();
 
@@ -201,6 +201,4 @@ public class SettingsController {
   private void notifyRunListeners(int[][] fractal) {
     runListeners.forEach(listener -> listener.accept(fractal));
   }
-
-
 }
