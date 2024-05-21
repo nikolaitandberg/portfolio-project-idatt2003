@@ -30,7 +30,7 @@ public class StepsBox extends HBox {
       if (!validateEverything()) {
         return;
       }**/
-        controller.runSteps(Integer.parseInt(stepsField.getText()))
+        controller.runSteps()
     );
     this.getChildren().addAll(stepsField, runSteps);
   }

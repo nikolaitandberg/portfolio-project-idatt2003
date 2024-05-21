@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003.view;
 
+import edu.ntnu.stud.idatt2003.ChaosGameObserver;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -11,7 +12,7 @@ import javafx.scene.paint.Color;
  * @version 1.0
  * @since 2024-05-20
  */
-public class CanvasView extends StackPane {
+public class CanvasView extends StackPane implements ChaosGameObserver {
   private final Canvas canvas = new Canvas();
   private final GraphicsContext gc = canvas.getGraphicsContext2D();
   private int[][] fractal = new int[][]{};
@@ -90,6 +91,12 @@ private Color getColorForHitCount(int hits, int maxHits) {
   int index = (int) Math.floor(ratio);
 
   return colors[index];
+  }
+
+  @Override
+  public void update(int[][] newCanvas) {
+    setFractal(newCanvas);
+    drawFractal();
   }
 
 

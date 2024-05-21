@@ -90,14 +90,15 @@ public class MainController {
 
   /**
    * Adds the view as an observer to the chaos game and runs the steps.
-   * @param steps the number of steps to run
    */
-  public void runSteps(int steps) {
+  public void runSteps() {
     ChaosGame chaosGame;
     ChaosGameDescription description = createChaosGameDescription();
 
+    int steps = Integer.parseInt(view.getSteps());
+
     chaosGame = new ChaosGame(description, 600, 600);
-    chaosGame.addObserver(view);
+    chaosGame.addObserver(view.getCanvasView());
     chaosGame.runSteps(steps);
   }
 
@@ -147,7 +148,7 @@ public class MainController {
     try {
       ChaosGameDescription description = fileHandler.readFromFile(path);
       ChaosGame chaosGame = new ChaosGame(description, 600, 600);
-      chaosGame.addObserver(view);
+      chaosGame.addObserver(view.getCanvasView());
       chaosGame.runSteps(1000000); // Or any other number of steps
     } catch (UnknownTransformationException e) {
       e.printStackTrace();
