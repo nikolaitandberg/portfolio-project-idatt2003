@@ -19,6 +19,20 @@ class ChaosGameDescriptionFactoryTest {
   }
 
   @Test
+  @DisplayName("Test get method with Sierpinski triangle")
+  void testGetSierpinskiTriangle() throws UnknownTransformationException {
+    ChaosGameDescription chaosGameDescription = ChaosGameDescriptionFactory.get("Sierpinski triangle");
+    assertNotNull(chaosGameDescription);
+  }
+
+  @Test
+  @DisplayName("Test get method with Barnsley fern")
+  void testGetBarnsleyFern() throws UnknownTransformationException {
+    ChaosGameDescription chaosGameDescription = ChaosGameDescriptionFactory.get("Barnsley fern");
+    assertNotNull(chaosGameDescription);
+  }
+
+  @Test
   @DisplayName("Test get method with unknown transformation")
   void testGetUnknownTransformation() {
     assertThrows(UnknownTransformationException.class, () -> ChaosGameDescriptionFactory.get("Unknown transformation"));

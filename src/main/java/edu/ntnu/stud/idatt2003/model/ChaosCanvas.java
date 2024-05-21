@@ -42,12 +42,23 @@ public class ChaosCanvas {
     this.clear();
   }
 
+  /**
+   * Method for getting a pixel from the canvas.
+   *
+   * @param point Point to get the pixel from.
+   * @return Pixel value.
+   */
+  public int getPixel(Vector2D point) {
+    Vector2D matrixVector = transformCoordsToIndices.transform(point);
+    return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
+  }
 
   /**
    * Method for putting a pixel on the canvas.
    *
    * @param point Point to put the pixel at.
    */
+
   public void putPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     int i = (int) matrixVector.getX0();
