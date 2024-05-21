@@ -25,4 +25,11 @@ class Matrix2x2Test {
     assertEquals(17, result.getX0());
     assertEquals(39, result.getX1());
   }
+
+  @Test
+  @DisplayName("Test toString")
+  void testToString() {
+    Matrix2x2 matrix = new Matrix2x2(1, 2, 3, 4);
+    assertEquals("1.0, 2.0, 3.0, 4.0", matrix.toString());
+  }
 }
