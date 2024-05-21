@@ -49,12 +49,9 @@ public class ChaosGameDescriptionFactory {
 
     // Create the transformations
     JuliaTransform transform1 = new JuliaTransform(c, -1);
-    JuliaTransform transform2 = new JuliaTransform(c, -1);
-    JuliaTransform transform3 = new JuliaTransform(c, -1);
-    JuliaTransform transform4 = new JuliaTransform(c, -1);
-    JuliaTransform transform5 = new JuliaTransform(new Complex(0,0), -1);
+    JuliaTransform transform2 = new JuliaTransform(c, 1);
     // Add the transformations to a list
-    List<Transform2D> transforms = Arrays.asList(transform1, transform2, transform3, transform4, transform5);
+    List<Transform2D> transforms = Arrays.asList(transform1, transform2);
 
     // Define the minimum and maximum coordinates for the fractal
     Vector2D minCords = new Vector2D(-1.6,-1);
