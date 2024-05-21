@@ -12,12 +12,10 @@ import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 */
 public class ChaosCanvas {
 
-  private int[][] canvas;
-  private int width;
-  private int height;
-  private Vector2D minCoords;
-  private Vector2D maxCoords;
-  private AffineTransform2D transformCoordsToIndices;
+  private final int[][] canvas;
+  private final int width;
+  private final int height;
+  private final AffineTransform2D transformCoordsToIndices;
 
   /**
    * Constructor for the chaos canvas.
@@ -30,8 +28,6 @@ public class ChaosCanvas {
   public ChaosCanvas(int width, int height, Vector2D minCoords, Vector2D maxCoords) {
     this.width = width;
     this.height = height;
-    this.minCoords = minCoords;
-    this.maxCoords = maxCoords;
     this.canvas = new int[height][width];
     this.transformCoordsToIndices = new AffineTransform2D(
             new Matrix2x2(
@@ -46,24 +42,12 @@ public class ChaosCanvas {
     this.clear();
   }
 
-  /**
-   * Method for getting a pixel from the canvas.
-   *
-   * @param point Point to get the pixel from.
-   * @return Pixel value.
-   */
-
-  public int getPixel(Vector2D point) {
-    Vector2D matrixVector = transformCoordsToIndices.transform(point);
-    return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
-  }
 
   /**
    * Method for putting a pixel on the canvas.
    *
    * @param point Point to put the pixel at.
    */
-
   public void putPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     int i = (int) matrixVector.getX0();
@@ -94,13 +78,5 @@ public class ChaosCanvas {
 
   public int[][] getCanvas() {
     return canvas;
-  }
-
-  public int getWidth() {
-    return width;
-  }
-
-  public int getHeight() {
-    return height;
   }
 }
