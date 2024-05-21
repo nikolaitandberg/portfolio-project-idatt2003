@@ -1,5 +1,6 @@
 package edu.ntnu.stud.idatt2003.view;
 
+import edu.ntnu.stud.idatt2003.model.CanvasColor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -42,35 +43,17 @@ public class CanvasView extends StackPane {
             canvas.getHeight() / fractal.length
     );
 
-    int maxHits = this.findMaxHits(fractal);
+    int maxHits = CanvasColor.findMaxHits(fractal);
 
     for (int i = 0; i < fractal.length; i++) {
       for (int j = 0; j < fractal[i].length; j++) {
         int hits = fractal[i][j];
         if (hits > 0) {
-          gc.setFill(getColorForHitCount(hits, maxHits));
+          gc.setFill(CanvasColor.getColorForHitCount(hits, maxHits));
           gc.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
         }
       }
     }
-  }
-
-  /**
-   * Method for finding the maximum hits in the fractal.
-   *
-   * @param fractal fractal to find max hits in
-   * @return max hits
-   */
-  private int findMaxHits(int[][] fractal) {
-    int maxHits = 0;
-    for (int[] row : fractal) {
-      for (int hits : row) {
-        if (hits > maxHits) {
-          maxHits = hits;
-        }
-      }
-    }
-    return maxHits;
   }
 
   /**
@@ -82,24 +65,4 @@ public class CanvasView extends StackPane {
     this.fractal = fractal;
   }
 
-  /**
-   * Method for getting the color of pixels depending on the hit count.
-   *
-   * @return Color of the pixel
-   */
-  private Color getColorForHitCount(int hits, int maxHits) {
-    if (hits == 0) {
-      return Color.WHITE;
-    }
-
-    hits = (int) Math.log(hits);
-    maxHits = (int) Math.log(maxHits);
-
-    Color[] colors = {Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED};
-
-    double ratio = (double) hits / maxHits * (colors.length - 1);
-    int index = (int) Math.floor(ratio);
-
-    return colors[index];
-  }
 }
