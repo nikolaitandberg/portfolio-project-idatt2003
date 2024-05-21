@@ -39,7 +39,10 @@ public class SettingsController {
    */
   public SettingsController(SettingsView view) {
     this.view = view;
+    this.buttonHandling();
+  }
 
+  private void buttonHandling() {
     view.getRunButton().setOnAction(actionEvent -> {
       if (!view.validateEverything()) {
         return;
