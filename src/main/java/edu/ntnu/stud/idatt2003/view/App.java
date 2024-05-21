@@ -28,7 +28,6 @@ public class App extends Application {
     MenuBarView menuBarView = new MenuBarView(settingsController, primaryStage);
     settingsController.addRunListener(canvasController::updateCanvas);
 
-
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setContent(settingsView);
     scrollPane.setMinWidth(400);

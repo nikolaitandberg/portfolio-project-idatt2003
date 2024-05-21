@@ -1,6 +1,6 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.model.InputValidator;
+import edu.ntnu.stud.idatt2003.utils.InputValidator;
 import edu.ntnu.stud.idatt2003.view.inputs.CustomButton;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,9 @@
 package edu.ntnu.stud.idatt2003.view;
 
-import edu.ntnu.stud.idatt2003.model.CanvasColor;
+import edu.ntnu.stud.idatt2003.utils.CanvasColor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 /**
  * A class for the canvas view.
