@@ -21,6 +21,7 @@ public class SettingsView extends VBox {
 
   private static final String JULIA = "Julia";
   private static final String AFFINE = "Affine";
+  private static final String CUSTOM_FRACTAL = "Custom fractal";
 
   private String selectedTransformationType;
 
@@ -59,14 +60,14 @@ public class SettingsView extends VBox {
 
     // dropdown for saved fractals
     fractalSelectorComboBox.getItems().addAll(
-            "Sierpinski triangle", "Barnsley fern", "Julia set", "Custom fractal"
+            "Sierpinski triangle", "Barnsley fern", "Julia set", CUSTOM_FRACTAL
     );
     fractalSelectorComboBox.setValue("Choose fractal");
 
 
     fractalSelectorComboBox.setOnAction(event ->  {
       String selectedFractal = fractalSelectorComboBox.getValue();
-      if ("Custom fractal".equals(selectedFractal)) {
+      if (CUSTOM_FRACTAL.equals(selectedFractal)) {
         fractalBox.setVisible(true);
         transformationTypeComboBox.setVisible(true);
         coordsBox.setVisible(true);
@@ -185,6 +186,10 @@ public class SettingsView extends VBox {
     return stepsBox.getRunButton();
   }
 
+  public CustomButton getClearButton() {
+    return stepsBox.getClearButton();
+  }
+
   private boolean ensureFractalIsSelected() {
     if (!InputValidator.checkIfFractalHasBeenSelected(fractalSelectorComboBox.getValue())) {
       UserNotification.noFractalSelected();
@@ -242,7 +247,7 @@ public class SettingsView extends VBox {
   }
 
   private boolean validateCustomFractal() {
-    if (fractalSelectorComboBox.getValue().equals("Custom fractal")) {
+    if (fractalSelectorComboBox.getValue().equals(CUSTOM_FRACTAL)) {
       if (!InputValidator.noEmptyFields(getMinMaxCoords())) {
         UserNotification.emptyField();
         return false;
