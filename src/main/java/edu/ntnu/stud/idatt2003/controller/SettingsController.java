@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 /**
@@ -26,7 +28,7 @@ import java.util.function.Consumer;
  */
 public class SettingsController {
 
-
+  private final Logger logger = Logger.getLogger(SettingsController.class.getName());
   private final SettingsView view;
 
   List<Consumer<int[][]>> runListeners = new ArrayList<>();
@@ -171,7 +173,7 @@ public class SettingsController {
     try {
       fileHandler.writeToFile(description, path);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.SEVERE, "Failed to save fractal to file", e);
     }
   }
 
@@ -188,7 +190,7 @@ public class SettingsController {
       chaosGame.runSteps(1000000);
       notifyRunListeners(chaosGame.getCanvas().getCanvas());
     } catch (UnknownTransformationException e) {
-      e.printStackTrace();
+      logger.log(Level.SEVERE, "Failed to load fractal from file", e);
     }
   }
 
