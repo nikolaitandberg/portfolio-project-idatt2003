@@ -23,8 +23,6 @@ public class SettingsView extends VBox {
   private static final String AFFINE = "Affine";
   private static final String CUSTOM_FRACTAL = "Custom fractal";
 
-  private String selectedTransformationType;
-
   private final StepsBox stepsBox;
 
   private final List<JuliaBox> juliaBoxes = new ArrayList<>();
@@ -66,8 +64,7 @@ public class SettingsView extends VBox {
 
 
     fractalSelectorComboBox.setOnAction(event ->  {
-      String selectedFractal = fractalSelectorComboBox.getValue();
-      if (CUSTOM_FRACTAL.equals(selectedFractal)) {
+      if (CUSTOM_FRACTAL.equals(fractalSelectorComboBox.getValue())) {
         fractalBox.setVisible(true);
         transformationTypeComboBox.setVisible(true);
         coordsBox.setVisible(true);
@@ -103,10 +100,8 @@ public class SettingsView extends VBox {
       String selected = transformationTypeComboBox.getValue();
       if (selected.equals(JULIA)) {
         fractalBox.getChildren().add(createJuliaBox());
-        selectedTransformationType = JULIA;
       } else if (selected.equals(AFFINE)) {
         fractalBox.getChildren().add(createAffineBox());
-        selectedTransformationType = AFFINE;
       }
       for (int i = 0; i < fractalBox.getChildren().size(); i++) {
         if (i % 2 != 0) {
@@ -173,9 +168,8 @@ public class SettingsView extends VBox {
     return values;
   }
 
-
   public String getSelectedTransformationType() {
-    return selectedTransformationType;
+    return transformationTypeComboBox.getValue();
   }
 
   public String getSavedFractal() {
