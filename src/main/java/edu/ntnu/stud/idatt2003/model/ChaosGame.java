@@ -6,9 +6,6 @@ import java.util.Random;
 
 /**
  * Class for calculating the fractal to play chaos game.
- *
- * @version 1.0
- * @since 2024-03-29
  */
 public class ChaosGame {
 

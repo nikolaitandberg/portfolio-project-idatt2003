@@ -6,7 +6,6 @@ package edu.ntnu.stud.idatt2003.math;
  *
  * @author Nikolai Tandberg
  * @version 1.0
- * @since 2024-02-08
  */
 public class Complex extends Vector2D {
   /**

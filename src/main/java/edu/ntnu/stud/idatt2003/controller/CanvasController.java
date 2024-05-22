@@ -4,12 +4,12 @@ import edu.ntnu.stud.idatt2003.view.CanvasView;
 
 /**
  * Controller class for the canvas of the chaos game.
- *
- * @version 1.0
- * @since 2024-21-5
  */
 public class CanvasController {
 
+  /**
+   * The view the controller handles.
+   */
   private final CanvasView view;
 
   /**
@@ -22,7 +22,7 @@ public class CanvasController {
   }
 
   /**
-   * method for updating the fractal in the canvas view.
+   * Method for updating the fractal in the canvas view.
    *
    * @param fractal new fractal to draw
    */

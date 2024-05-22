@@ -74,5 +74,4 @@ public class AffineBox extends HBox {
     vector1.setText(values[4]);
     vector2.setText(values[5]);
   }
-
 }
