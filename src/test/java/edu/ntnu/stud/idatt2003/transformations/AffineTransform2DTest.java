@@ -1,7 +1,8 @@
 package edu.ntnu.stud.idatt2003.transformations;
 
-import edu.ntnu.stud.idatt2003.math.Matrix2x2;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

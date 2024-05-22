@@ -1,16 +1,16 @@
 package edu.ntnu.stud.idatt2003.controller;
 
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
-import edu.ntnu.stud.idatt2003.math.Complex;
-import edu.ntnu.stud.idatt2003.math.Matrix2x2;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.math.Complex;
+import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
 import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
-import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
-import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
-import edu.ntnu.stud.idatt2003.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.JuliaTransform;
+import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 import edu.ntnu.stud.idatt2003.view.SettingsView;
 import java.io.IOException;
 import java.util.ArrayList;

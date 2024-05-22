@@ -1,7 +1,7 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.math.Vector2D;
-import edu.ntnu.stud.idatt2003.transformations.Transform2D;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 import java.util.List;
 
 /**
