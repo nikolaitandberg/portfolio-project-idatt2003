@@ -44,6 +44,7 @@ public class Matrix2x2 {
 
   /**
    * To string method.
+   *
    * @return String representation of the matrix.
    */
   public String toString() {

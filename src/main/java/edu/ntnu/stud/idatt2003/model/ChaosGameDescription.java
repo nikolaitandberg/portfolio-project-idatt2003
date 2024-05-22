@@ -67,10 +67,10 @@ public class ChaosGameDescription {
    */
   @Override
   public String toString() {
-    return "ChaosGameDescription{" +
-            "minCords=" + minCords +
-            ", maxCords=" + maxCords +
-            ", transforms=" + transforms +
-            '}';
+    return "ChaosGameDescription{"
+            + "minCords=" + minCords
+            + ", maxCords=" + maxCords
+            + ", transforms=" + transforms
+            + '}';
   }
 }

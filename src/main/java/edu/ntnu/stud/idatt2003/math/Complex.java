@@ -49,13 +49,14 @@ public class Complex extends Vector2D {
 
     double magnitude = Math.sqrt(a * a + b * b);
     double x = Math.sqrt((magnitude + a) / 2);
-    double y = Math.signum(b) * Math.sqrt((magnitude - a ) / 2);
+    double y = Math.signum(b) * Math.sqrt((magnitude - a) / 2);
 
-    return new Complex(x,y);
+    return new Complex(x, y);
   }
 
   /**
    * To string method.
+   *
    * @return String representation of the complex number.
    */
   @Override

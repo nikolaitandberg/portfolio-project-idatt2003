@@ -7,10 +7,16 @@ import edu.ntnu.stud.idatt2003.math.Vector2D;
 import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
-
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * A class for handling reading and writing of chaos game files.
@@ -69,7 +75,8 @@ public class ChaosGameFileHandler {
             transforms.add(new JuliaTransform(c, sign));
             break;
           default:
-            throw new UnknownTransformationException("Did not find transform type: " + transformType);
+            throw new UnknownTransformationException("Did not find transform type: "
+                    + transformType);
         }
       }
     } catch (FileNotFoundException e) {
@@ -78,13 +85,13 @@ public class ChaosGameFileHandler {
     return new ChaosGameDescription(minCords, maxCords, transforms);
   }
 
-    /**
-     * Method for writing a chaos game description to a file.
-     *
-     * @param description Chaos game description to write
-     * @param path        Path to write to
-     * @throws IOException If an I/O error occurs
-     */
+  /**
+   * Method for writing a chaos game description to a file.
+   *
+   * @param description Chaos game description to write
+   * @param path        Path to write to
+   * @throws IOException If an I/O error occurs
+   */
 
   public void writeToFile(ChaosGameDescription description, String path) throws IOException {
     List<String> linesToWrite = new ArrayList<>();
@@ -95,8 +102,10 @@ public class ChaosGameFileHandler {
               ? "Affine2D   # Type of transformation" : "Julia   # Type of transformation");
     }
 
-    linesToWrite.add(description.getMinCords().getX0() + "," + description.getMinCords().getX1() + "   # Lower left");
-    linesToWrite.add(description.getMaxCords().getX0() + "," + description.getMaxCords().getX1() + "   # Upper right");
+    linesToWrite.add(description.getMinCords().getX0() + ","
+            + description.getMinCords().getX1() + "   # Lower left");
+    linesToWrite.add(description.getMaxCords().getX0() + ","
+            + description.getMaxCords().getX1() + "   # Upper right");
 
     int transformationCounter = 1;
     for (Transform2D transform : description.getTransforms()) {

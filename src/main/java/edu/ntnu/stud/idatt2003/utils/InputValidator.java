@@ -75,6 +75,7 @@ public class InputValidator {
 
   /**
    * Method for checking if the sign is valid, that is, if it is either 1 or -1.
+   *
    * @param sign Sign to check.
    * @return True if the sign is valid, false otherwise.
    */
@@ -85,6 +86,7 @@ public class InputValidator {
   /**
    * Method for checking if the number of steps is valid, that is, if it is a positive integer
    * and not empty.
+   *
    * @param steps Number of steps to check.
    * @return True if the number of steps is valid, false otherwise.
    */
