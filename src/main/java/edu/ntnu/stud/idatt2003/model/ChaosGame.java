@@ -25,7 +25,6 @@ public class ChaosGame {
    * @param height height of the canvas
    */
   public ChaosGame(ChaosGameDescription description, int width, int height) {
-    super();
     this.canvas = new ChaosCanvas(
             width,
             height,
