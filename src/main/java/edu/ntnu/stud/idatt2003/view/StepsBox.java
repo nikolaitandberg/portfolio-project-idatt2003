@@ -41,10 +41,20 @@ public class StepsBox extends HBox {
     stepsField.setText(steps);
   }
 
+  /**
+   * Returns the run button.
+   *
+   * @return the run button
+   */
   public CustomButton getRunButton() {
     return runSteps;
   }
 
+  /**
+   * Returns the clear button.
+   *
+   * @return the clear button
+   */
   public CustomButton getClearButton() {
     return clearButton;
   }

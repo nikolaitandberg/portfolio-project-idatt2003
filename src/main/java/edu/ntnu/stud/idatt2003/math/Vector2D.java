@@ -62,6 +62,7 @@ public class Vector2D {
 
   /**
    * To string method.
+   *
    * @return String representation of the vector.
    */
   public String toString() {

@@ -68,6 +68,11 @@ public class JuliaTransform implements Transform2D {
     return sqrt;
   }
 
+  /**
+   * To string method.
+   *
+   * @return String representation of the Julia transformation.
+   */
   public String toString() {
     return "Point: " + point + ", Sign: " + sign;
   }

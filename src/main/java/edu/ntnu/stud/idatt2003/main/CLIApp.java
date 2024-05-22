@@ -1,23 +1,29 @@
 package edu.ntnu.stud.idatt2003.main;
 
+import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
 import edu.ntnu.stud.idatt2003.model.ChaosGame;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescription;
-import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
-import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
 import edu.ntnu.stud.idatt2003.model.ChaosGameDescriptionFactory;
+import edu.ntnu.stud.idatt2003.model.ChaosGameFileHandler;
 import edu.ntnu.stud.idatt2003.transformations.Transform2D;
-
 import java.io.IOException;
 import java.util.Scanner;
 
 /**
  * A class for running the chaos game application in the command line interface.
+ * This class was created early in the process and is not used in the final application.
  *
  * @version 1.0
  * @since 2024-02-28
  */
 public class CLIApp {
 
+  /**
+   * Method for running the application.
+   *
+   * @throws IOException                     if an I/O error occurs
+   * @throws UnknownTransformationException   if an unknown transformation is used
+   */
   public void run() throws IOException, UnknownTransformationException {
     Scanner scanner = new Scanner(System.in);
     ChaosGameFileHandler fileHandler = new ChaosGameFileHandler();

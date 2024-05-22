@@ -57,6 +57,4 @@ public class CoordsBox extends HBox {
     maxX.setText(values[2]);
     maxY.setText(values[3]);
   }
-
-
 }

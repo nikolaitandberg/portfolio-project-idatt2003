@@ -4,27 +4,29 @@ import edu.ntnu.stud.idatt2003.controller.CanvasController;
 import edu.ntnu.stud.idatt2003.controller.SettingsController;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
  * Main class for the chaos game application.
  */
+
 public class App extends Application {
 
   private final CanvasView canvasView = new CanvasView();
   private final SettingsView settingsView = new SettingsView();
+  private final SettingsController settingsController = new SettingsController(settingsView);
+  private final CanvasController canvasController = new CanvasController(canvasView);
 
   public static void main(String[] args) {
     launch(args);
   }
 
-
   @Override
   public void start(Stage primaryStage) {
-    SettingsController settingsController = new SettingsController(settingsView);
-    CanvasController canvasController = new CanvasController(canvasView);
+
     MenuBarView menuBarView = new MenuBarView(settingsController, primaryStage);
     settingsController.addRunListener(canvasController::updateCanvas);
 
