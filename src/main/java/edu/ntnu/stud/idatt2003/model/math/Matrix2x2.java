@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.math;
+package edu.ntnu.stud.idatt2003.model.math;
 
 
 /**
@@ -44,6 +44,7 @@ public class Matrix2x2 {
 
   /**
    * To string method.
+   *
    * @return String representation of the matrix.
    */
   public String toString() {

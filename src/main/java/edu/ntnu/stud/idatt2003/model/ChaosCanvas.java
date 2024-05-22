@@ -1,8 +1,8 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.math.Matrix2x2;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
-import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
 
 /**
 * A class representing a canvas for the chaos game.
@@ -12,12 +12,10 @@ import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
 */
 public class ChaosCanvas {
 
-  private int[][] canvas;
-  private int width;
-  private int height;
-  private Vector2D minCoords;
-  private Vector2D maxCoords;
-  private AffineTransform2D transformCoordsToIndices;
+  private final int[][] canvas;
+  private final int width;
+  private final int height;
+  private final AffineTransform2D transformCoordsToIndices;
 
   /**
    * Constructor for the chaos canvas.
@@ -30,8 +28,6 @@ public class ChaosCanvas {
   public ChaosCanvas(int width, int height, Vector2D minCoords, Vector2D maxCoords) {
     this.width = width;
     this.height = height;
-    this.minCoords = minCoords;
-    this.maxCoords = maxCoords;
     this.canvas = new int[height][width];
     this.transformCoordsToIndices = new AffineTransform2D(
             new Matrix2x2(
@@ -52,7 +48,6 @@ public class ChaosCanvas {
    * @param point Point to get the pixel from.
    * @return Pixel value.
    */
-
   public int getPixel(Vector2D point) {
     Vector2D matrixVector = transformCoordsToIndices.transform(point);
     return canvas[(int) matrixVector.getX0()][(int) matrixVector.getX1()];
@@ -70,7 +65,7 @@ public class ChaosCanvas {
     int j = (int) matrixVector.getX1();
 
     if (i >= 0 && i < height && j >= 0 && j < width) {
-      canvas[i][j] = 1;
+      canvas[i][j] += 1;
     }
   }
 
@@ -94,13 +89,5 @@ public class ChaosCanvas {
 
   public int[][] getCanvas() {
     return canvas;
-  }
-
-  public int getWidth() {
-    return width;
-  }
-
-  public int getHeight() {
-    return height;
   }
 }

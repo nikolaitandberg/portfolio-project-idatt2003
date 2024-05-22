@@ -1,19 +1,13 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.ChaosGameObserver;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
 import java.util.Random;
 
 /**
  * Class for calculating the fractal to play chaos game.
- *
- * @version 1.0
- * @since 2024-03-29
  */
-public class ChaosGame extends ChaosGameObservable {
+public class ChaosGame {
 
   private final ChaosCanvas canvas;
 
@@ -31,7 +25,6 @@ public class ChaosGame extends ChaosGameObservable {
    * @param height height of the canvas
    */
   public ChaosGame(ChaosGameDescription description, int width, int height) {
-    super();
     this.canvas = new ChaosCanvas(
             width,
             height,
@@ -41,14 +34,6 @@ public class ChaosGame extends ChaosGameObservable {
     this.description = description;
   }
 
-  /**
-   * Method for getting the canvas.
-   *
-   * @return canvas, an int[][] of 0 and 1
-   */
-  public int[][] getCanvasInt() {
-    return canvas.getCanvas();
-  }
 
   /**
    * Method for getting the canvas.
@@ -70,6 +55,5 @@ public class ChaosGame extends ChaosGameObservable {
       currentPoint = description.getTransforms().get(randomNumber).transform(currentPoint);
       canvas.putPixel(currentPoint);
     }
-    notifyObservers(canvas.getCanvas());
   }
 }

@@ -1,13 +1,12 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.math.Matrix2x2;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
-import edu.ntnu.stud.idatt2003.math.Complex;
-import edu.ntnu.stud.idatt2003.transformations.AffineTransform2D;
-import edu.ntnu.stud.idatt2003.transformations.JuliaTransform;
-import edu.ntnu.stud.idatt2003.transformations.Transform2D;
-
+import edu.ntnu.stud.idatt2003.model.math.Complex;
+import edu.ntnu.stud.idatt2003.model.math.Matrix2x2;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.stud.idatt2003.model.transformations.JuliaTransform;
+import edu.ntnu.stud.idatt2003.model.transformations.Transform2D;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,38 +43,35 @@ public class ChaosGameDescriptionFactory {
    * @param c complex number for the Julia set
    * @return chaos game description for a Julia set
    */
-  public static ChaosGameDescription createJuliaSet(Complex c) {
+  private static ChaosGameDescription createJuliaSet(Complex c) {
     // Define the transformation matrices
 
     // Create the transformations
     JuliaTransform transform1 = new JuliaTransform(c, -1);
-    JuliaTransform transform2 = new JuliaTransform(c, -1);
-    JuliaTransform transform3 = new JuliaTransform(c, -1);
-    JuliaTransform transform4 = new JuliaTransform(c, -1);
-    JuliaTransform transform5 = new JuliaTransform(new Complex(0,0), -1);
+    JuliaTransform transform2 = new JuliaTransform(c, 1);
     // Add the transformations to a list
-    List<Transform2D> transforms = Arrays.asList(transform1, transform2, transform3, transform4, transform5);
+    List<Transform2D> transforms = Arrays.asList(transform1, transform2);
 
     // Define the minimum and maximum coordinates for the fractal
-    Vector2D minCords = new Vector2D(-1.6,-1);
-    Vector2D maxCords = new Vector2D(1.6,1);
+    Vector2D minCords = new Vector2D(-1.6, -1);
+    Vector2D maxCords = new Vector2D(1.6, 1);
 
     // Create and return the ChaosGameDescription
     return new ChaosGameDescription(minCords, maxCords, transforms);
-}
+  }
 
   /**
    * Method for creating a Sierpinski triangle chaos game description.
    *
    * @return chaos game description for a Sierpinski triangle
    */
-  public static ChaosGameDescription createSierpinskiTriangle() {
+  private static ChaosGameDescription createSierpinskiTriangle() {
     Matrix2x2 sierpinskiMatrix = new Matrix2x2(0.5, 0, 0, 0.5);
-    AffineTransform2D sierpinski1 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0, 0));
-    AffineTransform2D sierpinski2 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.5, 0));
-    AffineTransform2D sierpinski3 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.25, 0.5));
+    AffineTransform2D s1 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0, 0));
+    AffineTransform2D s2 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.5, 0));
+    AffineTransform2D s3 = new AffineTransform2D(sierpinskiMatrix, new Vector2D(0.25, 0.5));
 
-    List<Transform2D> transforms = Arrays.asList(sierpinski1, sierpinski2, sierpinski3);
+    List<Transform2D> transforms = Arrays.asList(s1, s2, s3);
     Vector2D minCords = new Vector2D(0, 0);
     Vector2D maxCords = new Vector2D(1, 1);
 
@@ -87,7 +83,7 @@ public class ChaosGameDescriptionFactory {
    *
    * @return chaos game description for a Barnsley fern
    */
-  public static ChaosGameDescription createBarnsleyFern() {
+  private static ChaosGameDescription createBarnsleyFern() {
     Matrix2x2 matrix1 = new Matrix2x2(0, 0, 0, 0.16);
     Matrix2x2 matrix2 = new Matrix2x2(0.85, 0.04, -0.04, 0.85);
     Matrix2x2 matrix3 = new Matrix2x2(0.2, -0.26, 0.23, 0.22);
@@ -109,5 +105,5 @@ public class ChaosGameDescriptionFactory {
     Vector2D maxCords = new Vector2D(2.6558, 9.9983);
 
     return new ChaosGameDescription(minCords, maxCords, transforms);
-}
   }
+}

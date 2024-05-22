@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Root element of the Maven Project Object Model (POM) file -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion> <!-- Maven model version (always 4.0.0) -->
 
-    <groupId>edu.ntnu.stud.idatt2003</groupId>
-    <artifactId>chaos-game-group34</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <!-- General information about this project -->
+    <groupId>edu.ntnu.stud.idatt2003</groupId> <!-- Identifier of the group that the project belongs to -->
+    <artifactId>chaos-game-group34</artifactId> <!-- Name of the artifact produced by this project -->
+    <version>1.0-SNAPSHOT</version> <!-- Version of the artifact produced by this project -->
 
+    <!-- Configuration of project-specific parameters -->
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>21</maven.compiler.source> <!-- Source compatibility version for Java compiler -->
+        <maven.compiler.target>21</maven.compiler.target> <!-- Target compatibility version for Java compiler -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- Encoding standard for the source code -->
     </properties>
 
+    <!-- Project dependencies -->
     <dependencies>
+        <!-- JavaFX controls module for building UI components -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.1</version>
         </dependency>
+        <!-- JUnit Jupiter API for unit testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.1</version>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Indicates dependency is only available for the test compilation and execution phases -->
         </dependency>
     </dependencies>
 
+    <!-- Build configurations -->
     <build>
+        <!-- Plugins for build lifecycle and their configurations -->
         <plugins>
+            <!-- Compiler plugin for Java sources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.12.1</version>
             </plugin>
+            <!-- Plugin for running unit tests with Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
             </plugin>
+            <!-- JavaFX Maven plugin for handling JavaFX specifics in Maven -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>edu.ntnu.stud.idatt2003.view.MainView</mainClass>
+                    <mainClass>edu.ntnu.stud.idatt2003.view.App</mainClass> <!-- Main class to launch JavaFX application -->
                 </configuration>
             </plugin>
+            <!-- Maven Javadoc plugin for generating JavaDoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

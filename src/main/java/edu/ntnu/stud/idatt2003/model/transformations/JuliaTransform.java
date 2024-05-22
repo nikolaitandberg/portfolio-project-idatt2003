@@ -1,7 +1,7 @@
-package edu.ntnu.stud.idatt2003.transformations;
+package edu.ntnu.stud.idatt2003.model.transformations;
 
-import edu.ntnu.stud.idatt2003.math.Complex;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
+import edu.ntnu.stud.idatt2003.model.math.Complex;
+import edu.ntnu.stud.idatt2003.model.math.Vector2D;
 
 /**
  * A class representing a 2D Julia transformation.
@@ -68,6 +68,11 @@ public class JuliaTransform implements Transform2D {
     return sqrt;
   }
 
+  /**
+   * To string method.
+   *
+   * @return String representation of the Julia transformation.
+   */
   public String toString() {
     return "Point: " + point + ", Sign: " + sign;
   }

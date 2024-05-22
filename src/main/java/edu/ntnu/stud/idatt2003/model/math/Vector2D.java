@@ -1,4 +1,4 @@
-package edu.ntnu.stud.idatt2003.math;
+package edu.ntnu.stud.idatt2003.model.math;
 
 /**
  * Class for representing a 2D vector.
@@ -62,6 +62,7 @@ public class Vector2D {
 
   /**
    * To string method.
+   *
    * @return String representation of the vector.
    */
   public String toString() {
