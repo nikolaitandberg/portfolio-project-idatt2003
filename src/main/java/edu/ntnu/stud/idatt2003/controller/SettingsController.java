@@ -39,10 +39,13 @@ public class SettingsController {
    */
   public SettingsController(SettingsView view) {
     this.view = view;
-    this.buttonHandling();
+    this.setUpRunButton();
   }
 
-  private void buttonHandling() {
+  /**
+   * Sets up the run button in the view.
+   */
+  private void setUpRunButton() {
     view.getRunButton().setOnAction(actionEvent -> {
       if (!view.validateEverything()) {
         return;
@@ -143,7 +146,7 @@ public class SettingsController {
    */
   private ChaosGameDescription createChaosGameDescription() {
     try {
-      return ChaosGameDescriptionFactory.get(view.getSavedFractal());
+      return ChaosGameDescriptionFactory.get(view.getSelectedFractal());
     } catch (UnknownTransformationException e) {
       return createCustomDescription();
     }
