@@ -1,11 +1,8 @@
 package edu.ntnu.stud.idatt2003.model;
 
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
-import edu.ntnu.stud.idatt2003.math.Vector2D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

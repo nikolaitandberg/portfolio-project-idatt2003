@@ -1,15 +1,11 @@
 package edu.ntnu.stud.idatt2003.model;
 
-import edu.ntnu.stud.idatt2003.math.Complex;
 import edu.ntnu.stud.idatt2003.exceptions.UnknownTransformationException;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
