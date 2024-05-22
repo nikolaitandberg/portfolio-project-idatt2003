@@ -37,8 +37,8 @@ public class ChaosGameFileHandler {
 
   public ChaosGameDescription readFromFile(String path) throws UnknownTransformationException {
     List<Transform2D> transforms = new ArrayList<>();
-    Vector2D minCords = null;
-    Vector2D maxCords = null;
+    Vector2D minCords;
+    Vector2D maxCords;
 
     try (Scanner scanner = new Scanner(new File(path))) {
       scanner.useDelimiter(",|\\s|#");

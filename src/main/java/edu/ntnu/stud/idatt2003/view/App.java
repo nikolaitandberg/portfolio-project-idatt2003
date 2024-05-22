@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 /**
  * Main class for the chaos game application.
  */
+
 public class App extends Application {
 
   private final CanvasView canvasView = new CanvasView();
